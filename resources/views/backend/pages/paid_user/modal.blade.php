@@ -2,10 +2,10 @@
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form id="createUserForm" action="{{ route('admin.truck.type.store') }}" method="post">
+            <form id="createUserForm" action="{{ route('admin.user.store') }}" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         {{-- <i class="fa-solid fa-xmark"></i> --}}
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Add Image</label>
                         <div class="col-sm-10">
                             <div class="profile_image_input--container position-relative">
                                 <label class="w-100 h-100 rounded-circle overflow-hidden bg-blue-100 cursor-pointer"
@@ -31,38 +31,43 @@
                                     <i class="fa-solid fa-pen text-primary text-12"></i>
                                 </div>
                             </div>
-                            <input type="file" id="profile_image" name="image"
+                            <input type="file" id="profile_image" name="profile_image"
                                         class="d-none" onchange="previewImage(this, '#createModal .preview_image')" required>
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Full Name</label>
                         <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" placeholder="Item" required>
+                            <input type="text" name="name" class="form-control" placeholder="Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="email" class="form-control" placeholder="Email" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Phone No.</label>
                         <div class="col-sm-10">
-                            <select name="rent_type" class="form-control" id="rent_type" onchange="rentTypeChangeHandler(this, 'createModal')" required>
-                                <option value="">Select Item</option>
-                                <option value="distance">Item</option>
-                                <option value="load">Item</option>
+                            <input type="text" name="phone" class="form-control" placeholder="Phone No." required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Gender</label>
+                        <div class="col-sm-10">
+                            <select name="gender" class="form-control" id="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
                     </div>
-                    <div class="rent_amount_container">
-                        <div class="form-group row">
-                            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
-                            <div class="col-sm-10">
-                                <input type="number" name="rent_amount[]" class="form-control" placeholder="Item" required>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="address" class="text-gray-700 fw-medium col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
-                            <input type="number" name="driver_charge" class="form-control" placeholder="Item" required>
+                            <textarea id="address" type="text" class="form-control h-auto resize-none" name="address" placeholder="Address" rows="5" required></textarea>
                         </div>
                     </div>
                     <div class="form-group  row">

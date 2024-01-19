@@ -2,10 +2,10 @@
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form id="createUserForm" action="{{ route('admin.truck.type.store') }}" method="post">
+            <form id="createUserForm" action="{{ route('admin.video.premium.store') }}" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Video</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         {{-- <i class="fa-solid fa-xmark"></i> --}}
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
@@ -18,51 +18,21 @@
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Title</label>
                         <div class="col-sm-10">
-                            <div class="profile_image_input--container position-relative">
-                                <label class="w-100 h-100 rounded-circle overflow-hidden bg-blue-100 cursor-pointer"
-                                    for="profile_image">
-                                    <img class="w-100 h-100 object-fit-cover preview_image"
-                                        src="{{ asset('assets/img/ui/no-image.png') }}" alt="">
-                                </label>
-                                <div
-                                    class="profile_picture_edit_icon--container bg-white position-absolute d-flex flex-column align-items-center justify-content-center rounded-circle shadow">
-                                    <i class="fa-solid fa-pen text-primary text-12"></i>
-                                </div>
-                            </div>
-                            <input type="file" id="profile_image" name="image"
-                                        class="d-none" onchange="previewImage(this, '#createModal .preview_image')" required>
+                            <input type="text" name="title" class="form-control" placeholder="Title" required>
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Short Description</label>
                         <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" placeholder="Item" required>
+                            <input type="text" name="short_description" class="form-control" placeholder="Short Description" required>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                    <div class="form-group  row">
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Embed Link</label>
                         <div class="col-sm-10">
-                            <select name="rent_type" class="form-control" id="rent_type" onchange="rentTypeChangeHandler(this, 'createModal')" required>
-                                <option value="">Select Item</option>
-                                <option value="distance">Item</option>
-                                <option value="load">Item</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="rent_amount_container">
-                        <div class="form-group row">
-                            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
-                            <div class="col-sm-10">
-                                <input type="number" name="rent_amount[]" class="form-control" placeholder="Item" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
-                        <div class="col-sm-10">
-                            <input type="number" name="driver_charge" class="form-control" placeholder="Item" required>
+                            <input type="text" name="embed_link" class="form-control" placeholder="Embed Link" required>
                         </div>
                     </div>
                     <div class="form-group  row">

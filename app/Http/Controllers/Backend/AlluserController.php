@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\TruckType;
 use App\Models\TruckTypeDetail;
+use App\Models\User;
 use Helper;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -16,51 +17,60 @@ class AlluserController extends Controller
         return view('backend.pages.all_user.index');
     }
 
-    public function getList(Request $request)
-    {
+    public function getList(Request $request){
 
-        $data = TruckTypeDetail::with('truck_type')->get();
+        $data = User::query();
+        if ($request->name) {
+            $data->where(function($query) use ($request){
+                $query->where('name','like', "%" .$request->name ."%" );
+            });
+        }
 
-        return DataTables::of($data)
+        if ($request->email) {
+            $data->where(function($query) use ($request){
+                $query->where('email','like', "%" .$request->email ."%" );
+            });
+        }
 
-            ->editColumn('image', function ($row) {
-                return ($row->image) ? '<img class="profile-img" src="' . asset($row->image) . '" alt="profile image">' : '<img class="profile-img" src="' . asset('assets/img/no-img.jpg') . '" alt="profile image">';
-            })
+        if ($request->phone) {
+            $data->where(function($query) use ($request){
+                $query->where('phone','like', "%" .$request->phone ."%" );
+            });
+        }
 
-            ->addColumn('name', function ($row) {
-                if ($row->load_type) {
-                    return $row->truck_type->name . '(' . $row->load_type . ')';
-                } else {
-                    return $row->truck_type->name;
-                }
-            })
-            ->addColumn('driver_charge', function ($row) {
-                return $row->truck_type->driver_charge;
-            })
 
-            ->addColumn('register_truck', function ($row) {
-                return '0';
-            })
+        return Datatables::of($data)
 
-            ->editColumn('status', function ($row) {
-                if ($row->truck_type->status == 1) {
-                    return '<span class="badge bg-success-200 text-success-700 rounded-pill w-80">Active</span>';
-                } else {
-                    return '<span class="badge bg-gray-200 text-gray-600 rounded-pill w-80">Inactive</span>';
-                }
-            })
+        ->editColumn('profile_image', function ($row) {
+            return ($row->profile_image) ? '<img class="profile-img" src="'.asset('uploads/user-images/'.$row->profile_image).'" alt="profile image">' : '<img class="profile-img" src="'.asset('assets/img/no-img.jpg').'" alt="profile image">';
+        })
 
-            ->addColumn('action', function ($row) {
-                $btn = '';
-                if (Helper::hasRight('truck_type.view')) {
-                    $btn = $btn . '<a href="" data-id="' . $row->id . '" class="edit_btn btn btn-sm text-gray-900"><i class="fa-solid fa-pencil"></i></a>';
-                }
-                if (Helper::hasRight('truck_type.view')) {
-                    $btn = $btn . '<a class="delete_btn btn btn-sm text-gray-900" data-id="' . $row->id . '" href=""><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                }
-                return $btn;
-            })
-            ->rawColumns(['profile_image', 'name', 'driver_charge', 'register_truck', 'status', 'action'])->make(true);
+        ->editColumn('name', function ($row) {
+            return $row->name;
+        })
+
+        ->editColumn('status', function ($row) {
+            if ($row->status == 1) {
+                return '<span class="badge bg-success-200 text-success-700 rounded-pill w-80">Active</span>';
+            }else{
+                return '<span class="badge bg-gray-200 text-gray-600 rounded-pill w-80">Inactive</span>';
+            }
+        })
+
+        ->addColumn('action', function ($row) {
+            $btn = '';
+            if (Helper::hasRight('user.edit')) {
+                $btn = $btn . '<a href="" data-id="'.$row->id.'" class="edit_btn btn btn-sm text-gray-900"><i class="fa-solid fa-pencil"></i></a>';
+            }
+            // if (Helper::hasRight('user.edit')) {
+            //     $btn = $btn . '<a class="change_password btn btn-sm text-gray-900 mx-1 " data-id="'.$row->id.'" href="" title="Change Password"><i class="fa-solid fa-key"></i></a>';
+            // }
+            if (Helper::hasRight('user.delete')) {
+                $btn = $btn . '<a class="delete_btn btn btn-sm text-gray-900" data-id="'.$row->id.'" href=""><i class="fa fa-trash" aria-hidden="true"></i></a>';
+            }
+            return $btn;
+        })
+        ->rawColumns(['profile_image','name','status','action'])->make(true);
     }
 
     public function store(Request $request)

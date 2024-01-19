@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\TruckType;
-use App\Models\TruckTypeDetail;
+use App\Models\PremiumVideo;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class PremiumvideoController extends Controller
@@ -19,31 +19,16 @@ class PremiumvideoController extends Controller
     public function getList(Request $request)
     {
 
-        $data = TruckTypeDetail::with('truck_type')->get();
+        $data = PremiumVideo::all();
 
         return DataTables::of($data)
 
-            ->editColumn('image', function ($row) {
-                return ($row->image) ? '<img class="profile-img" src="' . asset($row->image) . '" alt="profile image">' : '<img class="profile-img" src="' . asset('assets/img/no-img.jpg') . '" alt="profile image">';
-            })
-
-            ->addColumn('name', function ($row) {
-                if ($row->load_type) {
-                    return $row->truck_type->name . '(' . $row->load_type . ')';
-                } else {
-                    return $row->truck_type->name;
-                }
-            })
-            ->addColumn('driver_charge', function ($row) {
-                return $row->truck_type->driver_charge;
-            })
-
-            ->addColumn('register_truck', function ($row) {
-                return '0';
+            ->editColumn('video', function ($row) {
+                return '<iframe width="150" height="100" src=" '.$row->embed_link.' " title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
             })
 
             ->editColumn('status', function ($row) {
-                if ($row->truck_type->status == 1) {
+                if ($row->status == 1) {
                     return '<span class="badge bg-success-200 text-success-700 rounded-pill w-80">Active</span>';
                 } else {
                     return '<span class="badge bg-gray-200 text-gray-600 rounded-pill w-80">Inactive</span>';
@@ -60,121 +45,104 @@ class PremiumvideoController extends Controller
                 }
                 return $btn;
             })
-            ->rawColumns(['profile_image', 'name', 'driver_charge', 'register_truck', 'status', 'action'])->make(true);
+            ->rawColumns(['video', 'status', 'action'])->make(true);
     }
 
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
-            'image' => 'required|image|mimes:jpg,png|max:20480'
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'short_description' => 'required',
+            'embed_link' => 'required',
         ]);
 
-        $truck_type = new TruckType();
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
-        }
-        $truck_type->save();
-
-        foreach ($request->rent_amount as $index => $value) {
-            $details = new TruckTypeDetail();
-
-            $details->truck_type_id = $truck_type->id;
-            if ($request->rent_type == 'load') {
-                $details->load_type = $request->load_type[$index];
-            }
-            $details->rent_amount = $value;
-
-            $details->save();
+        if ($validator->fails()) {
+            return response()->json([
+                'type' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
-        return response()->json([
-            'type' => 'success',
-            'message' => 'Trucktype created successfully.',
-        ]);
+        try {
+            $video = new PremiumVideo();
+            $video->title = $request->title;
+            $video->short_description = $request->short_description;
+            $video->embed_link = $request->embed_link;
+            $video->status  = ($request->status) ? 1 : 0;
+            $video->save();
+    
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Video created successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'type' => 'success',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function edit(Request $request)
     {
         $id = $request->id;
-        $truck_details = TruckTypeDetail::with('truck_type')->find($id);
-        return view('backend.pages.premium_video.edit', compact('truck_details'));
+        $video = PremiumVideo::find($id);
+        return view('backend.pages.premium_video.edit', compact('video'));
     }
 
     public function update(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
-            'image' => 'image|mimes:jpg,png|max:20480'
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'short_description' => 'required',
+            'embed_link' => 'required',
         ]);
 
-        $truck_type = TruckType::find($request->truck_type_id);
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
-            }
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
+        if ($validator->fails()) {
+            return response()->json([
+                'type' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
         }
-        $truck_type->save();
 
-        $details = TruckTypeDetail::find($request->id);
-        if ($request->rent_type == 'load') {
-            $details->load_type = $request->load_type;
-        }
-        $details->rent_amount = $request->rent_amount;
-        $details->save();
+        try {
+            $id = $request->id;
+            $video = PremiumVideo::find($id);
 
-        if ($truck_type->save()) {
+            $video->title = $request->title;
+            $video->short_description = $request->short_description;
+            $video->embed_link = $request->embed_link;
+            $video->status  = ($request->status) ? 1 : 0;
+            $video->save();
+    
             return response()->json([
                 'type' => 'success',
-                'message' => 'User updated successfully.',
+                'message' => 'Video updated successfully.',
             ]);
-        } else {
+        } catch (\Exception $e) {
             return response()->json([
                 'type' => 'success',
-                'message' => 'Something went wrong.',
+                'message' => $e->getMessage()
             ]);
         }
     }
 
     public function delete(Request $request)
     {
-        $details = TruckTypeDetail::find($request->id);
-        $truck_type = TruckType::with('truck_type_details')->find($details->truck_type_id);
-        $count = count($truck_type->truck_type_details) - 1;
+        $id = $request->id;
+        $video = PremiumVideo::find($id);
 
-        $details->delete();
-
-        if (!$count) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
-            }
-            $truck_type->delete();
+        if ($video) {
+            $video->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Video deleted.',
+            ]);
+        } else {
+            return response()->json([
+                'type' => 'success',
+                'message' => 'No video fouond.',
+            ]);
         }
-
-        return response()->json([
-            'type' => 'success',
-            'message' => 'Truck deleted successfully.',
-        ]);
     }
 }

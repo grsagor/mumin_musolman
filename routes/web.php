@@ -115,7 +115,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/regular-video-free'], function () {
         Route::get('/', [RegularvideoController::class, 'index'])->name('admin.regular.video.free');
-        Route::get('/get/list', [RegularvideoController::class, 'getList']);
+        Route::get('/get/list', [RegularvideoController::class, 'getList'])->name('admin.regular.video.free.get.list');
         Route::post('/store', [RegularvideoController::class, 'store'])->name('admin.regular.video.free.store');
         Route::get('/edit', [RegularvideoController::class, 'edit'])->name('admin.regular.video.free.edit');
         Route::any('/update', [RegularvideoController::class, 'update'])->name('admin.regular.video.free.update');
@@ -123,7 +123,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/amol-video-free'], function () {
         Route::get('/', [AmolvideoController::class, 'index'])->name('admin.amol.video.free');
-        Route::get('/get/list', [AmolvideoController::class, 'getList']);
+        Route::get('/get/list', [AmolvideoController::class, 'getList'])->name('admin.amol.video.free.get.list');
         Route::post('/store', [AmolvideoController::class, 'store'])->name('admin.amol.video.free.store');
         Route::get('/edit', [AmolvideoController::class, 'edit'])->name('admin.amol.video.free.edit');
         Route::any('/update', [AmolvideoController::class, 'update'])->name('admin.amol.video.free.update');
@@ -131,7 +131,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/amol-video-premium'], function () {
         Route::get('/', [PremiumamolvideoController::class, 'index'])->name('admin.amol.video.premium');
-        Route::get('/get/list', [PremiumamolvideoController::class, 'getList']);
+        Route::get('/get/list', [PremiumamolvideoController::class, 'getList'])->name('admin.amol.video.premium.get.list');
         Route::post('/store', [PremiumamolvideoController::class, 'store'])->name('admin.amol.video.premium.store');
         Route::get('/edit', [PremiumamolvideoController::class, 'edit'])->name('admin.amol.video.premium.edit');
         Route::any('/update', [PremiumamolvideoController::class, 'update'])->name('admin.amol.video.premium.update');
@@ -139,7 +139,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/video-premium'], function () {
         Route::get('/', [PremiumvideoController::class, 'index'])->name('admin.video.premium');
-        Route::get('/get/list', [PremiumvideoController::class, 'getList']);
+        Route::get('/get/list', [PremiumvideoController::class, 'getList'])->name('admin.video.premium.get.list');
         Route::post('/store', [PremiumvideoController::class, 'store'])->name('admin.video.premium.store');
         Route::get('/edit', [PremiumvideoController::class, 'edit'])->name('admin.video.premium.edit');
         Route::any('/update', [PremiumvideoController::class, 'update'])->name('admin.video.premium.update');
@@ -147,7 +147,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/live-channel'], function () {
         Route::get('/', [LivechannelController::class, 'index'])->name('admin.live.channel');
-        Route::get('/get/list', [LivechannelController::class, 'getList']);
+        Route::get('/get/list', [LivechannelController::class, 'getList'])->name('admin.live.channel.get.list');
         Route::post('/store', [LivechannelController::class, 'store'])->name('admin.live.channel.store');
         Route::get('/edit', [LivechannelController::class, 'edit'])->name('admin.live.channel.edit');
         Route::any('/update', [LivechannelController::class, 'update'])->name('admin.live.channel.update');
@@ -155,7 +155,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/total-message'], function () {
         Route::get('/', [TotalmessageController::class, 'index'])->name('admin.total.message');
-        Route::get('/get/list', [TotalmessageController::class, 'getList']);
+        Route::get('/get/list', [TotalmessageController::class, 'getList'])->name('admin.total.message.get.list');
         Route::post('/store', [TotalmessageController::class, 'store'])->name('admin.total.message.store');
         Route::get('/edit', [TotalmessageController::class, 'edit'])->name('admin.total.message.edit');
         Route::any('/update', [TotalmessageController::class, 'update'])->name('admin.total.message.update');
@@ -163,7 +163,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/payment-request'], function () {
         Route::get('/', [PaymentrequestController::class, 'index'])->name('admin.payment.request');
-        Route::get('/get/list', [PaymentrequestController::class, 'getList']);
+        Route::get('/get/list', [PaymentrequestController::class, 'getList'])->name('admin.payment.request.get.list');
         Route::post('/store', [PaymentrequestController::class, 'store'])->name('admin.payment.request.store');
         Route::get('/edit', [PaymentrequestController::class, 'edit'])->name('admin.payment.request.edit');
         Route::any('/update', [PaymentrequestController::class, 'update'])->name('admin.payment.request.update');
@@ -171,7 +171,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/tafsir'], function () {
         Route::get('/', [TafsirController::class, 'index'])->name('admin.tafsir');
-        Route::get('/get/list', [TafsirController::class, 'getList']);
+        Route::get('/get/list', [TafsirController::class, 'getList'])->name('admin.tafsir.get.list');
         Route::post('/store', [TafsirController::class, 'store'])->name('admin.tafsir.store');
         Route::get('/edit', [TafsirController::class, 'edit'])->name('admin.tafsir.edit');
         Route::any('/update', [TafsirController::class, 'update'])->name('admin.tafsir.update');
@@ -179,7 +179,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/all-user'], function () {
         Route::get('/', [AlluserController::class, 'index'])->name('admin.all.user');
-        Route::get('/get/list', [AlluserController::class, 'getList']);
+        Route::get('/get/list', [AlluserController::class, 'getList'])->name('admin.all.user.get.list');
         Route::post('/store', [AlluserController::class, 'store'])->name('admin.all.user.store');
         Route::get('/edit', [AlluserController::class, 'edit'])->name('admin.all.user.edit');
         Route::any('/update', [AlluserController::class, 'update'])->name('admin.all.user.update');
@@ -187,7 +187,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/paid-user'], function () {
         Route::get('/', [PaiduserController::class, 'index'])->name('admin.paid.user');
-        Route::get('/get/list', [PaiduserController::class, 'getList']);
+        Route::get('/get/list', [PaiduserController::class, 'getList'])->name('admin.paid.user.get.list');
         Route::post('/store', [PaiduserController::class, 'store'])->name('admin.paid.user.store');
         Route::get('/edit', [PaiduserController::class, 'edit'])->name('admin.paid.user.edit');
         Route::any('/update', [PaiduserController::class, 'update'])->name('admin.paid.user.update');
@@ -195,7 +195,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => '/custom-ads'], function () {
         Route::get('/', [CustomadsController::class, 'index'])->name('admin.custom.ads');
-        Route::get('/get/list', [CustomadsController::class, 'getList']);
+        Route::get('/get/list', [CustomadsController::class, 'getList'])->name('admin.custom.ads.get.list');
         Route::post('/store', [CustomadsController::class, 'store'])->name('admin.custom.ads.store');
         Route::get('/edit', [CustomadsController::class, 'edit'])->name('admin.custom.ads.edit');
         Route::any('/update', [CustomadsController::class, 'update'])->name('admin.custom.ads.update');

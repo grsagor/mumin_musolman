@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\TruckType;
 use App\Models\User;
 use Helper;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -23,17 +24,12 @@ class ApiController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:user',
             'phone' => 'required|unique:user',
-            'gender' => 'required',
+            'dob' => 'required',
             'address' => 'required',
-            'role' => 'required',
-            'profile_image' => 'required|image|mimes:jpg,png|max:20480'
+            'password' => 'required',
+            'profile_image' => 'required|image|mimes:jpg,png|max:2048'
         ];
-        if ($request->role == 3) {
-            $rule['driving_experience'] = 'required';
-            $rule['driver_truck_type'] = 'required';
-            $rule['driving_license_front'] = 'required|image|mimes:jpg,png|max:20480';
-            $rule['driving_license_back'] = 'required|image|mimes:jpg,png|max:20480';
-        }
+
         $validator = Validator::make($request->all(), $rule);
 
         if ($validator->fails()) {
@@ -46,31 +42,11 @@ class ApiController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->gender = $request->gender;
         $user->address = $request->address;
-        $user->role = $request->role;
-        $user->driving_experience = $request->driving_experience;
-        $user->driver_truck_type = $request->driver_truck_type;
+        $user->dob = $request->dob;
+        $user->password = Hash::make($request->password);
         $user->status = 1;
-
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/user-images'), $filename);
-            $user->profile_image = 'uploads/user-images/' . $filename;
-        }
-        if ($request->hasFile('driving_license_front')) {
-            $image = $request->file('driving_license_front');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/user-images'), $filename);
-            $user->driving_license_front = 'uploads/user-images/' . $filename;
-        }
-        if ($request->hasFile('driving_license_back')) {
-            $image = $request->file('driving_license_back');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/user-images'), $filename);
-            $user->driving_license_back = 'uploads/user-images/' . $filename;
-        }
+        Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
 
         if ($user->save()) {
             $data['status'] = 1;
@@ -86,7 +62,8 @@ class ApiController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -95,18 +72,29 @@ class ApiController extends Controller
             return response()->json($data, 200);
         }
 
-        $user = User::where('phone', $request->phone)->first();
+        $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            $data['token'] = $this->generateToken($user);
-            $data['status'] = 1;
-            $data['data'] = $user;
-            return response()->json($data, 200);
+            if(Hash::check($request->password, $user->password)) {
+                $respose = [
+                    'status' => 1,
+                    'token' => $this->generateToken($user),
+                    'data' => $user
+                ];
+            } else {
+                $respose = [
+                    'status' => 1,
+                    'data' => "Credentials don't matched."
+                ];
+            }
         } else {
-            $data['status'] = 0;
-            $data['data'] = 'No user registered with this phone number.';
-            return response()->json($data, 200);
+            $respose = [
+                'status' => 1,
+                'data' => "No user found."
+            ];
         }
+
+        return response()->json($respose, 200);
     }
     private function generateToken($user)
     {
@@ -118,7 +106,7 @@ class ApiController extends Controller
     public function updateUser(Request $request) {
         $user = User::find($request->id);
         if ($user) {
-            $fillableFields = ['name', 'email', 'phone', 'gender', 'address', 'driving_experience', 'driver_truck_type'];
+            $fillableFields = ['name', 'email', 'phone', 'address'];
             foreach ($fillableFields as $field) {
                 if ($request->filled($field)) {
                     $user->$field = $request->$field;
@@ -126,8 +114,6 @@ class ApiController extends Controller
             }
 
             Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
-            Helper::updateFileField($request, $user, 'driving_license_front', 'uploads/user-images/');
-            Helper::updateFileField($request, $user, 'driving_license_back', 'uploads/user-images/');
 
             if ($user->save()) {
                 $data['status'] = 1;

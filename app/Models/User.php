@@ -30,7 +30,7 @@ class User extends Authenticatable
         'status',
     ];
 
-    protected $appends = ['profile_image_path', 'driving_license_front_path', 'driving_license_back_path', 'average_rating'];
+    protected $appends = ['profile_image_path'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -39,9 +39,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'visible_password',
         'remember_token',
-        'ratings',
         'pivot',
     ];
 
@@ -68,53 +66,8 @@ class User extends Authenticatable
         $profileImage = $this->attributes['profile_image'];
         return env('APP_URL') . '/' . $profileImage;
     }
-    public function getDrivingLicenseFrontPathAttribute()
-    {
-        if (isset($this->attributes['driving_license_front'])) {
-            $driving_license_front = $this->attributes['driving_license_front'];
-            return env('APP_URL') . '/' . $driving_license_front;
-        }
-        return null;
-    }
-    public function getDrivingLicenseBackPathAttribute()
-    {
-        if (isset($this->attributes['driving_license_back'])) {
-            $driving_license_back = $this->attributes['driving_license_back'];
-            return env('APP_URL') . '/' . $driving_license_back;
-        }
-        return null;
-    }
     public function roles()
     {
         return $this->belongsTo(Role::class, 'role', 'id');
-    }
-    public function truck_type_detail()
-    {
-        return $this->belongsTo(TruckTypeDetail::class, 'driver_truck_type', 'id');
-    }
-    public function deposits()
-    {
-        return $this->hasMany(Deposit::class, 'driver_id');
-    }
-    public function orders()
-    {
-        return $this->belongsToMany(Order::class, 'driver_histories', 'driver_id', 'order_id');
-    }
-
-    /* Rating */
-    public function ratings()
-    {
-        return $this->hasMany(Rating::class, 'driver_id');
-    }
-
-    public function getAverageRatingAttribute()
-    {
-        $average = $this->ratings->avg('rating');
-        $average = $average ?? 0;
-        if ($this->role != 3) {
-            $this->hidden[] = 'average_rating';
-            return null;
-        }
-        return $average;
     }
 }

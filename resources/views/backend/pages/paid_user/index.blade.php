@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Truck Type | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'User | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
 @section('css')
     <style>
         .profile_image_input--container {
@@ -17,14 +17,46 @@
 @endsection
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Islam</h4>
+        <h4 class="mt-2">User Management</h4>
+
+        <div class="card my-2">
+            <div class="card-body pb-0">
+                <form method="" id="filter_form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="email" id="email"
+                                    placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="phone" id="phone"
+                                    placeholder="Phone">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group text-end mt-2">
+                                <button type="submit" id="filterBtn" name="submit" class="btn btn-primary"><i
+                                        class="feather icon-file mr-2"></i> Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">
                     <div class="col-12 d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            <h5 class="m-0">Islam</h5>
+                            <h5 class="m-0">User List</h5>
                         </div>
                         @if (Helper::hasRight('user.create'))
                             <button type="button" class="btn btn-primary btn-create-user create_form_btn"
@@ -40,10 +72,10 @@
                         <tr>
                             <th>Sl No</th>
                             <th>User ID</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -55,7 +87,7 @@
             </div>
         </div>
     </div>
-    @include('backend.pages.regular_video.modal')
+    @include('backend.pages.user.modal')
     @push('footer')
         <script type="text/javascript">
             function getusers(name = null, email = null, phone = null) {
@@ -64,7 +96,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ url('admin/truck-type/get/list') }}",
+                        url: "{{ url('admin/user/get/list') }}",
                         type: 'GET',
                         data: {
                             'name': name,
@@ -98,16 +130,16 @@
                             name: 'name'
                         },
                         {
-                            data: 'rent_amount',
-                            name: 'rent_amount'
+                            data: 'email',
+                            name: 'email'
                         },
                         {
-                            data: 'driver_charge',
-                            name: 'driver_charge'
+                            data: 'phone',
+                            name: 'phone'
                         },
                         {
-                            data: 'register_truck',
-                            name: 'register_truck'
+                            data: 'address',
+                            name: 'address'
                         },
                         {
                             data: 'status',
@@ -183,9 +215,8 @@
                 e.preventDefault();
                 let id = $(this).attr('data-id');
                 $.ajax({
-                    url: "{{ route('admin.regular.video.free.edit') }}",
+                    url: "{{ url('/admin/user/edit/') }}/" + id,
                     type: "GET",
-                    data: { id: id },
                     dataType: "html",
                     success: function(data) {
                         $('#editModal .modal-content').html(data);
@@ -251,9 +282,8 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('admin.truck.type.delete') }}",
+                            url: "{{ url('/admin/user/delete/') }}/" + id,
                             type: "GET",
-                            data: { id:id },
                             dataType: "json",
                             success: function(data) {
                                 if (data.success) {
@@ -279,6 +309,64 @@
                     }
                 })
             })
+
+
+            $(document).on('click', '.change_password', function(e) {
+                e.preventDefault();
+                let form = $('#changePasswordModal').find('form');
+                form[0].reset();
+                $('#changePasswordModal .server_side_error').empty();
+                $('#changePasswordModal input[required]').each(function() {
+                    $(this).css("border-color", "#d4d4d4");
+                    $(this).next('.error-tag').remove();
+                });
+                let id = $(this).attr('data-id');
+                $('#changePasswordModal #user_id').val(id);
+                $('#changePasswordModal').modal('show');
+            })
+
+            $(document).on('click', '#changePasswordBtn', function(e) {
+                e.preventDefault();
+                let go_next_step = true;
+                if ($(this).attr('data-check-area') && $(this).attr('data-check-area').trim() !== '') {
+                    go_next_step = check_validation_Form('#changePasswordModal .' + $(this).attr('data-check-area'));
+                }
+                if (go_next_step == true) {
+                    let form = document.getElementById('changePasswordForm');
+                    var formData = new FormData(form);
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: $('#changePasswordForm').attr('action'),
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            $.toast({
+                                heading: 'Success',
+                                text: response.message,
+                                position: 'top-center',
+                                icon: 'success'
+                            })
+                            $('#dataTable').DataTable().destroy();
+                            getusers();
+                            $('#changePasswordModal').modal('hide');
+                        },
+                        error: function(xhr) {
+                            let errorMessage = '';
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                errorMessage += ('' + value + '<br>');
+                            });
+                            $('#changePasswordForm .server_side_error').html(
+                                '<div class="alert alert-danger" role="alert">' + errorMessage +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                            );
+                        },
+                    })
+                }
+            })
         </script>
 
         <script>
@@ -292,26 +380,6 @@
                     };
                     reader.readAsDataURL(input.files[0]);
                 }
-            }
-
-            function incrementRow(first_div, second_div, copy_single = null) {
-                console.log(copy_single);
-                if (copy_single == null) {
-                    var maindiv = $('.' + first_div);
-                } else {
-                    var maindiv = $(copy_single).closest('.' + first_div);
-                }
-                var copydiv = maindiv.find('.' + second_div + ':last');
-                var clonedDiv = copydiv.clone(true);
-                var rowNumber = parseInt(copydiv.attr('data-row-no')) + 1;
-                clonedDiv.attr('data-row-no', rowNumber);
-                clonedDiv.insertAfter(copydiv);
-            }
-
-            function removeRow(event) {
-                event.preventDefault();
-                var row = event.target.closest('tr');
-                row.remove();
             }
         </script>
     @endpush

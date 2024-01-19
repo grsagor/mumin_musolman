@@ -1,0 +1,578 @@
+{
+	"info": {
+		"_postman_id": "816d5591-309c-4c27-b384-951e5958b1c0",
+		"name": "truck",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26121716"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Driver 1",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "asdfsafd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "male",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "asfasd",
+							"type": "text"
+						},
+						{
+							"key": "profile_image",
+							"type": "file",
+							"src": [
+								"/C:/Users/Lenovo/Downloads/c8075f25bd374f50813b55467b29db7f.jpg",
+								"/C:/Users/Lenovo/Downloads/1.png"
+							]
+						},
+						{
+							"key": "phone",
+							"value": "123412342",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "4",
+							"description": "Admin = 1\nDispatcher = 2\nDriver = 3\nCustomer = 4",
+							"type": "text"
+						},
+						{
+							"key": "driving_experience",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "driver_truck_type",
+							"value": "7",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "driving_license_front",
+							"type": "file",
+							"src": "/C:/Users/Lenovo/Downloads/1.png",
+							"disabled": true
+						},
+						{
+							"key": "driving_license_back",
+							"type": "file",
+							"src": "/C:/Users/Lenovo/Downloads/1.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/register",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "ABC",
+							"disabled": true
+						},
+						{
+							"key": "email",
+							"value": "abc@abc.ocm",
+							"disabled": true
+						},
+						{
+							"key": "gender",
+							"value": "male",
+							"disabled": true
+						},
+						{
+							"key": "address",
+							"value": "asdasdfa",
+							"disabled": true
+						},
+						{
+							"key": "profile_image",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "123451",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store-device-token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "123451",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/store-device-token?device_token=asfasdfasdfasdfasdfsa&id=5507",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store-device-token"
+					],
+					"query": [
+						{
+							"key": "device_token",
+							"value": "asfasdfasdfasdfasdfsa"
+						},
+						{
+							"key": "id",
+							"value": "5507"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "4653",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "John Bhai",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "asdfasd",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "driving_experience",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "driver_truck_type",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "profile_image",
+							"type": "file",
+							"src": "/C:/Users/Lenovo/Downloads/1.png"
+						},
+						{
+							"key": "driving_license_front",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "driving_license_back",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/update-user",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"update-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-nearest-distance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pick_lat",
+							"value": "23.7514376",
+							"type": "text"
+						},
+						{
+							"key": "pick_lng",
+							"value": "90.3808295",
+							"type": "text"
+						},
+						{
+							"key": "drop_lat",
+							"value": "24.3746497",
+							"type": "text"
+						},
+						{
+							"key": "drop_lng",
+							"value": "88.60036649999999",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/get-nearest-distance",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-nearest-distance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store-order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "truck_type_details_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pick_lat",
+							"value": "34.0522",
+							"type": "text"
+						},
+						{
+							"key": "pick_lng",
+							"value": "-118.2437",
+							"type": "text"
+						},
+						{
+							"key": "drop_lat",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "drop_lng",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "pick_date",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "pick_time",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "no_of_truck",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "shipment_item",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "note",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "distance",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "fare",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pickup_location",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "drop_location",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/order",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store-deposit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "driver_id",
+							"value": "7784",
+							"type": "text"
+						},
+						{
+							"key": "ac_holder",
+							"value": "Driver 1",
+							"type": "text"
+						},
+						{
+							"key": "ac_no",
+							"value": "alsdfk234234",
+							"type": "text"
+						},
+						{
+							"key": "transaction_id",
+							"value": "asdfasdfj23432",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "document",
+							"type": "file",
+							"src": "/C:/Users/Lenovo/Downloads/c8075f25bd374f50813b55467b29db7f.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/store-deposit",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store-deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "truck-type",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "1234",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/get-truck-type-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-truck-type-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-order-list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/get-order-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-order-list"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://127.0.0.1:8000",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "host",
+			"value": "http://192.168.0.106:8000",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "host",
+			"value": "https://truckease.orfactor.com",
+			"type": "string"
+		},
+		{
+			"key": "host",
+			"value": "https://d3ca-103-180-245-251.ngrok-free.app",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

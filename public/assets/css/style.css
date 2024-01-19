@@ -1,0 +1,483 @@
+:root {
+    font-size: 16px;
+    --primary-color: #3742FA;
+    --secondary-color: #EBECFD;
+
+    --gray-50: #F9FAFB;
+    --gray-100: #F2F4F7;
+    --gray-300: #D0D5DD;
+    --gray-400: #98A2B3;
+    --gray-500: #667085;
+    --gray-600: #475467;
+    --gray-700: #344054;
+    --gray-800: #1D2939;
+    --gray-900: #101828;
+
+    --blue-100: #D1E9FF;
+    --blue-500: #2E90FA;
+    --blue-600: #1570EF;
+
+    --orange-25: #FFFAF5;
+    --orange-50: #FFF6ED;
+    --orange-100: #FFEAD5;
+
+    --error-50: #FEF3F2;
+    --error-700: #B42318;
+
+    --success-200: #BBEEBB;
+    --success-500: #12B76A;
+    --success-700: #29A329;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F9FAFB;
+    height: 100vh;
+    overflow: hidden;
+}
+
+p {
+    margin: 0;
+}
+
+label {
+    color: var(--gray-500);
+}
+
+.vh-100 {
+    height: 100vh !important;
+}
+
+.h-fit-content {
+    height: fit-content !important;
+}
+
+.w-fit-content {
+    width: fit-content !important;
+}
+
+.aspect-ratio-1x1 {
+    aspect-ratio: 1/1 !important;
+}
+
+.flex-1 {
+    flex: 1 !important;
+}
+
+.text-12 {
+    font-size: 12px !important;
+}
+.text-14 {
+    font-size: 14px !important;
+}
+.text-20 {
+    font-size: 20px !important;
+}
+.text-24 {
+    font-size: 24px !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+input[type='radio'] {
+    accent-color: var(--primary-color);
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.border-secondary {
+    border-color: var(--secondary-color) !important;
+}
+
+.text-gray-50 {
+    color: var(--gray-50) !important;
+}
+.bg-gray-50 {
+    background: var(--gray-50) !important;
+}
+
+.text-gray-100 {
+    color: var(--gray-100) !important;
+}
+.bg-gray-100 {
+    background: var(--gray-100) !important;
+}
+
+.text-gray-300 {
+    color: var(--gray-300) !important;
+}
+.bg-gray-300 {
+    background: var(--gray-300) !important;
+}
+.border-gray-300 {
+    border-color: var(--gray-300) !important;
+}
+
+.text-gray-400 {
+    color: var(--gray-400) !important;
+}
+
+.bg-gray-400 {
+    background: var(--gray-400) !important;
+}
+
+.text-gray-500 {
+    color: var(--gray-500) !important;
+}
+
+.bg-gray-500 {
+    background: var(--gray-500) !important;
+}
+
+.text-gray-600 {
+    color: var(--gray-600) !important;
+}
+
+.bg-gray-600 {
+    background: var(--gray-600) !important;
+}
+
+.text-gray-700 {
+    color: var(--gray-700) !important;
+}
+
+.bg-gray-700 {
+    background: var(--gray-700) !important;
+}
+
+.text-gray-800 {
+    color: var(--gray-800) !important;
+}
+
+.bg-gray-800 {
+    background: var(--gray-800) !important;
+}
+
+.border-gray-800 {
+    border-color: var(--gray-800) !important;
+}
+
+.text-gray-900 {
+    color: var(--gray-900) !important;
+}
+
+.bg-gray-900 {
+    background: var(--gray-900) !important;
+}
+
+.text-blue-100 {
+    color: var(--blue-100) !important;
+}
+.bg-blue-100 {
+    background: var(--blue-100) !important;
+}
+
+.text-blue-600 {
+    color: var(--blue-600) !important;
+}
+.bg-blue-600 {
+    background: var(--blue-600) !important;
+}
+
+.text-blue-500 {
+    color: var(--blue-500) !important;
+}
+.bg-blue-500 {
+    background: var(--blue-500) !important;
+}
+
+.text-orange-25 {
+    color: var(--orange-25) !important;
+}
+.bg-orange-25 {
+    background: var(--orange-25) !important;
+}
+
+.text-orange-50 {
+    color: var(--orange-50) !important;
+}
+.bg-orange-50 {
+    background-color: var(--orange-50) !important;
+}
+
+.text-orange-100 {
+    color: var(--orange-100) !important;
+}
+.bg-orange-100 {
+    background: var(--orange-100) !important;
+}
+
+.text-success-500 {
+    color: var(--success-500) !important;
+}
+.bg-success-500 {
+    background: var(--success-500) !important;
+}
+
+.text-error-50 {
+    color: var(--error-50) !important;
+}
+.bg-error-50 {
+    background: var(--error-50) !important;
+}
+
+.text-error-700 {
+    color: var(--error-700) !important;
+}
+.bg-error-700 {
+    background: var(--error-700) !important;
+}
+
+.btn-primary {
+    color: #fff !important;
+    background-color: var(--primary-color) !important;
+    border: none !important;
+}
+.btn-primary:hover {
+    background-color: var(--secondary-color) !important;
+}
+.btn-gray {
+    color: var(--gray-500);
+    background-color: var(--gray-300);
+    border: none;
+}
+a {
+    text-decoration: none !important;
+}
+
+/* Frontend logo */
+.front-end-sidebar-logo {
+    max-width: 80%;
+    max-height: 80px;
+}
+/* Customized scrollbar */
+.customized__scrollbar::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 4px;
+}
+
+.customized__scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 16px;
+}
+
+.customized__scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Style for input with icon label */
+.input__with__icon--icon_container {
+    height: 20px;
+    width: 20px;
+}
+
+/* Auth */
+.auth-container {
+    min-height: 100vh;
+}
+
+.auth-bg-shade {
+    background: linear-gradient(to bottom, #000, transparent);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+.x-btn,
+.fb-btn,
+.google-btn {
+    font-weight: 600;
+}
+
+.google-btn:hover {
+    background-color: #efefef;
+}
+
+.fb-btn {
+    background-color: #1877F2;
+}
+
+.fb-btn:hover {
+    background-color: #438ef0;
+}
+
+.x-btn {
+    background-color: #1DA1F2;
+}
+
+.x-btn:hover {
+    background-color: #0894eb;
+}
+
+.eye-icon-btn:active {
+    border-color: transparent !important;
+}
+
+/* Sidebar */
+.sidebar {
+    height: 100vh;
+}
+
+.sidebar li a {
+    font-size: 18px;
+}
+
+.sidebar li a.active {
+    color: var(--primary-color) !important;
+}
+
+.list-style-none {
+    list-style: none !important;
+}
+
+.sidebar .sidebar-icon-container {
+    height: 20px;
+    width: 20px;
+}
+
+/* Post */
+.post-three-dot-btn::after {
+    display: none;
+}
+
+.post-three-dot-btn:active,
+.post-three-dot-btn.show {
+    border-color: transparent !important;
+}
+
+/* Settings */
+.settings-sidebar li a.active {
+    color: var(--primary-color) !important;
+    background: var(--orange-25) !important;
+    border: 1px solid var(--secondary-color) !important;
+}
+
+/* Form input desings */
+input.form-control {
+    min-height: auto !important;
+    height: 38px !important;
+    font-size: 14px;
+}
+
+textarea.form-control {
+    font-size: 14px;
+}
+
+.form-floating>label,
+.form-check>label {
+    height: 75%;
+    padding: 6px 0.75rem;
+    font-size: 14px;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input:focus {
+    border-color: var(--secondary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem var(--secondary-color);
+}
+
+/* Locked File */
+.locked-file {
+    filter: blur(25px);
+}
+
+/* image select custom field  */
+.upload-field-customized {
+    width: 50px;
+    background: #dbd7d7;
+    position: absolute;
+    cursor: pointer;
+    left: 5px;
+    top: 5px;
+    border-radius: 50%;
+}
+
+.upload-field-customized input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+.upload-field-customized span {
+    text-align: center;
+    width: 100%;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+}
+
+.upload-field-customized span i {
+    opacity: 0.8;
+    color: #ff5b22;
+}
+
+/* upload profile image custom field  */
+.upload-profile-customized {
+    display: none;
+    width: 50px;
+    background: #ffffff;
+    position: absolute;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 50px;
+}
+
+.upload-profile-customized input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+.upload-profile-customized span {
+    text-align: center;
+    width: 100%;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+}
+
+.upload-profile-customized span i {
+    opacity: 0.8;
+    color: #ff5b22;
+}
+
+.profile-pic-container:hover .upload-profile-customized{
+    display: block;
+}

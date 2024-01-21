@@ -388,7 +388,7 @@ body {
     flex-shrink: 0;
     transition: transform 0.15s ease-in-out;
     z-index: 1038;
-    transform: translateX(-225px);
+    transform: translateX(-276px);
 }
 
 #layoutSidenav #layoutSidenav_content {
@@ -708,6 +708,7 @@ body {
     flex-direction: column;
     height: 100%;
     flex-wrap: nowrap;
+    background: #fff;
 }
 
 .sb-sidenav .sb-sidenav-menu {

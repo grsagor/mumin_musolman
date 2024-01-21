@@ -14,7 +14,7 @@
 
 <body>
     <div class="row justify-content-center w-100 auth-container">
-        <div class="col-4 d-flex flex-column justify-content-center align-items-center px-5 overflow-y-auto py-5">
+        <div class="col-12 col-lg-4 d-flex flex-column justify-content-center align-items-center px-5 overflow-y-auto py-5">
             <div class="mb-3">
                 <img src="{{ asset('uploads/settings/'.Helper::getSettings('site_logo')) }}" width="70px" alt="Logo">
             </div>

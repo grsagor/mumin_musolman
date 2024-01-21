@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "d22125c6-4acc-4988-8e19-fecdbaa5b038",
+		"name": "mumin_musolman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26121716"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "aa",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "asdfsafd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "asfasd",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "1234",
+							"type": "text"
+						},
+						{
+							"key": "dob",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "profile_image",
+							"type": "file",
+							"src": "/C:/Users/User/Downloads/1.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/register",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "asdfsafd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://127.0.0.1:8000",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "host",
+			"value": "https://mm.grsagor.com",
+			"type": "string"
+		}
+	]
+}

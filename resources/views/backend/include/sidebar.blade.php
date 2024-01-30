@@ -157,16 +157,16 @@
                 {{-- <a class="nav-link {{ Route::is('admin.total.message') ? 'active' : '' }}"
                     href="{{ route('admin.total.message') }}" href="{{ route('admin.total.message') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-message"></i></div> Massage Total Massage
-                </a>
-                <a class="nav-link {{ Route::is('admin.payment.request') ? 'active' : '' }}"
+                </a> --}}
+                {{-- <a class="nav-link {{ Route::is('admin.payment.request') ? 'active' : '' }}"
                     href="{{ route('admin.payment.request') }}" href="{{ route('admin.payment.request') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></div> Payment Requst
-                </a>
+                </a> --}}
                 <a class="nav-link {{ Route::is('admin.tafsir') ? 'active' : '' }}" href="{{ route('admin.tafsir') }}"
                     href="{{ route('admin.tafsir') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-book-quran"></i></div> তাসফীর
                 </a>
-                <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
+                {{-- <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
                     href="{{ route('admin.custom.ads') }}" href="{{ route('admin.custom.ads') }}">
                     <div class="sb-nav-link-icon"><i class="fa-brands fa-adversal"></i></div> Custom Ads
                 </a> --}}

@@ -69,32 +69,34 @@ class ApiController extends Controller
         if ($validator->fails()) {
             $data['status'] = 0;
             $data['data'] = $validator->errors();
-            return response()->json($data, 200);
+            return response()->json($data, 400); // Bad Request
         }
 
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
             if(Hash::check($request->password, $user->password)) {
-                $respose = [
+                $response = [
                     'status' => 1,
                     'token' => $this->generateToken($user),
                     'data' => $user
                 ];
+                return response()->json($response, 200); // OK
+
             } else {
-                $respose = [
-                    'status' => 1,
+                $response = [
+                    'status' => 0,
                     'data' => "Credentials don't matched."
                 ];
+                return response()->json($response, 401); // Unauthorized
             }
         } else {
-            $respose = [
-                'status' => 1,
+            $response = [
+                'status' => 0,
                 'data' => "No user found."
             ];
+            return response()->json($response, 404); // Not Found
         }
-
-        return response()->json($respose, 200);
     }
     private function generateToken($user)
     {
@@ -144,213 +146,4 @@ class ApiController extends Controller
         }
     }
     /* Auth End */
-
-    /* Truck Type Started */
-    public function getTruckTypeList()
-    {
-        $truck_types = TruckType::with('truck_type_details')->get();
-
-        $data['status'] = 1;
-        $data['data'] = $truck_types;
-        return response()->json($data, 200);
-    }
-    /* Truck Type Ended */
-
-    /* Order Management Start */
-    public function storeOrder(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'drop_lat' => 'required',
-            'drop_lng' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $data['status'] = 0;
-            $data['data'] = $validator->errors();
-            return response()->json($data, 200);
-        }
-
-        $order = new Order();
-
-        $order->user_id = $request->user_id;
-        $order->truck_type_details_id = $request->truck_type_details_id;
-        $order->pick_lat = $request->pick_lat;
-        $order->pick_lng = $request->pick_lng;
-        $order->drop_lat = $request->drop_lat;
-        $order->drop_lng = $request->drop_lng;
-        $order->pick_date = $request->pick_date;
-        $order->pick_time = $request->pick_time;
-        $order->pickup_location = $request->pickup_location;
-        $order->drop_location = $request->drop_location;
-        $order->no_of_truck = $request->no_of_truck;
-        $order->shipment_item = $request->shipment_item;
-        $order->note = $request->note;
-        $order->status = '1';
-        $order->distance = $request->distance;
-        $order->fare = $request->fare;
-
-        if ($order->save()) {
-            $data['status'] = 1;
-            $data['data'] = $order;
-            return response()->json($data, 200);
-        } else {
-            $data['status'] = 0;
-            $data['data'] = 'Something went wrong during saving order.';
-            return response()->json($data, 200);
-        }
-    }
-
-    public function getOrderList(Request $request) {
-        $orders = Order::query()->with('drivers');
-        if ($request->has('status')) {
-            $orders->where('status', $request->status);
-        }
-        if ($request->has('user_id')) {
-            $orders->where('user_id', $request->user_id);
-        }
-        $orders = $orders->get();
-
-        if ($orders) {
-            $data['status'] = 1;
-            $data['data'] = $orders;
-            return response()->json($data, 200);
-        } else {
-            $data['status'] = 0;
-            $data['data'] = 'Something went wrong.';
-            return response()->json($data, 200);
-        }
-    }
-
-    public function userDeclineOrder(Request $request) {
-        $user_id = $request->user_id;
-        $order_id = $request->order_id;
-
-        $order = Order::where([['id', $order_id], ['user_id', $user_id]])->first();
-        $order->status = 3;
-        if ($order->save()) {
-            $response = [
-                "status" => 1,
-                "data" => $order
-            ];
-        } else {
-            $response = [
-                "status" => 0,
-                "data" => "Can't cancel"
-            ];
-        }
-        return response()->json($response);
-    }
-    public function driverAcceptOrder(Request $request) {
-        $driver_id = $request->driver_id;
-        $order_id = $request->order_id;
-        try {
-            DB::beginTransaction();
-            $order = Order::find($order_id);
-            $order->status = 6;
-            $order->save();
-
-            $history = DriverHistory::where([['order_id', $order_id], ['driver_id', $driver_id]])->first();
-            $history->status = 3;
-            $history->save();
-            DB::commit();
-
-            $response = [
-                "status" => 1,
-                "data" => $order
-            ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                "status" => 0,
-                "data" => "Can't cancel"
-            ];
-        }
-
-        return response()->json($response);
-    }
-    public function driverDeclineOrder(Request $request) {
-        $driver_id = $request->driver_id;
-        $order_id = $request->order_id;
-        try {
-            DB::beginTransaction();
-            $order = Order::find($order_id);
-            $order->status = 5;
-            $order->save();
-
-            $history = DriverHistory::where([['order_id', $order_id], ['driver_id', $driver_id]])->first();
-            $history->status = 2;
-            $history->save();
-            DB::commit();
-
-            $response = [
-                "status" => 1,
-                "data" => $order
-            ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                "status" => 0,
-                "data" => "Can't cancel"
-            ];
-        }
-
-        return response()->json($response);
-    }
-    /* Order Management End */
-
-    /* Get Nearest Distance */
-    public function getNearestDistance(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'drop_lat' => 'required',
-            'drop_lng' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $data['status'] = 0;
-            $data['data'] = $validator->errors();
-            return response()->json($data, 200);
-        }
-        $distance = Helper::distance($request->pick_lat, $request->pick_lng, $request->drop_lat, $request->drop_lng);
-        if ($distance) {
-            $data['status'] = 1;
-            $data['data'] = $distance;
-            return response()->json($data, 200);
-        } else {
-            $data['status'] = 0;
-            $data['data'] = 'Something went wrong.';
-            return response()->json($data, 200);
-        }
-    }
-    /* Get Nearest Distance End */
-
-    /* Deposit Management Start */
-    public function storeDeposit(Request $request) {
-        $deposit = new Deposit();
-
-        $deposit->driver_id = $request->driver_id;
-        $deposit->ac_holder = $request->ac_holder;
-        $deposit->ac_no = $request->ac_no;
-        $deposit->transaction_id = $request->transaction_id;
-        $deposit->amount = $request->amount;
-        $deposit->status = 1;
-
-        if ($request->hasFile('document')) {
-            $image = $request->file('document');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/deposit-images'), $filename);
-            $deposit->document = 'uploads/deposit-images/' . $filename;
-        }
-
-        if ($deposit->save()) {
-            $data['status'] = 1;
-            $data['data'] = $deposit;
-            return response()->json($data, 200);
-        } else {
-            $data['status'] = 0;
-            $data['data'] = 'Something went wrong.';
-            return response()->json($data, 200);
-        }
-    }
-    /* Deposit Management End */
 }

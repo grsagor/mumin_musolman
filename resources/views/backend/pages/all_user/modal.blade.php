@@ -53,7 +53,7 @@
                             <input type="text" name="phone" class="form-control" placeholder="Phone No." required>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Gender</label>
                         <div class="col-sm-10">
                             <select name="gender" class="form-control" id="gender" required>
@@ -63,11 +63,23 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="form-group row">
                         <label for="address" class="text-gray-700 fw-medium col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
                             <textarea id="address" type="text" class="form-control h-auto resize-none" name="address" placeholder="Address" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="password" class="form-control" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Confirm Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password">
                         </div>
                     </div>
                     <div class="form-group  row">

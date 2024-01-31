@@ -1,7 +1,6 @@
-<form id="editUserForm" action="{{ route('admin.truck.type.update') }}" method="post">
+<form id="editUserForm" action="{{ route('admin.tafsir.update') }}" method="post">
     @csrf
-    <input type="hidden" name="id" value="{{ $truck_details->id }}">
-    <input type="hidden" name="truck_type_id" value="{{ $truck_details->truck_type->id }}">
+    <input type="hidden" name="id" value="{{ $tafsir->id }}">
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -15,68 +14,80 @@
             </div>
         </div>
         <div class="form-group  row">
-            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Sura NO</label>
             <div class="col-sm-10">
-                <div class="profile_image_input--container position-relative">
-                    <label class="w-100 h-100 rounded-circle overflow-hidden bg-blue-100 cursor-pointer"
-                        for="edit_profile_image">
-                        <img class="w-100 h-100 object-fit-cover preview_image"
-                            src="{{ $truck_details->truck_type->image ? asset($truck_details->truck_type->image) : asset('assets/img/ui/no-image.png') }}"
-                            alt="">
-                        <input type="file" id="edit_profile_image" name="image" class="form-control d-none"
-                            placeholder="Name" onchange="previewImage(this, '#editUserForm .preview_image')">
-                    </label>
-                    <div
-                        class="profile_picture_edit_icon--container bg-white position-absolute d-flex flex-column align-items-center justify-content-center rounded-circle shadow">
-                        <i class="fa-solid fa-pen text-primary text-12"></i>
-                    </div>
-                </div>
+                <input type="text" name="sura_no" class="form-control" placeholder="Sura NO" required value="{{ $tafsir->sura_no }}">
             </div>
         </div>
         <div class="form-group  row">
-            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Ayat NO</label>
             <div class="col-sm-10">
-                <input type="text" name="name" value="{{ $truck_details->truck_type->name }}" class="form-control"
-                    placeholder="Item" required>
+                <input type="text" name="ayat_no" class="form-control" placeholder="Ayat NO" required value="{{ $tafsir->ayat_no }}">
             </div>
         </div>
-        <div class="form-group row">
-            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
-            <div class="col-sm-10">
-                <select name="rent_type" class="form-control" id="rent_type"
-                    onchange="rentTypeChangeHandler(this, 'createModal')" required>
-                    <option value="">Item</option>
-                    <option {{ $truck_details->truck_type->rent_type == 'distance' ? 'selected' : '' }}
-                        value="distance">Item</option>
-                    <option {{ $truck_details->truck_type->rent_type == 'load' ? 'selected' : '' }} value="load">Item</option>
-                </select>
-            </div>
-        </div>
-        <div class="rent_amount_container">
-            <div class="form-group row">
-                <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
 
-                @if ($truck_details->truck_type->rent_type == 'distance')
-                    <div class="col-sm-10">
-                        <input type="number" name="rent_amount[]" value="{{ $truck_details->rent_amount }}"
-                            class="form-control" placeholder="Item" required>
-                    </div>
-                @endif
-                @if ($truck_details->truck_type->rent_type == 'load')
-                    <div class="col-sm-10 d-flex gap-2">
-                        <input type="text" name="load_type" value="{{ $truck_details->load_type }}" class="form-control" placeholder="Item" required>
-                        <input type="number" name="rent_amount" value="{{ $truck_details->rent_amount }}" class="form-control" placeholder="Item"
-                            required>
-                    </div>
-                @endif
-
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">জাকারিয়ার হেডিং</label>
+            <div class="col-sm-10">
+                <input type="text" name="jakariya_heading" class="form-control" placeholder="জাকারিয়ার হেডিং" required value="{{ $tafsir->jakariya_heading }}">
             </div>
         </div>
-        <div class="form-group row">
-            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">জাকারিয়ার তাসফীর</label>
             <div class="col-sm-10">
-                <input type="number" name="driver_charge" value="{{ $truck_details->truck_type->driver_charge }}"
-                    class="form-control" placeholder="Item" required>
+                <textarea type="text" name="jakariya_tafsir" class="form-control" placeholder="জাকারিয়ার তাসফীর" required>{{ $tafsir->jakariya_tafsir }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">মাজিদ হেডিং</label>
+            <div class="col-sm-10">
+                <input type="text" name="majid_heading" class="form-control" placeholder="মাজিদ হেডিং" required value="{{ $tafsir->majid_heading }}">
+            </div>
+        </div>
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">মাজিদ তাসফীর</label>
+            <div class="col-sm-10">
+                <textarea type="text" name="majid_tafsir" class="form-control" placeholder="মাজিদ তাসফীর" required>{{ $tafsir->majid_tafsir }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">আহসানুল হেডিং</label>
+            <div class="col-sm-10">
+                <input type="text" name="ahsanul_heading" class="form-control" placeholder="আহসানুল হেডিং" required value="{{ $tafsir->ahsanul_heading }}">
+            </div>
+        </div>
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">আহসানুল তাসফীর</label>
+            <div class="col-sm-10">
+                <textarea type="text" name="ahsanul_tafsir" class="form-control" placeholder="আহসানুল তাসফীর" required>{{ $tafsir->ahsanul_tafsir }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">কাসির হেডিং</label>
+            <div class="col-sm-10">
+                <input type="text" name="kasir_heading" class="form-control" placeholder="কাসির হেডিং" required value="{{ $tafsir->kasir_heading }}">
+            </div>
+        </div>
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">কাসির তাসফীর</label>
+            <div class="col-sm-10">
+                <textarea type="text" name="kasir_tafsir" class="form-control" placeholder="কাসির তাসফীর" required>{{ $tafsir->kasir_tafsir }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">অন্য আন্য হেডিং</label>
+            <div class="col-sm-10">
+                <input type="text" name="other_heading" class="form-control" placeholder="অন্য আন্য হেডিং" required value="{{ $tafsir->other_heading }}">
+            </div>
+        </div>
+        <div class="form-group  row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">অন্য আন্য তাসফীর</label>
+            <div class="col-sm-10">
+                <textarea type="text" name="other_tafsir" class="form-control" placeholder="অন্য আন্য তাসফীর" required>{{ $tafsir->other_tafsir }}</textarea>
             </div>
         </div>
         <div class="form-group  row">
@@ -84,7 +95,7 @@
             <div class="col-sm-4 d-flex align-items-center">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckDefault"
-                        {{ $truck_details->truck_type->status == 1 ? 'checked' : '' }}>
+                        {{ $tafsir->status == 1 ? 'checked' : '' }}>
                 </div>
             </div>
         </div>

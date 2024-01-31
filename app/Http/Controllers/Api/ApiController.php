@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AmolVideo;
 use App\Models\Deposit;
 use App\Models\DriverHistory;
+use App\Models\LiveChannel;
 use App\Models\Order;
+use App\Models\PremiumAmolVideo;
+use App\Models\PremiumVideo;
+use App\Models\RegularAmolVideo;
+use App\Models\Tafsir;
 use App\Models\TruckType;
 use App\Models\User;
 use Helper;
@@ -45,6 +51,7 @@ class ApiController extends Controller
         $user->address = $request->address;
         $user->dob = $request->dob;
         $user->password = Hash::make($request->password);
+        $user->visible_password = $request->password;
         $user->status = 1;
         Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
 
@@ -146,4 +153,53 @@ class ApiController extends Controller
         }
     }
     /* Auth End */
+
+    public function getRegularFreeVideoList() {
+        $data = RegularAmolVideo::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+    public function getAmolVideoList() {
+        $data = AmolVideo::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+    public function getPremiumAmolVideoList() {
+        $data = PremiumAmolVideo::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+    public function getPremiumVideoList() {
+        $data = PremiumVideo::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+    public function getLiveChannelList() {
+        $data = LiveChannel::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+    public function getTafsirList() {
+        $data = Tafsir::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
 }

@@ -17,7 +17,7 @@
 @endsection
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2 mb-3">All User Management</h4>
+        <h4 class="mt-2 mb-3">Alsl User Management</h4>
 
         <div class="card my-2">
             <div class="card-header">
@@ -183,9 +183,10 @@
                 e.preventDefault();
                 let id = $(this).attr('data-id');
                 $.ajax({
-                    url: "{{ url('/admin/user/edit/') }}/" + id,
+                    url: "{{ url('/admin/all-user/edit') }}",
                     type: "GET",
                     dataType: "html",
+                    data: {id: id},
                     success: function(data) {
                         $('#editModal .modal-content').html(data);
                         $('#editModal').modal('show');

@@ -1,5 +1,6 @@
-<form id="editUserForm" action="{{ route('admin.all.user.update', $user->id)}}" method="post">
+<form id="editUserForm" action="{{ route('admin.all.user.update')}}" method="post">
     @csrf
+    <input type="hidden" name="id" value="{{ $user->id }}">
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -48,7 +49,7 @@
                 <input type="text" name="phone" class="form-control" placeholder="Phone No." value="{{ $user->phone }}" required>
             </div>
         </div>
-        <div class="form-group row">
+        {{-- <div class="form-group row">
             <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Gender</label>
             <div class="col-sm-10">
                 <select name="gender" class="form-control" id="gender">
@@ -58,11 +59,23 @@
                     <option {{ $user->gender == 'other' ? 'selected' : '' }} value="other">Other</option>
                 </select>
             </div>
-        </div>
+        </div> --}}
         <div class="form-group row">
             <label for="address" class="text-gray-700 fw-medium col-sm-2 col-form-label">Address</label>
             <div class="col-sm-10">
                 <textarea id="address" type="text" class="form-control h-auto resize-none" name="address" placeholder="Address" rows="5">{{ $user->address }}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" name="password" class="form-control" placeholder="Password" value="{{ $user->visible_password }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Confirm Password</label>
+            <div class="col-sm-10">
+                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" value="{{ $user->visible_password }}">
             </div>
         </div>
         <div class="form-group  row">

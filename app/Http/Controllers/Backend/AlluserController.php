@@ -8,7 +8,9 @@ use App\Models\TruckTypeDetail;
 use App\Models\User;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Hash;
 
 class AlluserController extends Controller
 {
@@ -75,86 +77,79 @@ class AlluserController extends Controller
 
     public function store(Request $request)
     {
-        $validator = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
-            'image' => 'required|image|mimes:jpg,png|max:20480'
+            'email' => 'required|email|unique:user',
+            'phone' => 'required|unique:user',
+            'address' => 'required',
+            'profile_image' => 'required|image|mimes:jpg,png|max:20480',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
         ]);
 
-        $truck_type = new TruckType();
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
-        }
-        $truck_type->save();
-
-        foreach ($request->rent_amount as $index => $value) {
-            $details = new TruckTypeDetail();
-
-            $details->truck_type_id = $truck_type->id;
-            if ($request->rent_type == 'load') {
-                $details->load_type = $request->load_type[$index];
-            }
-            $details->rent_amount = $value;
-
-            $details->save();
+        if ($validator->fails()) {
+            return response()->json([
+                'type' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
-        return response()->json([
-            'type' => 'success',
-            'message' => 'Trucktype created successfully.',
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->dob = $request->dob;
+        $user->password = Hash::make($request->password);
+        $user->visible_password = $request->password;
+        $user->status = 1;
+        Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
+
+        if ($user->save()) {
+            return response()->json([
+                'type' => 'success',
+                'message' => 'User created successfully.',
+            ]);
+        }
     }
 
     public function edit(Request $request)
     {
-        $id = $request->id;
-        $truck_details = TruckTypeDetail::with('truck_type')->find($id);
-        return view('backend.pages.all_user.edit', compact('truck_details'));
+        $user = User::find($request->id);
+        return view('backend.pages.all_user.edit', compact('user'));
     }
 
     public function update(Request $request)
     {
-        $validator = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
-            'image' => 'image|mimes:jpg,png|max:20480'
+            'email' => 'required|email|unique:user,email,'.$request->id,
+            'phone' => 'required|unique:user,phone,'.$request->id,
+            'address' => 'required',
+            'profile_image' => 'image|mimes:jpg,png|max:20480',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
         ]);
 
-        $truck_type = TruckType::find($request->truck_type_id);
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
-            }
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
+        if ($validator->fails()) {
+            return response()->json([
+                'type' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
         }
-        $truck_type->save();
 
-        $details = TruckTypeDetail::find($request->id);
-        if ($request->rent_type == 'load') {
-            $details->load_type = $request->load_type;
-        }
-        $details->rent_amount = $request->rent_amount;
-        $details->save();
+        $user = User::find($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->dob = $request->dob;
+        $user->password = Hash::make($request->password);
+        $user->visible_password = $request->password;
+        $user->status = 1;
+        Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
 
-        if ($truck_type->save()) {
+        if ($user->save()) {
             return response()->json([
                 'type' => 'success',
                 'message' => 'User updated successfully.',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tafsir;
 use App\Models\TruckType;
 use App\Models\TruckTypeDetail;
 use Helper;
@@ -19,31 +20,12 @@ class TafsirController extends Controller
     public function getList(Request $request)
     {
 
-        $data = TruckTypeDetail::with('truck_type')->get();
+        $data = Tafsir::all();
 
         return DataTables::of($data)
 
-            ->editColumn('image', function ($row) {
-                return ($row->image) ? '<img class="profile-img" src="' . asset($row->image) . '" alt="profile image">' : '<img class="profile-img" src="' . asset('assets/img/no-img.jpg') . '" alt="profile image">';
-            })
-
-            ->addColumn('name', function ($row) {
-                if ($row->load_type) {
-                    return $row->truck_type->name . '(' . $row->load_type . ')';
-                } else {
-                    return $row->truck_type->name;
-                }
-            })
-            ->addColumn('driver_charge', function ($row) {
-                return $row->truck_type->driver_charge;
-            })
-
-            ->addColumn('register_truck', function ($row) {
-                return '0';
-            })
-
             ->editColumn('status', function ($row) {
-                if ($row->truck_type->status == 1) {
+                if ($row->status == 1) {
                     return '<span class="badge bg-success-200 text-success-700 rounded-pill w-80">Active</span>';
                 } else {
                     return '<span class="badge bg-gray-200 text-gray-600 rounded-pill w-80">Inactive</span>';
@@ -60,91 +42,60 @@ class TafsirController extends Controller
                 }
                 return $btn;
             })
-            ->rawColumns(['profile_image', 'name', 'driver_charge', 'register_truck', 'status', 'action'])->make(true);
+            ->rawColumns(['status', 'action'])->make(true);
     }
 
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
-            'image' => 'required|image|mimes:jpg,png|max:20480'
-        ]);
+        $tafsir = new Tafsir();
 
-        $truck_type = new TruckType();
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
-        }
-        $truck_type->save();
-
-        foreach ($request->rent_amount as $index => $value) {
-            $details = new TruckTypeDetail();
-
-            $details->truck_type_id = $truck_type->id;
-            if ($request->rent_type == 'load') {
-                $details->load_type = $request->load_type[$index];
-            }
-            $details->rent_amount = $value;
-
-            $details->save();
-        }
+        $tafsir->sura_no = $request->sura_no;
+        $tafsir->ayat_no = $request->ayat_no;
+        $tafsir->jakariya_heading = $request->jakariya_heading;
+        $tafsir->jakariya_tafsir = $request->jakariya_tafsir;
+        $tafsir->majid_heading = $request->majid_heading;
+        $tafsir->majid_tafsir = $request->majid_tafsir;
+        $tafsir->ahsanul_heading = $request->ahsanul_heading;
+        $tafsir->ahsanul_tafsir = $request->ahsanul_tafsir;
+        $tafsir->kasir_heading = $request->kasir_heading;
+        $tafsir->kasir_tafsir = $request->kasir_tafsir;
+        $tafsir->other_heading = $request->other_heading;
+        $tafsir->other_tafsir = $request->other_tafsir;
+        $tafsir->status  = ($request->status) ? 1 : 0;
+        $tafsir->save();
 
         return response()->json([
             'type' => 'success',
-            'message' => 'Trucktype created successfully.',
+            'message' => 'Tafsir created successfully.',
         ]);
     }
 
     public function edit(Request $request)
     {
         $id = $request->id;
-        $truck_details = TruckTypeDetail::with('truck_type')->find($id);
-        return view('backend.pages.tafsir.edit', compact('truck_details'));
+        $tafsir = Tafsir::find($id);
+        return view('backend.pages.tafsir.edit', compact('tafsir'));
     }
 
     public function update(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
-            'image' => 'image|mimes:jpg,png|max:20480'
-        ]);
+        $tafsir = Tafsir::find($request->id);
 
-        $truck_type = TruckType::find($request->truck_type_id);
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
-            }
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
-        }
-        $truck_type->save();
+        $tafsir->sura_no = $request->sura_no;
+        $tafsir->ayat_no = $request->ayat_no;
+        $tafsir->jakariya_heading = $request->jakariya_heading;
+        $tafsir->jakariya_tafsir = $request->jakariya_tafsir;
+        $tafsir->majid_heading = $request->majid_heading;
+        $tafsir->majid_tafsir = $request->majid_tafsir;
+        $tafsir->ahsanul_heading = $request->ahsanul_heading;
+        $tafsir->ahsanul_tafsir = $request->ahsanul_tafsir;
+        $tafsir->kasir_heading = $request->kasir_heading;
+        $tafsir->kasir_tafsir = $request->kasir_tafsir;
+        $tafsir->other_heading = $request->other_heading;
+        $tafsir->other_tafsir = $request->other_tafsir;
+        $tafsir->status  = ($request->status) ? 1 : 0;
 
-        $details = TruckTypeDetail::find($request->id);
-        if ($request->rent_type == 'load') {
-            $details->load_type = $request->load_type;
-        }
-        $details->rent_amount = $request->rent_amount;
-        $details->save();
-
-        if ($truck_type->save()) {
+        if ($tafsir->save()) {
             return response()->json([
                 'type' => 'success',
                 'message' => 'User updated successfully.',
@@ -159,22 +110,14 @@ class TafsirController extends Controller
 
     public function delete(Request $request)
     {
-        $details = TruckTypeDetail::find($request->id);
-        $truck_type = TruckType::with('truck_type_details')->find($details->truck_type_id);
-        $count = count($truck_type->truck_type_details) - 1;
+        $tafsir = Tafsir::find($request->id);
 
-        $details->delete();
-
-        if (!$count) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
-            }
-            $truck_type->delete();
+        if ($tafsir) {
+            $tafsir->delete();
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Truck deleted successfully.',
+            ]);
         }
-
-        return response()->json([
-            'type' => 'success',
-            'message' => 'Truck deleted successfully.',
-        ]);
     }
 }

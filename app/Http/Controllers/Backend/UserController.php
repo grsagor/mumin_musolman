@@ -96,7 +96,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:user',
             'phone' => 'required|unique:user',
-            'gender' => 'required',
+            // 'gender' => 'required',
             'address' => 'required',
             'profile_image' => 'required|image|mimes:jpg,png|max:20480'
 		]);
@@ -105,17 +105,12 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->gender = $request->gender;
+        // $user->gender = $request->gender;
         $user->address = $request->address;
         $user->status  = ($request->status) ? 1 : 0;
         $user->role = 4;
 
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/user-images'), $filename);
-            $user->profile_image = 'uploads/user-images/' . $filename;
-        }
+        Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
         if ($user->save()) {
             return response()->json([
                 'type' => 'success',
@@ -134,7 +129,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:user,email,'.$id,
             'phone' => 'required|unique:user,phone,'.$id,
-            'gender' => 'required',
+            // 'gender' => 'required',
             'address' => 'required',
             'profile_image' => 'image|mimes:jpg,png|max:20480'
 		]);
@@ -144,16 +139,11 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->gender = $request->gender;
+        // $user->gender = $request->gender;
         $user->address = $request->address;
         $user->status  = ($request->status) ? 1 : 0;
 
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/user-images'), $filename);
-            $user->profile_image = 'uploads/user-images/' . $filename;
-        }
+        Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
 
         if ($user->save()) {
             return response()->json([

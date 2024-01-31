@@ -123,7 +123,7 @@
                 </div>
                 {{-- Video ended --}}
                 {{-- User started --}}
-                {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#userNav"
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#userNav"
                     aria-expanded="@if (Route::is('admin.all.user') ||
                             Route::is('admin.paid.user')) true @else false @endif"
                     aria-controls="collapseLayouts">
@@ -137,11 +137,11 @@
                         <a class="nav-link {{ Route::is('admin.all.user') ? 'active' : '' }}"
                             href="{{ route('admin.all.user') }}"><i class="fa-solid fa-angles-right ikon"></i>
                             All User </a>
-                        <a class="nav-link {{ Route::is('admin.paid.user') ? 'active' : '' }}"
+                        {{-- <a class="nav-link {{ Route::is('admin.paid.user') ? 'active' : '' }}"
                             href="{{ route('admin.paid.user') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                            Paid User </a>
+                            Paid User </a> --}}
                     </nav>
-                </div> --}}
+                </div>
                 {{-- User ended --}}
 
                 {{-- @if (Helper::hasRight('truck_type.view'))

@@ -48,7 +48,7 @@
                 <input type="text" name="phone" class="form-control" placeholder="Phone No." value="{{ $user->phone }}" required>
             </div>
         </div>
-        <div class="form-group row">
+        {{-- <div class="form-group row">
             <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Gender</label>
             <div class="col-sm-10">
                 <select name="gender" class="form-control" id="gender">
@@ -58,7 +58,7 @@
                     <option {{ $user->gender == 'other' ? 'selected' : '' }} value="other">Other</option>
                 </select>
             </div>
-        </div>
+        </div> --}}
         <div class="form-group row">
             <label for="address" class="text-gray-700 fw-medium col-sm-2 col-form-label">Address</label>
             <div class="col-sm-10">

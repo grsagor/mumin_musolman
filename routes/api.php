@@ -43,5 +43,13 @@ Route::prefix('v1')->group(function () {
         /* Deposit Management Start */
         Route::post('store-deposit', 'storeDeposit');
         /* Deposit Management End */
+
+
+        Route::get('get-regular-free-video-list', 'getRegularFreeVideoList');
+        Route::get('get-amol-video-list', 'getAmolVideoList');
+        Route::get('get-premium-amol-video-list', 'getPremiumAmolVideoList');
+        Route::get('get-premium-video-list', 'getPremiumVideoList');
+        Route::get('get-live-channel-list', 'getLiveChannelList');
+        Route::get('get-tafsir-list', 'getTafsirList');
     });
 });

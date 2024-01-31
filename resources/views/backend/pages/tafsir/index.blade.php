@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Truck Type | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'Tafsir | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
 @section('css')
     <style>
         .profile_image_input--container {
@@ -17,14 +17,14 @@
 @endsection
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Islam</h4>
+        <h4 class="mt-2">Tafsir Management</h4>
 
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">
                     <div class="col-12 d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            <h5 class="m-0">Islam</h5>
+                            <h5 class="m-0">Tafsir List</h5>
                         </div>
                         @if (Helper::hasRight('user.create'))
                             <button type="button" class="btn btn-primary btn-create-user create_form_btn"
@@ -39,11 +39,8 @@
                     <thead>
                         <tr>
                             <th>Sl No</th>
-                            <th>User ID</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
+                            <th>Sura NO</th>
+                            <th>Ayat NO</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -55,7 +52,7 @@
             </div>
         </div>
     </div>
-    @include('backend.pages.regular_video.modal')
+    @include('backend.pages.tafsir.modal')
     @push('footer')
         <script type="text/javascript">
             function getusers(name = null, email = null, phone = null) {
@@ -64,7 +61,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ url('admin/truck-type/get/list') }}",
+                        url: "{{ url('admin/tafsir/get/list') }}",
                         type: 'GET',
                         data: {
                             'name': name,
@@ -90,24 +87,12 @@
                             "className": "text-center"
                         },
                         {
-                            data: 'id',
-                            name: 'id'
+                            data: 'sura_no',
+                            name: 'sura_no'
                         },
                         {
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
-                            data: 'rent_amount',
-                            name: 'rent_amount'
-                        },
-                        {
-                            data: 'driver_charge',
-                            name: 'driver_charge'
-                        },
-                        {
-                            data: 'register_truck',
-                            name: 'register_truck'
+                            data: 'ayat_no',
+                            name: 'ayat_no'
                         },
                         {
                             data: 'status',
@@ -183,7 +168,7 @@
                 e.preventDefault();
                 let id = $(this).attr('data-id');
                 $.ajax({
-                    url: "{{ route('admin.regular.video.free.edit') }}",
+                    url: "{{ route('admin.tafsir.edit') }}",
                     type: "GET",
                     data: { id: id },
                     dataType: "html",
@@ -251,7 +236,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('admin.truck.type.delete') }}",
+                            url: "{{ route('admin.tafsir.delete') }}",
                             type: "GET",
                             data: { id:id },
                             dataType: "json",
@@ -279,40 +264,6 @@
                     }
                 })
             })
-        </script>
-
-        <script>
-            function previewImage(input, previewContainerClass) {
-                var preview = document.querySelector(previewContainerClass);
-                console.log(previewContainerClass)
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            function incrementRow(first_div, second_div, copy_single = null) {
-                console.log(copy_single);
-                if (copy_single == null) {
-                    var maindiv = $('.' + first_div);
-                } else {
-                    var maindiv = $(copy_single).closest('.' + first_div);
-                }
-                var copydiv = maindiv.find('.' + second_div + ':last');
-                var clonedDiv = copydiv.clone(true);
-                var rowNumber = parseInt(copydiv.attr('data-row-no')) + 1;
-                clonedDiv.attr('data-row-no', rowNumber);
-                clonedDiv.insertAfter(copydiv);
-            }
-
-            function removeRow(event) {
-                event.preventDefault();
-                var row = event.target.closest('tr');
-                row.remove();
-            }
         </script>
     @endpush
 @endsection

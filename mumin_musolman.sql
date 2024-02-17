@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 19, 2024 at 09:39 PM
+-- Generation Time: Feb 17, 2024 at 07:02 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -40,6 +40,54 @@ CREATE TABLE `amol_videos` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `channels`
+--
+
+CREATE TABLE `channels` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `updated_by` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `channels`
+--
+
+INSERT INTO `channels` (`id`, `name`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'Single', NULL, NULL, NULL, NULL),
+(2, 'Group', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `channel_subscribers`
+--
+
+CREATE TABLE `channel_subscribers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `channel_id` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `channel_subscribers`
+--
+
+INSERT INTO `channel_subscribers` (`id`, `user_id`, `channel_id`, `created_at`, `updated_at`) VALUES
+(1, '1', '1', NULL, NULL),
+(2, '2', '1', NULL, NULL),
+(3, '2', '2', NULL, NULL),
+(4, '4', '2', NULL, NULL),
+(5, '1', '2', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `custom_ads`
 --
 
@@ -67,6 +115,68 @@ CREATE TABLE `live_channels` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `channel_id` varchar(255) DEFAULT NULL,
+  `message` longtext NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `channel_id`, `message`, `user_id`, `created_at`, `updated_at`) VALUES
+(106, '1', 'hi', '1', '2023-12-28 23:27:38', '2023-12-28 23:27:38'),
+(107, '1', 'hi', '1', '2023-12-28 23:28:15', '2023-12-28 23:28:15'),
+(108, '1', 'abc', '1', '2023-12-28 23:29:48', '2023-12-28 23:29:48'),
+(109, '1', 'abc\nasdfasdf', '1', '2023-12-28 23:29:53', '2023-12-28 23:29:53'),
+(110, '1', 'asfdas', '1', '2023-12-28 23:30:13', '2023-12-28 23:30:13'),
+(111, '1', 'asdfasfd', '1', '2023-12-28 23:30:26', '2023-12-28 23:30:26'),
+(112, '1', 'helllo', '1', '2023-12-28 23:31:25', '2023-12-28 23:31:25'),
+(113, '1', 'hiiiiiii', '1', '2023-12-28 23:32:41', '2023-12-28 23:32:41'),
+(114, '1', 'hello', '1', '2023-12-28 23:33:33', '2023-12-28 23:33:33'),
+(115, '1', 'hello', '1', '2023-12-28 23:34:14', '2023-12-28 23:34:14'),
+(116, '1', 'hiiiiiiiiiiiiiiiiiiiiiiii', '1', '2023-12-28 23:34:47', '2023-12-28 23:34:47'),
+(117, '1', 'kigo', '2', '2023-12-28 23:44:28', '2023-12-28 23:44:28'),
+(118, '1', 'baiya', '1', '2023-12-28 23:44:43', '2023-12-28 23:44:43'),
+(119, '1', 'hillo', '1', '2023-12-28 23:45:34', '2023-12-28 23:45:34'),
+(120, '1', 'bhaiyaaaaaaaaaaaaaa', '2', '2023-12-28 23:45:40', '2023-12-28 23:45:40'),
+(121, '1', 'pilo pilo', '1', '2023-12-28 23:45:55', '2023-12-28 23:45:55'),
+(122, '1', 'pakka pakka', '2', '2023-12-28 23:46:10', '2023-12-28 23:46:10'),
+(123, '1', 'pide pide', '1', '2023-12-28 23:47:11', '2023-12-28 23:47:11'),
+(124, '1', 'pidamu', '2', '2023-12-28 23:48:40', '2023-12-28 23:48:40'),
+(125, '1', 'ustaaaaaaaaaaaad', '1', '2023-12-28 23:48:51', '2023-12-28 23:48:51'),
+(126, '1', 'reza bhai', '1', '2023-12-28 23:59:09', '2023-12-28 23:59:09'),
+(127, '1', 'bhalo?', '1', '2023-12-28 23:59:12', '2023-12-28 23:59:12'),
+(128, '1', 'hae hae bhalo', '2', '2023-12-28 23:59:17', '2023-12-28 23:59:17'),
+(129, '1', 'ki obostha?', '2', '2023-12-28 23:59:20', '2023-12-28 23:59:20'),
+(130, '1', 'hi', '1', '2023-12-29 00:22:25', '2023-12-29 00:22:25'),
+(131, '1', 'ajsdf;lakjsfdlasd', '2', '2023-12-29 00:23:10', '2023-12-29 00:23:10'),
+(132, '1', 'hiiiiiiiiiiiiii', '1', '2023-12-29 00:24:13', '2023-12-29 00:24:13'),
+(133, '1', 'bossssssssssss', '1', '2023-12-29 00:26:17', '2023-12-29 00:26:17'),
+(134, '1', 'hiyo', '1', '2023-12-29 00:27:00', '2023-12-29 00:27:00'),
+(135, '1', 'omago turu lav', '1', '2023-12-29 00:56:58', '2023-12-29 00:56:58'),
+(136, '2', 'nice', '1', '2023-12-29 00:59:13', '2023-12-29 00:59:13'),
+(137, '1', 'hello', '1', '2023-12-29 01:16:34', '2023-12-29 01:16:34'),
+(138, '1', 'hi', '1', '2023-12-29 01:16:55', '2023-12-29 01:16:55'),
+(139, '2', 'hello', '1', '2023-12-29 01:17:22', '2023-12-29 01:17:22'),
+(140, '2', 'hello', '1', '2023-12-29 01:17:31', '2023-12-29 01:17:31'),
+(141, '1', 'hello', '1', '2023-12-29 01:18:16', '2023-12-29 01:18:16'),
+(142, '2', 'bye', '1', '2023-12-29 01:19:00', '2023-12-29 01:19:00'),
+(143, '1', 'ki koro', '1', '2023-12-29 01:19:50', '2023-12-29 01:19:50'),
+(144, '2', 'group re upore nao', '1', '2023-12-29 01:20:35', '2023-12-29 01:20:35'),
+(145, '1', 'ebar single re upore nao', '1', '2023-12-29 01:20:52', '2023-12-29 01:20:52'),
+(146, '2', 'group re duita thekei upore nao', '1', '2023-12-29 01:22:12', '2023-12-29 01:22:12');
 
 -- --------------------------------------------------------
 
@@ -141,10 +251,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `name`, `email`, `phone`, `amount`, `address`, `status`, `transaction_id`, `currency`) VALUES
-(1, 'Customer Name', 'customer@mail.com', '8801XXXXXXXXX', 10, 'Customer Address', 'Pending', '65a574fa57895', 'BDT'),
-(2, 'Customer Name', 'customer@mail.com', '8801XXXXXXXXX', 10, 'Customer Address', 'Processing', '65a575a08b040', 'BDT'),
-(3, 'Customer Name', 'customer@mail.com', '8801XXXXXXXXX', 10, 'Customer Address', 'Processing', '65a575ecca920', 'BDT'),
-(4, 'Customer Name', 'customer@mail.com', '8801XXXXXXXXX', 10, 'Customer Address', 'Pending', '65a5782e45b59', 'BDT');
+(6, 'Customer Name', 'customer@mail.com', '8801XXXXXXXXX', 10, 'Customer Address', 'Processing', '65aba97a2b7ae', 'BDT');
 
 -- --------------------------------------------------------
 
@@ -374,7 +481,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `is_active`, `created_at`, `update
 (20, 'youtube_link', 'https://www.youtube.com/', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
 (21, 'bkash_number', '01*******76', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
 (22, 'nagad_number', '01*******76', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
-(23, 'message_charge', '123', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
+(23, 'message_charge', '100', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
 (24, 'message_validity', '3', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
 (25, 'premium_charge', '500', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56'),
 (26, 'premium_validity', '6', 1, '2023-07-03 05:45:16', '2023-12-21 05:54:56');
@@ -387,6 +494,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `is_active`, `created_at`, `update
 
 CREATE TABLE `tafsirs` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
   `sura_no` varchar(255) NOT NULL,
   `ayat_no` varchar(255) NOT NULL,
   `jakariya_heading` varchar(255) NOT NULL,
@@ -399,9 +507,16 @@ CREATE TABLE `tafsirs` (
   `kasir_tafsir` longtext NOT NULL,
   `other_heading` varchar(255) NOT NULL,
   `other_tafsir` longtext NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT 1,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tafsirs`
+--
+
+INSERT INTO `tafsirs` (`id`, `created_at`, `sura_no`, `ayat_no`, `jakariya_heading`, `jakariya_tafsir`, `majid_heading`, `majid_tafsir`, `ahsanul_heading`, `ahsanul_tafsir`, `kasir_heading`, `kasir_tafsir`, `other_heading`, `other_tafsir`, `status`, `updated_at`) VALUES
+(4, '2024-01-31 19:17:03', 'Distinctio Iure sed', 'Dicta pariatur Maio', 'Doloribus magnam eli', 'Ab ullamco voluptati', 'Amet qui ea fugiat', 'Aute omnis ipsam id', 'Quis aliquip labore', 'Consequuntur volupta', 'Ipsa dolor voluptat', 'Rerum quia anim enim', 'Facilis totam doloru', 'Facilis sequi in off', 1, '2024-01-31 19:17:03');
 
 -- --------------------------------------------------------
 
@@ -476,6 +591,9 @@ INSERT INTO `truck_type_details` (`id`, `truck_type_id`, `load_type`, `rent_amou
 
 CREATE TABLE `user` (
   `id` varchar(40) NOT NULL,
+  `wallet` varchar(255) DEFAULT NULL,
+  `chat_expiry_date` timestamp NULL DEFAULT NULL,
+  `premium_expiry_date` timestamp NULL DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `token` varchar(60) DEFAULT NULL,
@@ -483,6 +601,7 @@ CREATE TABLE `user` (
   `phone` varchar(100) DEFAULT NULL,
   `role` int(11) NOT NULL DEFAULT 2 COMMENT 'Admin = 1\r\nDispatcher = 2\r\nDriver = 3\r\nCustomer = 4',
   `password` text DEFAULT NULL,
+  `visible_password` varchar(255) DEFAULT NULL,
   `profile_image` varchar(256) DEFAULT NULL,
   `dob` varchar(255) DEFAULT NULL,
   `device_token` varchar(255) DEFAULT NULL,
@@ -495,9 +614,9 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `address`, `email`, `token`, `name`, `phone`, `role`, `password`, `profile_image`, `dob`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
-('7375', 'asfasd', 'asdfsafd@gmail.com', 'imCdsYhs9S7CrWJGz4bmUYAxi6Rno3Mf5cQ9n6yzHjXMJBy8MEKv0COosoh6', 'aa', '1234', 2, '$2y$10$7PO2mUUc0QxJo5JzxrBiQ.V70cDIU1FOlL7wNMePuuvRC.O5tGgGe', 'uploads/user-images/170569132765aac8bf5e7b91.jpg', '123', NULL, 1, '2024-01-19 13:08:47', '2024-01-19 13:17:54'),
-('7865', NULL, 'admin@gmail.com', NULL, 'Jack Rose', '12345678', 1, '$2y$10$kJ5cYJxY51rQL5v4aOPUouMLfISAC4uTS6FDHyuo6rXxCKTG0gRs.', 'uploads/user-images/170533771565a56373f241bunnamed.webp', '1970-01-01', NULL, 1, '2023-05-07 11:15:50', '2024-01-15 10:55:16');
+INSERT INTO `user` (`id`, `wallet`, `chat_expiry_date`, `premium_expiry_date`, `address`, `email`, `token`, `name`, `phone`, `role`, `password`, `visible_password`, `profile_image`, `dob`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
+('7276', '200', '2024-08-23 05:55:39', '2024-08-17 05:58:56', 'Magni est voluptate', 'ryzohyqoqa@mailinator.com', NULL, 'asdfa', 'dilec@mailinator.com', 2, '$2y$10$Z2dqgA3x5OsKp38Z46R12eow6AAeAzieY69/cPGv8DvXBCC8tBu0K', 'Pa$$w0rd!', 'uploads/user-images/170672440865ba8c38e7cdescreencapture-127-0-0-1-8000-pos-2024-01-28-01_01_19.png', NULL, NULL, 1, '2024-01-31 11:59:26', '2024-02-17 05:58:56'),
+('7865', NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, 'Jack Rose', '12345678', 1, '$2y$10$kJ5cYJxY51rQL5v4aOPUouMLfISAC4uTS6FDHyuo6rXxCKTG0gRs.', NULL, 'uploads/user-images/170533771565a56373f241bunnamed.webp', '1970-01-01', NULL, 1, '2023-05-07 11:15:50', '2024-01-15 10:55:16');
 
 -- --------------------------------------------------------
 
@@ -524,6 +643,18 @@ ALTER TABLE `amol_videos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `channels`
+--
+ALTER TABLE `channels`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `channel_subscribers`
+--
+ALTER TABLE `channel_subscribers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `custom_ads`
 --
 ALTER TABLE `custom_ads`
@@ -533,6 +664,12 @@ ALTER TABLE `custom_ads`
 -- Indexes for table `live_channels`
 --
 ALTER TABLE `live_channels`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -644,7 +781,19 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `amol_videos`
 --
 ALTER TABLE `amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `channels`
+--
+ALTER TABLE `channels`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `channel_subscribers`
+--
+ALTER TABLE `channel_subscribers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `custom_ads`
@@ -656,7 +805,13 @@ ALTER TABLE `custom_ads`
 -- AUTO_INCREMENT for table `live_channels`
 --
 ALTER TABLE `live_channels`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `message_requests`
@@ -674,25 +829,25 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `premium_amol_videos`
 --
 ALTER TABLE `premium_amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `premium_videos`
 --
 ALTER TABLE `premium_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `regular_amol_videos`
 --
 ALTER TABLE `regular_amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `right`
@@ -722,7 +877,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `tafsirs`
 --
 ALTER TABLE `tafsirs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `transaction_histories`

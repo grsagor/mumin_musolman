@@ -4,16 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\AmolVideo;
-use App\Models\Deposit;
-use App\Models\DriverHistory;
 use App\Models\LiveChannel;
-use App\Models\Order;
 use App\Models\PremiumAmolVideo;
 use App\Models\PremiumVideo;
 use App\Models\RegularAmolVideo;
 use App\Models\Tafsir;
-use App\Models\TruckType;
 use App\Models\User;
+use Carbon\Carbon;
 use Helper;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -82,7 +79,7 @@ class ApiController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            if(Hash::check($request->password, $user->password)) {
+            if (Hash::check($request->password, $user->password)) {
                 $response = [
                     'status' => 1,
                     'token' => $this->generateToken($user),
@@ -112,7 +109,8 @@ class ApiController extends Controller
         $user->save();
         return $token;
     }
-    public function updateUser(Request $request) {
+    public function updateUser(Request $request)
+    {
         $user = User::find($request->id);
         if ($user) {
             $fillableFields = ['name', 'email', 'phone', 'address'];
@@ -139,7 +137,8 @@ class ApiController extends Controller
             return response()->json($data, 200);
         }
     }
-    public function storeDeviceToken(Request $request) {
+    public function storeDeviceToken(Request $request)
+    {
         $user = User::find($request->id);
         $user->device_token = $request->device_token;
         if ($user->save()) {
@@ -154,7 +153,8 @@ class ApiController extends Controller
     }
     /* Auth End */
 
-    public function getRegularFreeVideoList() {
+    public function getRegularFreeVideoList()
+    {
         $data = RegularAmolVideo::orderByDesc('created_at')->get();
         $response = [
             "status" => 1,
@@ -162,7 +162,8 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function getAmolVideoList() {
+    public function getAmolVideoList()
+    {
         $data = AmolVideo::orderByDesc('created_at')->get();
         $response = [
             "status" => 1,
@@ -170,7 +171,8 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function getPremiumAmolVideoList() {
+    public function getPremiumAmolVideoList()
+    {
         $data = PremiumAmolVideo::orderByDesc('created_at')->get();
         $response = [
             "status" => 1,
@@ -178,7 +180,8 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function getPremiumVideoList() {
+    public function getPremiumVideoList()
+    {
         $data = PremiumVideo::orderByDesc('created_at')->get();
         $response = [
             "status" => 1,
@@ -186,7 +189,8 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function getLiveChannelList() {
+    public function getLiveChannelList()
+    {
         $data = LiveChannel::orderByDesc('created_at')->get();
         $response = [
             "status" => 1,
@@ -194,12 +198,71 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function getTafsirList() {
+    public function getTafsirList()
+    {
         $data = Tafsir::orderByDesc('created_at')->get();
         $response = [
             "status" => 1,
             "data" => $data
         ];
         return response()->json($response, 200);
+    }
+
+    public function storePayment(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = User::find($request->user_id);
+
+            $wallet = $user->wallet + $request->amount;
+
+            if ($request->for) {
+                if ($request->for == "chat") {
+                    $wallet = $wallet - Helper::getSettings('message_charge');
+                    if (!$user->chat_expiry_date) {
+                        $user->chat_expiry_date = Carbon::now()->addDays(Helper::getSettings('message_validity'));
+                    } else {
+                        $currentDateTime = Carbon::now();
+                        $chat_expiry_date = Carbon::parse($user->chat_expiry_date);
+                        if ($chat_expiry_date->lt($currentDateTime)) {
+                            $chat_expiry_date = $currentDateTime->copy()->addDays(Helper::getSettings('message_validity'));
+                        } else {
+                            $chat_expiry_date->addDays(Helper::getSettings('message_validity'));
+                        }
+                        $user->chat_expiry_date = $chat_expiry_date;
+                    }
+                } elseif ($request->for == "premium") {
+                    $wallet = $wallet - Helper::getSettings('premium_charge');
+    
+                    if (!$user->premium_expiry_date) {
+                        $user->premium_expiry_date = Carbon::now()->addMonths(Helper::getSettings('premium_validity'));
+                    } else {
+                        $currentDateTime = Carbon::now();
+                        $premium_expiry_date = Carbon::parse($user->premium_expiry_date);
+                        if ($premium_expiry_date->lt($currentDateTime)) {
+                            $premium_expiry_date = $currentDateTime->copy()->addMonths(Helper::getSettings('premium_validity'));
+                        } else {
+                            $premium_expiry_date->addMonths(Helper::getSettings('premium_validity'));
+                        }
+                        $user->premium_expiry_date = $premium_expiry_date;
+                    }
+                }
+            }
+            $user->wallet = $wallet;
+            $user->save();
+            DB::commit();
+            $response = [
+                'status' => 1,
+                'data' => $user
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = [
+                'status' => 0,
+                'data' => $e->getMessage()
+            ];
+            return response()->json($response, 200);
+        }
     }
 }

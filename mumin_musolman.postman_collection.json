@@ -75,7 +75,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "asdfsafd@gmail.com",
+							"value": "asdfsafd@gmail.coml",
 							"type": "text"
 						},
 						{
@@ -94,6 +94,120 @@
 						"api",
 						"v1",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-regular-free-video-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/v1/get-regular-free-video-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-regular-free-video-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-amol-video-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/v1/get-amol-video-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-amol-video-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-premium-amol-video-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/v1/get-premium-amol-video-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-premium-amol-video-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-premium-video-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/v1/get-premium-video-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-premium-video-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-live-channel-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/v1/get-live-channel-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-live-channel-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-tafsir-list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/v1/get-tafsir-list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"get-tafsir-list"
 					]
 				}
 			},

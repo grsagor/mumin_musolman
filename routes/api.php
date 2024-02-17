@@ -27,23 +27,6 @@ Route::prefix('v1')->group(function () {
         Route::post('login', 'login');
         Route::post('store-device-token', 'storeDeviceToken');
         Route::post('update-user', 'updateUser');
-        Route::get('get-truck-type-list', 'getTruckTypeList');
-
-        /* Order mangement start */
-        Route::post('order', 'storeOrder');
-        Route::get('get-order-list', 'getOrderList');
-        Route::post('user-decline-order', 'userDeclineOrder');
-        Route::post('driver-decline-order', 'driverDeclineOrder');
-        Route::post('driver-accept-order', 'driverAcceptOrder');
-        /* Order mangement end */
-
-        /* Get distance */
-        Route::post('get-nearest-distance', 'getNearestDistance');
-
-        /* Deposit Management Start */
-        Route::post('store-deposit', 'storeDeposit');
-        /* Deposit Management End */
-
 
         Route::get('get-regular-free-video-list', 'getRegularFreeVideoList');
         Route::get('get-amol-video-list', 'getAmolVideoList');
@@ -51,5 +34,7 @@ Route::prefix('v1')->group(function () {
         Route::get('get-premium-video-list', 'getPremiumVideoList');
         Route::get('get-live-channel-list', 'getLiveChannelList');
         Route::get('get-tafsir-list', 'getTafsirList');
+
+        Route::post('payment', 'storePayment');
     });
 });

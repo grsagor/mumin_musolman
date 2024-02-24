@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\PremiumvideoController;
 use App\Http\Controllers\Backend\RegularvideoController;
 use App\Http\Controllers\Backend\TafsirController;
 use App\Http\Controllers\Backend\TotalmessageController;
+use App\Http\Controllers\Backend\TransactionHistoryController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -200,6 +201,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/edit', [CustomadsController::class, 'edit'])->name('admin.custom.ads.edit');
         Route::any('/update', [CustomadsController::class, 'update'])->name('admin.custom.ads.update');
         Route::get('/delete', [CustomadsController::class, 'delete'])->name('admin.custom.ads.delete');
+    });
+    Route::group(['prefix' => '/transaction-history'], function () {
+        Route::get('/', [TransactionHistoryController::class, 'index'])->name('admin.transaction.history');
+        Route::get('/get/list', [TransactionHistoryController::class, 'getList'])->name('admin.transaction.history.get.list');
+        Route::post('/store', [TransactionHistoryController::class, 'store'])->name('admin.transaction.history.store');
+        Route::get('/edit', [TransactionHistoryController::class, 'edit'])->name('admin.transaction.history.edit');
+        Route::any('/update', [TransactionHistoryController::class, 'update'])->name('admin.transaction.history.update');
+        Route::get('/delete', [TransactionHistoryController::class, 'delete'])->name('admin.transaction.history.delete');
     });
 });
 

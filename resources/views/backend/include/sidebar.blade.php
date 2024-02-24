@@ -166,6 +166,10 @@
                     href="{{ route('admin.tafsir') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-book-quran"></i></div> তাসফীর
                 </a>
+                <a class="nav-link {{ Route::is('admin.transaction.history') ? 'active' : '' }}" href="{{ route('admin.transaction.history') }}"
+                    href="{{ route('admin.transaction.history') }}">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-book-quran"></i></div> Transaction History
+                </a>
                 {{-- <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
                     href="{{ route('admin.custom.ads') }}" href="{{ route('admin.custom.ads') }}">
                     <div class="sb-nav-link-icon"><i class="fa-brands fa-adversal"></i></div> Custom Ads

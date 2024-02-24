@@ -36,5 +36,6 @@ Route::prefix('v1')->group(function () {
         Route::get('get-tafsir-list', 'getTafsirList');
 
         Route::post('payment', 'storePayment');
+        Route::get('get-setting-list', 'getSettingList');
     });
 });

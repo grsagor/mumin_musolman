@@ -8,7 +8,9 @@ use App\Models\LiveChannel;
 use App\Models\PremiumAmolVideo;
 use App\Models\PremiumVideo;
 use App\Models\RegularAmolVideo;
+use App\Models\Setting;
 use App\Models\Tafsir;
+use App\Models\TransactionHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Helper;
@@ -250,6 +252,15 @@ class ApiController extends Controller
             }
             $user->wallet = $wallet;
             $user->save();
+
+            $transaction_history = new TransactionHistory();
+
+            $transaction_history->user_id = $request->user_id;
+            $transaction_history->transaction_id = $request->transaction_id;
+            $transaction_history->amount = $request->amount;
+            $transaction_history->cause = $request->for;
+
+            $transaction_history->save();
             DB::commit();
             $response = [
                 'status' => 1,
@@ -264,5 +275,26 @@ class ApiController extends Controller
             ];
             return response()->json($response, 200);
         }
+    }
+
+    public function getSettingList() {
+        $keys = [
+            "bkash_number",
+            "nagad_number",
+            "message_charge",
+            "message_validity",
+            "premium_validity",
+            "premium_charge"
+        ];
+        $data = [];
+        foreach ($keys as $key) {
+            $data[$key] = Setting::where('key', $key)->value('value');
+        }
+
+        $response = [
+            'status' => 1,
+            'data' => $data
+        ];
+        return response()->json($response, 200);
     }
 }

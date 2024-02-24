@@ -212,6 +212,46 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "7276",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "500",
+							"type": "text"
+						},
+						{
+							"key": "for",
+							"value": "premium",
+							"description": "chat/premium",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/payment",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"payment"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

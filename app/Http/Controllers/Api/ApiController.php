@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Otp;
 use App\Models\AmolVideo;
 use App\Models\LiveChannel;
 use App\Models\PremiumAmolVideo;
@@ -15,6 +16,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Helper;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -27,8 +29,8 @@ class ApiController extends Controller
     {
         $rule = [
             'name' => 'required',
-            'email' => 'required|email|unique:user',
-            'phone' => 'required|unique:user',
+            'email' => 'required|email',
+            'phone' => 'required',
             'dob' => 'required',
             'address' => 'required',
             'password' => 'required',
@@ -43,6 +45,23 @@ class ApiController extends Controller
             return response()->json($data, 422);
         }
 
+        $user = User::where('email', $request->email)->first();
+        if ($user && $user->is_verified) {
+            $data['status'] = 0;
+            $data['data'] = "A user is registered with this email.";
+            return response()->json($data, 422);
+        } elseif ($user && !$user->is_verified) {
+            $user->delete();
+        }
+        $user = User::where('phone', $request->phone)->first();
+        if ($user && $user->is_verified) {
+            $data['status'] = 0;
+            $data['data'] = "A user is registered with this phone.";
+            return response()->json($data, 422);
+        } elseif ($user && !$user->is_verified) {
+            $user->delete();
+        }
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -52,7 +71,16 @@ class ApiController extends Controller
         $user->password = Hash::make($request->password);
         $user->visible_password = $request->password;
         $user->status = 1;
+        $otp = rand(1000, 9999);
+        $user->otp = $otp;
+        $user->otp_expired_at = Carbon::now()->addMinutes(2);
+        $user->is_verified = 0;
         Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
+
+        $body = 'Your One time password is ' . $otp . '. Do not share your one time password to anyone.';
+        $subject = 'Registration OTP.';
+
+        Mail::to($request->email)->send(new Otp($body, $subject));
 
         if ($user->save()) {
             $data['status'] = 1;
@@ -62,6 +90,46 @@ class ApiController extends Controller
         } else {
             $data['status'] = 0;
             $data['data'] = 'Something went wrong during registering user.';
+            return response()->json($data, 200);
+        }
+    }
+    public function verifyOtp(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                $currentDateTime = Carbon::now();
+                $otp_expired_at = Carbon::parse($user->otp_expired_at);
+                if ($otp_expired_at->lt($currentDateTime)) {
+                    $data['status'] = 0;
+                    $data['data'] = 'OTP expired.';
+                    return response()->json($data, 200);
+                } else {
+                    if ($user->otp == $request->otp) {
+                        $user->is_verified = 1;
+                        $user->save();
+                    } else {
+                        $data['status'] = 0;
+                        $data['data'] = 'OTP does not matched.';
+                        return response()->json($data, 200);
+                    }
+                }
+            } else {
+                $data['status'] = 0;
+                $data['data'] = 'No user found.';
+                return response()->json($data, 200);
+            }
+
+            DB::commit();
+
+            $data['status'] = 1;
+            $data['data'] = $user;
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $data['status'] = 0;
+            $data['data'] = $e->getMessage();
             return response()->json($data, 200);
         }
     }
@@ -235,7 +303,7 @@ class ApiController extends Controller
                     }
                 } elseif ($request->for == "premium") {
                     $wallet = $wallet - Helper::getSettings('premium_charge');
-    
+
                     if (!$user->premium_expiry_date) {
                         $user->premium_expiry_date = Carbon::now()->addMonths(Helper::getSettings('premium_validity'));
                     } else {
@@ -277,7 +345,8 @@ class ApiController extends Controller
         }
     }
 
-    public function getSettingList() {
+    public function getSettingList()
+    {
         $keys = [
             "bkash_number",
             "nagad_number",

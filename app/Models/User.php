@@ -72,23 +72,31 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role', 'id');
     }
     public function getChatAttribute() {
-        $chat_expiry_date = $this->attributes["chat_expiry_date"];
-        $currentDateTime = Carbon::now();
-        $chat_expiry_date = Carbon::parse($chat_expiry_date);
-        if ($chat_expiry_date->lt($currentDateTime)) {
-            return 0;
+        if (isset($this->attributes["chat_expiry_date"])) {
+            $chat_expiry_date = $this->attributes["chat_expiry_date"];
+            $currentDateTime = Carbon::now();
+            $chat_expiry_date = Carbon::parse($chat_expiry_date);
+            if ($chat_expiry_date->lt($currentDateTime)) {
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
-            return 1;
+            return 0;
         }
     }
     public function getPremiumAttribute() {
-        $premium_expiry_date = $this->attributes["premium_expiry_date"];
-        $currentDateTime = Carbon::now();
-        $premium_expiry_date = Carbon::parse($premium_expiry_date);
-        if ($premium_expiry_date->lt($currentDateTime)) {
-            return 0;
+        if (isset($this->attributes["premium_expiry_date"])) {
+            $premium_expiry_date = $this->attributes["premium_expiry_date"];
+            $currentDateTime = Carbon::now();
+            $premium_expiry_date = Carbon::parse($premium_expiry_date);
+            if ($premium_expiry_date->lt($currentDateTime)) {
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
-            return 1;
+            return 0;
         }
     }
 }

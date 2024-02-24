@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::controller(ApiController::class)->group(function() {
         Route::post('register', 'register');
+        Route::post('verify-otp', 'verifyOtp');
         Route::post('login', 'login');
         Route::post('store-device-token', 'storeDeviceToken');
         Route::post('update-user', 'updateUser');

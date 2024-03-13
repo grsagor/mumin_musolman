@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2024 at 07:02 AM
+-- Generation Time: Feb 24, 2024 at 08:32 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -527,12 +527,20 @@ INSERT INTO `tafsirs` (`id`, `created_at`, `sura_no`, `ayat_no`, `jakariya_headi
 CREATE TABLE `transaction_histories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` varchar(255) NOT NULL,
-  `transaction_id` varchar(255) NOT NULL,
-  `amouont` varchar(255) NOT NULL,
+  `transaction_id` varchar(255) DEFAULT NULL,
+  `amount` varchar(255) NOT NULL,
   `cause` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `transaction_histories`
+--
+
+INSERT INTO `transaction_histories` (`id`, `user_id`, `transaction_id`, `amount`, `cause`, `created_at`, `updated_at`) VALUES
+(1, '7276', NULL, '500', 'premium', '2024-02-24 16:30:08', '2024-02-24 16:30:08'),
+(2, '7276', 'asdfa', '500', 'premium', '2024-02-24 16:30:33', '2024-02-24 16:30:33');
 
 -- --------------------------------------------------------
 
@@ -591,6 +599,9 @@ INSERT INTO `truck_type_details` (`id`, `truck_type_id`, `load_type`, `rent_amou
 
 CREATE TABLE `user` (
   `id` varchar(40) NOT NULL,
+  `otp` int(11) DEFAULT NULL,
+  `otp_expired_at` timestamp NULL DEFAULT NULL,
+  `is_verified` int(11) DEFAULT NULL,
   `wallet` varchar(255) DEFAULT NULL,
   `chat_expiry_date` timestamp NULL DEFAULT NULL,
   `premium_expiry_date` timestamp NULL DEFAULT NULL,
@@ -614,9 +625,8 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `wallet`, `chat_expiry_date`, `premium_expiry_date`, `address`, `email`, `token`, `name`, `phone`, `role`, `password`, `visible_password`, `profile_image`, `dob`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
-('7276', '200', '2024-08-23 05:55:39', '2024-08-17 05:58:56', 'Magni est voluptate', 'ryzohyqoqa@mailinator.com', NULL, 'asdfa', 'dilec@mailinator.com', 2, '$2y$10$Z2dqgA3x5OsKp38Z46R12eow6AAeAzieY69/cPGv8DvXBCC8tBu0K', 'Pa$$w0rd!', 'uploads/user-images/170672440865ba8c38e7cdescreencapture-127-0-0-1-8000-pos-2024-01-28-01_01_19.png', NULL, NULL, 1, '2024-01-31 11:59:26', '2024-02-17 05:58:56'),
-('7865', NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, 'Jack Rose', '12345678', 1, '$2y$10$kJ5cYJxY51rQL5v4aOPUouMLfISAC4uTS6FDHyuo6rXxCKTG0gRs.', NULL, 'uploads/user-images/170533771565a56373f241bunnamed.webp', '1970-01-01', NULL, 1, '2023-05-07 11:15:50', '2024-01-15 10:55:16');
+INSERT INTO `user` (`id`, `otp`, `otp_expired_at`, `is_verified`, `wallet`, `chat_expiry_date`, `premium_expiry_date`, `address`, `email`, `token`, `name`, `phone`, `role`, `password`, `visible_password`, `profile_image`, `dob`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
+('7865', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, 'Jack Rose', '12345678', 1, '$2y$10$kJ5cYJxY51rQL5v4aOPUouMLfISAC4uTS6FDHyuo6rXxCKTG0gRs.', NULL, 'uploads/user-images/170533771565a56373f241bunnamed.webp', '1970-01-01', NULL, 1, '2023-05-07 11:15:50', '2024-01-15 10:55:16');
 
 -- --------------------------------------------------------
 
@@ -883,7 +893,7 @@ ALTER TABLE `tafsirs`
 -- AUTO_INCREMENT for table `transaction_histories`
 --
 ALTER TABLE `transaction_histories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `truck_types`

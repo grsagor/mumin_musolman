@@ -1037,3 +1037,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     right: 0;
     left: 0;
 }
+/* Customized scrollbar */
+.customized__scrollbar::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 4px;
+}
+
+.customized__scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 16px;
+}
+
+.customized__scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+}

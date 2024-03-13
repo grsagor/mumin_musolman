@@ -325,6 +325,7 @@ class ApiController extends Controller
 
             $transaction_history->user_id = $request->user_id;
             $transaction_history->transaction_id = $request->transaction_id;
+            $transaction_history->phone = $request->phone;
             $transaction_history->amount = $request->amount;
             $transaction_history->cause = $request->for;
 

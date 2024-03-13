@@ -49,7 +49,7 @@ class MessageController extends Controller
             $data['current_channel'] = $current_channel;
             $data['messages'] = $messages;
         }
-        return view('frontend.pages.message.index', $data);
+        return view('backend.pages.message.index', $data);
     }
 
     public function messageSave(Request $request) {

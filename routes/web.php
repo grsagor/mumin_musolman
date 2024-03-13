@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AlluserController;
 use App\Http\Controllers\Backend\AmolvideoController;
 use App\Http\Controllers\Backend\CustomadsController;
 use App\Http\Controllers\Backend\LivechannelController;
+use App\Http\Controllers\Backend\MessageController;
 use App\Http\Controllers\Backend\PaiduserController;
 use App\Http\Controllers\Backend\PaymentrequestController;
 use App\Http\Controllers\Backend\PremiumamolvideoController;
@@ -209,6 +210,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/edit', [TransactionHistoryController::class, 'edit'])->name('admin.transaction.history.edit');
         Route::any('/update', [TransactionHistoryController::class, 'update'])->name('admin.transaction.history.update');
         Route::get('/delete', [TransactionHistoryController::class, 'delete'])->name('admin.transaction.history.delete');
+    });
+    Route::group(['prefix' => '/message'], function () {
+        Route::get('/', [MessageController::class, 'index'])->name('admin.message');
+        Route::get('/reload', [MessageController::class, 'reloadChannelContainer'])->name('reload.channels.container');
+        Route::get('/save', [MessageController::class, 'messageSave'])->name('chat.save');
     });
 });
 

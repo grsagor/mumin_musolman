@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2024 at 08:32 PM
+-- Generation Time: Mar 13, 2024 at 07:12 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -528,19 +528,12 @@ CREATE TABLE `transaction_histories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` varchar(255) NOT NULL,
   `transaction_id` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
   `amount` varchar(255) NOT NULL,
   `cause` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `transaction_histories`
---
-
-INSERT INTO `transaction_histories` (`id`, `user_id`, `transaction_id`, `amount`, `cause`, `created_at`, `updated_at`) VALUES
-(1, '7276', NULL, '500', 'premium', '2024-02-24 16:30:08', '2024-02-24 16:30:08'),
-(2, '7276', 'asdfa', '500', 'premium', '2024-02-24 16:30:33', '2024-02-24 16:30:33');
 
 -- --------------------------------------------------------
 

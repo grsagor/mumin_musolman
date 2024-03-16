@@ -99,4 +99,7 @@ class User extends Authenticatable
             return 0;
         }
     }
+    public function subscribers() {
+        return $this->hasMany(ChannelSubscriber::class, 'user_id');
+    }
 }

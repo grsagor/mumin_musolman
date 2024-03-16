@@ -212,9 +212,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/delete', [TransactionHistoryController::class, 'delete'])->name('admin.transaction.history.delete');
     });
     Route::group(['prefix' => '/message'], function () {
-        Route::get('/', [MessageController::class, 'index'])->name('admin.message');
         Route::get('/reload', [MessageController::class, 'reloadChannelContainer'])->name('reload.channels.container');
-        Route::get('/save', [MessageController::class, 'messageSave'])->name('chat.save');
+        Route::get('/{channel_id?}', [MessageController::class, 'index'])->name('admin.message');
+        Route::post('/save', [MessageController::class, 'messageSave'])->name('chat.save');
     });
 });
 

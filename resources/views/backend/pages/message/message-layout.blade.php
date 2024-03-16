@@ -1,11 +1,11 @@
 @extends('backend.layout.app')
 @section('title', 'Message')
 @section('content')
-    <div class="row border-start me-0">
-        <div class="col-7 p-0 vh-100">
+    <div class="row border-start me-0 g-0">
+        <div class="col-7 p-0 full-height">
             @yield('message-content')
         </div>
-        <div class="col-5 border-start p-3 pt-0 vh-100 overflow-y-scroll customized__scrollbar">
+        <div class="col-5 border-start p-3 pt-0 full-height overflow-y-scroll customized__scrollbar">
             @include('backend.pages.message.message-right-side')
         </div>
     </div>
@@ -47,6 +47,9 @@
             width: 24px;
             bottom: 14px !important;
             right: 5px !important;
+        }
+        .full-height {
+            height: calc(100vh - 80px) !important;
         }
     </style>
 @endsection
@@ -395,5 +398,65 @@
                 sendMessage();
             })
         })
+
+        function previewFiles(input, preview) {
+            var files = $("#" + input + "").get(0).files;
+            var selectedFiles = [];
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+                    var file = files[i];
+
+                    reader.onload = (function(file) {
+                        return function(e) {
+                            var mediaContainer = $("<div>").addClass("media-container position-relative");
+                            var mediaElement;
+
+                            if (file.type.startsWith('image/')) {
+                                // If the file is an image
+                                mediaElement = $("<img>").attr("src", e.target.result).attr("height", "60px")
+                                    .attr("width", "60px");
+                            } else if (file.type.startsWith('video/')) {
+                                // If the file is a video
+                                mediaElement = $("<video controls>").attr("src", e.target.result).attr("height",
+                                    "60px").attr("width", "60px");
+                            } else {
+                                // Unsupported file type, skip preview
+                                return;
+                            }
+
+                            mediaElement.addClass("preview_media m-1 border").appendTo(mediaContainer);
+
+                            var removeButton = $("<a>")
+                                .addClass(
+                                    "position-absolute top-0 end-0 rounded-circle bg-danger text-light px-1")
+                                .html('<i class="fa-solid fa-xmark"></i>')
+                                .click(function() {
+                                    // Remove the media container when the remove button is clicked
+                                    $(this).closest(".media-container").remove();
+
+                                    // Remove the corresponding file from the selectedFiles array
+                                    var indexToRemove = selectedFiles.indexOf(file);
+                                    if (indexToRemove !== -1) {
+                                        selectedFiles.splice(indexToRemove, 1);
+                                    }
+
+                                    // Update the file input with the new set of selected files
+                                    $("#" + input + "").prop("files", new FileListFromArray(selectedFiles));
+                                })
+                                .appendTo(mediaContainer);
+
+                            mediaContainer.appendTo("#" + preview + "");
+
+                            // Add the file to the selectedFiles array
+                            selectedFiles.push(file);
+                        };
+                    })(file);
+
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
     </script>
 @endsection

@@ -1,10 +1,10 @@
 @foreach ($channels as $channel)
-    <a data-channel-id="{{ $channel->id }}" href="{{ route('frontend.message', ['channel_id' => $channel->id]) }}"
+    <a data-channel-id="{{ $channel->id }}" href="{{ route('admin.message', ['channel_id' => $channel->id]) }}"
         class="text-gray-900 d-flex align-items-center justify-content-between bg-white px-3 py-1 border-0 rounded mb-2 cursor-pointer">
         <div class="d-flex align-items-center gap-2 flex-1">
             <div class="aspect-ratio-1x1 receiver_profile_img--container position-relative">
                 <div class="rounded-circle overflow-hidden">
-                    <img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ $channel->other_subscriber->user->profile_image ? asset('uploads/user-images/' . $channel->other_subscriber->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}"
+                    <img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ $channel->other_subscriber && $channel->other_subscriber->user && $channel->other_subscriber->user->profile_image ? asset('uploads/user-images/' . $channel->other_subscriber->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}"
                         alt="">
                 </div>
                 <div
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="d-flex flex-column text-start">
-                <span class="fw-bold">{{ $channel->other_subscriber->user->name }} </span>
+                <span class="fw-bold">{{ $channel->other_subscriber && $channel->other_subscriber->user ? $channel->other_subscriber->user->name : 'Unknown' }} </span>
                 <span class="text-primary text-14 last-message">
                     @if ($channel->last_message && $channel->last_message->user_id == $my_user_id)
                         You: {{ $channel->last_message->message }}

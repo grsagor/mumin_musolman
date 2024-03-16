@@ -17,26 +17,39 @@ class MessageController extends Controller
             $locked == true;
         }
         $user = Auth::user();
-        $all_channels = Channel::all();
-        $channels = [];
-        foreach ($all_channels as $channel) {
+        // $all_channels = Channel::all();
+        // $channels = [];
+        // foreach ($all_channels as $channel) {
+        //     $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
+        //     if ($lastMessage) {
+        //         $channel->last_message = $lastMessage;
+        //     }
+        //     $is_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', $user->id)->first();
+        //     if($is_subscriber) {
+        //         $channels[] = $channel;
+        //     }
+        // }
+
+        $channels = Channel::whereHas('subscribers.user', function($query)  {
+            $query->where('id', Auth::user()->id);
+        })->get();
+
+        foreach ($channels as $channel) {
             $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
             if ($lastMessage) {
                 $channel->last_message = $lastMessage;
-            }
-            $is_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', $user->id)->first();
-            if($is_subscriber) {
-                $channels[] = $channel;
             }
         }
 
         $channels = collect($channels)->sortByDesc(function ($channel) {
             return optional($channel->last_message)->created_at ?? null;
         })->values()->all();
-
         $subscribers = ChannelSubscriber::where('channel_id', $channel_id)->where('user_id', '!=', $user->id)->get();
         $current_channel = Channel::find($channel_id);
         $messages = Message::where('channel_id',$channel_id)->get();
+        foreach ($messages as $message) {
+            $message->files = json_decode($message->files);
+        }
         $data = [
             'locked' => $locked,
             'my_username' => $user->user_name,
@@ -52,25 +65,59 @@ class MessageController extends Controller
         return view('backend.pages.message.index', $data);
     }
 
-    public function messageSave(Request $request) {
+    public function messageSave(Request $request)
+    {
         $message = new Message();
 
         $message->channel_id = $request->channel_id;
         $message->user_id = Auth::user()->id;
         $message->message = $request->message;
 
+        if ($request->hasFile('files')) {
+            $files = [];
+            $images = $request->file('files');
+            foreach ($images as $image) {
+                $filename = time() . uniqid() . $image->getClientOriginalName();
+                $image->move(public_path('uploads/message-files/'), $filename);
+
+                $extension = strtolower($image->getClientOriginalExtension());
+
+                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
+                    $type = 'image';
+                } elseif (in_array($extension, ['mp4', 'avi', 'mov', 'mkv', 'wmv'])) {
+                    $type = 'video';
+                } else {
+                    $type = 'document';
+                }
+
+                $files[] = [
+                    "type" => $type,
+                    "path" => 'uploads/message-files/' . $filename
+                ];
+            }
+            $message->files = json_encode($files);
+        }
+
         $message->save();
 
         $response = [
             'success' => true,
-            'body' => $message
+            'fullMessage' => $message
         ];
         return response()->json($response);
     }
 
-    public function reloadChannelContainer() {
+    public function reloadChannelContainer(Request $request)
+    {
         $user = Auth::user();
-        $all_channels = Channel::all();
+        $all_channels = Channel::query();
+        if($request->name){
+            $all_channels->whereHas('subscribers.user', function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->name . '%');
+            });
+        }
+        $all_channels = $all_channels->get();
+
         $channels = [];
         foreach ($all_channels as $channel) {
             $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
@@ -78,7 +125,9 @@ class MessageController extends Controller
                 $channel->last_message = $lastMessage;
             }
             $is_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', $user->id)->first();
-            if($is_subscriber) {
+            $other_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', '!=', $user->id)->first();
+            $channel->other_subscriber = $other_subscriber;
+            if ($is_subscriber) {
                 $channels[] = $channel;
             }
         }
@@ -91,6 +140,6 @@ class MessageController extends Controller
             'my_user_id' => $user->id
         ];
 
-        return view('frontend.pages.message.message-users', $data);
+        return view('backend.pages.message.message-users', $data);
     }
 }

@@ -31,7 +31,6 @@ class MessageController extends Controller
         })->values()->all();
         $subscribers = ChannelSubscriber::where('channel_id', $channel_id)->where('user_id', '!=', $user->id)->get();
         $current_channel = Channel::find($channel_id);
-        $current_channel->other_subscriber = ChannelSubscriber::where('channel_id', $channel_id)->first();
         $messages = Message::with('user')->where('channel_id',$channel_id)->get();
         foreach ($messages as $message) {
             $message->files = json_decode($message->files);
@@ -45,6 +44,7 @@ class MessageController extends Controller
             'channels' => $channels,
         ];
         if ($current_channel) {
+            $current_channel->other_subscriber = ChannelSubscriber::where('channel_id', $current_channel->id)->first();
             $data['current_channel'] = $current_channel;
             $data['messages'] = $messages;
         }

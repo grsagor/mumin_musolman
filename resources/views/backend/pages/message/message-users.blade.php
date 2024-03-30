@@ -4,7 +4,7 @@
         <div class="d-flex align-items-center gap-2 flex-1">
             <div class="aspect-ratio-1x1 receiver_profile_img--container position-relative">
                 <div class="rounded-circle overflow-hidden">
-                    <img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ $channel->other_subscriber && $channel->other_subscriber->user && $channel->other_subscriber->user->profile_image ? asset('uploads/user-images/' . $channel->other_subscriber->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}"
+                    <img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ $channel->other_subscriber && $channel->other_subscriber->user && $channel->other_subscriber->user->profile_image ? asset( $channel->other_subscriber->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}"
                         alt="">
                 </div>
                 <div

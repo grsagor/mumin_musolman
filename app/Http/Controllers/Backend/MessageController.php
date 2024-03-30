@@ -23,6 +23,7 @@ class MessageController extends Controller
             if ($lastMessage) {
                 $channel->last_message = $lastMessage;
             }
+            $channel->other_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->first();
         }
 
         $channels = collect($channels)->sortByDesc(function ($channel) {
@@ -30,7 +31,8 @@ class MessageController extends Controller
         })->values()->all();
         $subscribers = ChannelSubscriber::where('channel_id', $channel_id)->where('user_id', '!=', $user->id)->get();
         $current_channel = Channel::find($channel_id);
-        $messages = Message::where('channel_id',$channel_id)->get();
+        $current_channel->other_subscriber = ChannelSubscriber::where('channel_id', $current_channel->id)->first();
+        $messages = Message::with('user')->where('channel_id',$channel_id)->get();
         foreach ($messages as $message) {
             $message->files = json_decode($message->files);
         }

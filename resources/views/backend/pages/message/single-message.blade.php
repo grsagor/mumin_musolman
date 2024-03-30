@@ -1,7 +1,7 @@
 <div class="d-flex gap-1 h-fit-content mb-3 {{ $message->user_id == $my_user_id ? 'flex-row-reverse' : '' }}">
     <div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden">
         <img class="rounded-circle object-fit-cover" height="36px" width="36px"
-            src="{{ optional($message->user)->profile_image ? asset('uploads/user-images/' . $message->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}"
+            src="{{ optional($message->user)->profile_image ? asset($message->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}"
             alt="">
     </div>
     <div class="message-text-container d-flex flex-column {{ $message->user_id == $my_user_id ? 'align-items-end' : 'align-items-start' }}">

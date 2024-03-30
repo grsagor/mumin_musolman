@@ -3,7 +3,7 @@
         <div class="d-flex align-items-center gap-2 flex-1">
             <div class="aspect-ratio-1x1 receiver_profile_img--container">
                 <a href="">
-                    <img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ $current_channel->other_subscriber && $current_channel->other_subscriber->user->profile_image ? asset('uploads/user-images/' . $current_channel->other_subscriber->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}" alt="">
+                    <img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ $current_channel->other_subscriber && $current_channel->other_subscriber->user->profile_image ? asset($current_channel->other_subscriber->user->profile_image) : asset('assets/img/no-img-cover.jpg') }}" alt="">
                 </a>
                 {{-- <img class="w-100 h-100 object-fit-cover" src="{{ asset('assets/img/ui/avatar_pp.png') }}" alt=""> --}}
             </div>

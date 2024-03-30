@@ -17,23 +17,7 @@ class MessageController extends Controller
             $locked == true;
         }
         $user = Auth::user();
-        // $all_channels = Channel::all();
-        // $channels = [];
-        // foreach ($all_channels as $channel) {
-        //     $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
-        //     if ($lastMessage) {
-        //         $channel->last_message = $lastMessage;
-        //     }
-        //     $is_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', $user->id)->first();
-        //     if($is_subscriber) {
-        //         $channels[] = $channel;
-        //     }
-        // }
-
-        $channels = Channel::whereHas('subscribers.user', function($query)  {
-            $query->where('id', Auth::user()->id);
-        })->get();
-
+        $channels = Channel::all();
         foreach ($channels as $channel) {
             $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
             if ($lastMessage) {

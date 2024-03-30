@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\Otp;
 use App\Models\AmolVideo;
+use App\Models\Channel;
+use App\Models\ChannelSubscriber;
 use App\Models\LiveChannel;
+use App\Models\Message;
 use App\Models\PremiumAmolVideo;
 use App\Models\PremiumVideo;
 use App\Models\RegularAmolVideo;
@@ -277,7 +280,6 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
-
     public function storePayment(Request $request)
     {
         try {
@@ -345,7 +347,6 @@ class ApiController extends Controller
             return response()->json($response, 200);
         }
     }
-
     public function getSettingList()
     {
         $keys = [
@@ -366,5 +367,141 @@ class ApiController extends Controller
             'data' => $data
         ];
         return response()->json($response, 200);
+    }
+    public function bkash(Request $request)
+    {
+        // Merchant Info
+        $msisdn = "01811181526"; // bKash Merchant Number.
+        $user = "01811181526"; // bKash Merchant Username.
+        $pass = "W6QpzDen94#EJNP"; // bKash Merchant Password.
+        $url = "https://www.bkashcluster.com:9081"; // bKash API URL with Port Number.
+        $trxid = $request->transaction_id; // bKash Transaction ID : TrxID.
+        // Final URL for getting response from bKash.
+        $bkash_url = $url . '/dreamwave/merchant/trxcheck/sendmsg?user=' . $user . '&pass=' . $pass . '&msisdn=' . $msisdn . '&trxid=' . $trxid;
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_PORT => 9081,
+            CURLOPT_URL => $bkash_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "cache-control: no-cache",
+                "content-type: application/json"
+            ),
+
+        )
+        );
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+        //print_r($response); // For Getting all Response Data.
+        $api_response = json_decode($response, true); // Getting Response from bKash API.
+        $transaction_status = $api_response['transaction']['trxStatus']; // Transaction Status Codes
+        if ($err || $transaction_status == "4001") {
+            echo 'Problem for Sending Response to bKash API ! Try Again after fews minutes.';
+        } else {
+            // Assign Transaction Information
+            $transaction_amount = $api_response['transaction']['amount']; // bKash Payment Amount.
+            $transaction_reference = $api_response['transaction']['reference']; // bKash Reference for Invoice ID.
+            $transaction_time = $api_response['transaction']['trxTimestamp']; // bKash Transaction Time & Date.
+            // Return Transaction Information into Your Blade Template.
+            return view('backend.pages.bkash.bkash', compact('transaction_status', 'transaction_amount', 'transaction_reference', 'transaction_time'));
+        }
+    }
+
+    public function sendMessage(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $user = User::find($request->user_id);
+
+            $channel = Channel::whereHas('subscribers', function($query) use ($request) {
+                $query->where('user_id', $request->user_id);
+            })->first();
+
+            if (!$channel) {
+                $channel = new Channel();
+                $channel->name = $user->name;
+                $channel->is_approved = 0;
+                $channel->created_by = $user->id;
+                $channel->save();
+
+                $subscriber = new ChannelSubscriber();
+                $subscriber->user_id = $user->id;
+                $subscriber->channel_id = $channel->id;
+                $subscriber->save();
+            }
+
+            $message = new Message();
+            $message->channel_id = $channel->id;
+            $message->user_id = $request->user_id;
+            $message->message = $request->message;
+    
+            if ($request->hasFile('files')) {
+                $files = [];
+                $images = $request->file('files');
+                foreach ($images as $image) {
+                    $filename = time() . uniqid() . $image->getClientOriginalName();
+                    $image->move(public_path('uploads/message-files/'), $filename);
+    
+                    $extension = strtolower($image->getClientOriginalExtension());
+    
+                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
+                        $type = 'image';
+                    } elseif (in_array($extension, ['mp4', 'avi', 'mov', 'mkv', 'wmv'])) {
+                        $type = 'video';
+                    } else {
+                        $type = 'document';
+                    }
+    
+                    $files[] = [
+                        "type" => $type,
+                        "path" => 'uploads/message-files/' . $filename
+                    ];
+                }
+                $message->files = json_encode($files);
+            }
+            $message->save();
+            DB::commit();
+            $response = [
+                'status' => 0,
+                'data' => $message
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = [
+                'status' => 0,
+                'data' => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+    public function getMessage(Request $request) {
+        try {
+            $messages = Message::whereHas('channel.subscribers', function($query) use ($request) {
+                $query->where('user_id', $request->user_id);
+            })->get();
+    
+            $response = [
+                'status' => 0,
+                'data' => $messages
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 0,
+                'data' => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
     }
 }

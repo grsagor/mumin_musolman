@@ -38,5 +38,10 @@ Route::prefix('v1')->group(function () {
 
         Route::post('payment', 'storePayment');
         Route::get('get-setting-list', 'getSettingList');
+
+        Route::post('bkash-transaction-status', 'bkash');
+
+        Route::post('send-message', 'sendMessage');
+        Route::get('get-message', 'getMessage');
     });
 });

@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
         Route::post('login', 'login');
         Route::post('store-device-token', 'storeDeviceToken');
         Route::post('update-user', 'updateUser');
+        Route::get('get-user-details', 'getUserDetails');
 
         Route::get('get-regular-free-video-list', 'getRegularFreeVideoList');
         Route::get('get-amol-video-list', 'getAmolVideoList');

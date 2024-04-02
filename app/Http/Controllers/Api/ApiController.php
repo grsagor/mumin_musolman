@@ -210,6 +210,34 @@ class ApiController extends Controller
             return response()->json($data, 200);
         }
     }
+    public function getUserDetails(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $data['status'] = 0;
+            $data['data'] = $validator->errors();
+            return response()->json($data, 400); // Bad Request
+        }
+
+        $user = User::find($request->user_id);
+
+        if ($user) {
+                $response = [
+                    'status' => 1,
+                    'data' => $user
+                ];
+                return response()->json($response, 200); // OK
+        } else {
+            $response = [
+                'status' => 0,
+                'data' => "No user found."
+            ];
+            return response()->json($response, 404); // Not Found
+        }
+    }
     public function storeDeviceToken(Request $request)
     {
         $user = User::find($request->id);
@@ -415,9 +443,7 @@ class ApiController extends Controller
             // Return Transaction Information into Your Blade Template.
             return view('backend.pages.bkash.bkash', compact('transaction_status', 'transaction_amount', 'transaction_reference', 'transaction_time'));
         }
-    }
-
-    public function sendMessage(Request $request) {
+    }    public function sendMessage(Request $request) {
         try {
             DB::beginTransaction();
 

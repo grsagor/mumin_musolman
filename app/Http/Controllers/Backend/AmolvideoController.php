@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNotificationJob;
 use App\Models\AmolVideo;
+use App\Models\User;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -70,6 +72,11 @@ class AmolvideoController extends Controller
             $video->embed_link = $request->embed_link;
             $video->status  = ($request->status) ? 1 : 0;
             $video->save();
+
+            $users = User::all();
+            foreach ($users as $user) {
+                SendNotificationJob::dispatch($user->device_token, 'Title', 'Body', 'Image');
+            }
     
             return response()->json([
                 'type' => 'success',

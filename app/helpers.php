@@ -143,4 +143,41 @@ class Helper
             $table->$fieldName = $path . $filename;
         }
     }
+
+    public static function sendPushNotification($device_token, $title, $body, $image)
+    {
+
+        $data = [
+            'to' => $device_token,
+            'content_available' => true,
+            "sticky" => true,
+            'notification' => [
+                'title' => $title,
+                'body' => $body,
+            ],
+            'data' => [
+                'title' => $title,
+                'body' => json_encode($body),
+            ],
+        ];
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: key=AAAAhrKPGVQ:APA91bEesj0K3Z0aEI4OuVC9e9GMWa07qfzDWAJKLOAiPD3RWw-FPIoAXGZgw-esiIwZuFPaBRx-J-Vq6Y2JSPa_Imflf3GxWaa6SLCu5cSRh21Vk84MI0qNLLioPlsSMkcQ7gQArGwG",
+                "Content-Type: application/json"
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($response);
+    }
 }

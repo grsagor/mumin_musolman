@@ -146,6 +146,7 @@ class Helper
 
     public static function sendPushNotification($device_token, $title, $body, $image)
     {
+        $fcmAuthKey = env('FCM_AUTH_KEY');
 
         $data = [
             'to' => $device_token,
@@ -172,7 +173,7 @@ class Helper
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array(
-                "Authorization: key=AAAAhrKPGVQ:APA91bEesj0K3Z0aEI4OuVC9e9GMWa07qfzDWAJKLOAiPD3RWw-FPIoAXGZgw-esiIwZuFPaBRx-J-Vq6Y2JSPa_Imflf3GxWaa6SLCu5cSRh21Vk84MI0qNLLioPlsSMkcQ7gQArGwG",
+                "Authorization: key=$fcmAuthKey",
                 "Content-Type: application/json"
             ),
         ));

@@ -7,6 +7,7 @@ use App\Mail\Otp;
 use App\Models\AmolVideo;
 use App\Models\Channel;
 use App\Models\ChannelSubscriber;
+use App\Models\DeviceToken;
 use App\Models\LiveChannel;
 use App\Models\Message;
 use App\Models\PremiumAmolVideo;
@@ -19,6 +20,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Helper;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -225,11 +227,11 @@ class ApiController extends Controller
         $user = User::find($request->user_id);
 
         if ($user) {
-                $response = [
-                    'status' => 1,
-                    'data' => $user
-                ];
-                return response()->json($response, 200); // OK
+            $response = [
+                'status' => 1,
+                'data' => $user
+            ];
+            return response()->json($response, 200); // OK
         } else {
             $response = [
                 'status' => 0,
@@ -240,16 +242,29 @@ class ApiController extends Controller
     }
     public function storeDeviceToken(Request $request)
     {
-        $user = User::find($request->id);
-        $user->device_token = $request->device_token;
-        if ($user->save()) {
+        try {
+            DB::beginTransaction();
+            if ($request->id) {
+                $device_token = DeviceToken::where('user_id', $request->id)->first();
+                if (!$device_token) {
+                    $device_token = new DeviceToken();
+                }
+            }
+            if (!$request->id) {
+                $device_token = new DeviceToken();
+            }
+            $device_token->user_id = $request->id;
+            $device_token->device_token = $request->device_token;
+            $device_token->save();
             $data['status'] = 1;
-            $data['data'] = $user;
+            $data['data'] = $device_token;
+            DB::commit();
             return response()->json($data, 200);
-        } else {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $data['status'] = 0;
-            $data['data'] = 'No user registered with this phone number.';
-            return response()->json($data, 200);
+            $data['data'] = $e->getMessage();
+            return response()->json($data, 500);
         }
     }
     /* Auth End */
@@ -409,21 +424,23 @@ class ApiController extends Controller
 
         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_PORT => 9081,
-            CURLOPT_URL => $bkash_url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "cache-control: no-cache",
-                "content-type: application/json"
-            ),
+        curl_setopt_array(
+            $curl,
+            array(
+                CURLOPT_PORT => 9081,
+                CURLOPT_URL => $bkash_url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "cache-control: no-cache",
+                    "content-type: application/json"
+                ),
 
-        )
+            )
         );
 
         $response = curl_exec($curl);
@@ -443,13 +460,15 @@ class ApiController extends Controller
             // Return Transaction Information into Your Blade Template.
             return view('backend.pages.bkash.bkash', compact('transaction_status', 'transaction_amount', 'transaction_reference', 'transaction_time'));
         }
-    }    public function sendMessage(Request $request) {
+    }
+    public function sendMessage(Request $request)
+    {
         try {
             DB::beginTransaction();
 
             $user = User::find($request->user_id);
 
-            $channel = Channel::whereHas('subscribers', function($query) use ($request) {
+            $channel = Channel::whereHas('subscribers', function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
             })->first();
 
@@ -470,7 +489,7 @@ class ApiController extends Controller
             $message->channel_id = $channel->id;
             $message->user_id = $request->user_id;
             $message->message = $request->message;
-    
+
             if ($request->hasFile('files')) {
                 $files = [];
                 $images = $request->file('files');
@@ -496,6 +515,18 @@ class ApiController extends Controller
                 $message->files = json_encode($files);
             }
             $message->save();
+            if ($message->files) {
+                $newFiles = [];
+                foreach (json_decode($message->files) as $file) {
+                    $newFiles[] = [
+                        'type' => $file->type,
+                        'path' => env('APP_URL') . '/' . $file->path
+                    ];
+                }
+                $message->files = $newFiles;
+            }
+            $message->user;
+            Http::post(env('NODE_URL') . '/send-message-to-user', $message->toArray());
             DB::commit();
             $response = [
                 'status' => 0,
@@ -511,12 +542,13 @@ class ApiController extends Controller
             return response()->json($response, 500);
         }
     }
-    public function getMessage(Request $request) {
+    public function getMessage(Request $request)
+    {
         try {
-            $messages = Message::whereHas('channel.subscribers', function($query) use ($request) {
+            $messages = Message::whereHas('channel.subscribers', function ($query) use ($request) {
                 $query->where('user_id', $request->user_id);
             })->get();
-    
+
             $response = [
                 'status' => 0,
                 'data' => $messages

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendNotificationJob;
 use App\Models\AmolVideo;
+use App\Models\DeviceToken;
 use App\Models\User;
 use Helper;
 use Illuminate\Http\Request;
@@ -73,7 +74,7 @@ class AmolvideoController extends Controller
             $video->status  = ($request->status) ? 1 : 0;
             $video->save();
 
-            $users = User::all();
+            $users = DeviceToken::all();
             foreach ($users as $user) {
                 SendNotificationJob::dispatch($user->device_token, 'Title', 'Body', 'Image');
             }

@@ -8,14 +8,11 @@ use App\Models\ChannelSubscriber;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class MessageController extends Controller
 {
     public function index($channel_id = null) {
-        $locked = null;
-        if ($locked == 'locked') {
-            $locked == true;
-        }
         $user = Auth::user();
         $channels = Channel::all();
         foreach ($channels as $channel) {
@@ -36,7 +33,6 @@ class MessageController extends Controller
             $message->files = json_decode($message->files);
         }
         $data = [
-            'locked' => $locked,
             'my_username' => $user->user_name,
             'my_user_id' => $user->id,
             'subscribers' => $subscribers,
@@ -53,44 +49,65 @@ class MessageController extends Controller
 
     public function messageSave(Request $request)
     {
-        $message = new Message();
+        try {
+            $message = new Message();
 
-        $message->channel_id = $request->channel_id;
-        $message->user_id = Auth::user()->id;
-        $message->message = $request->message;
-
-        if ($request->hasFile('files')) {
-            $files = [];
-            $images = $request->file('files');
-            foreach ($images as $image) {
-                $filename = time() . uniqid() . $image->getClientOriginalName();
-                $image->move(public_path('uploads/message-files/'), $filename);
-
-                $extension = strtolower($image->getClientOriginalExtension());
-
-                if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
-                    $type = 'image';
-                } elseif (in_array($extension, ['mp4', 'avi', 'mov', 'mkv', 'wmv'])) {
-                    $type = 'video';
-                } else {
-                    $type = 'document';
+            $message->channel_id = $request->channel_id;
+            $message->user_id = Auth::user()->id;
+            $message->message = $request->message;
+    
+            if ($request->hasFile('files')) {
+                $files = [];
+                $images = $request->file('files');
+                foreach ($images as $image) {
+                    $filename = time() . uniqid() . $image->getClientOriginalName();
+                    $image->move(public_path('uploads/message-files/'), $filename);
+    
+                    $extension = strtolower($image->getClientOriginalExtension());
+    
+                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
+                        $type = 'image';
+                    } elseif (in_array($extension, ['mp4', 'avi', 'mov', 'mkv', 'wmv'])) {
+                        $type = 'video';
+                    } else {
+                        $type = 'document';
+                    }
+    
+                    $files[] = [
+                        "type" => $type,
+                        "path" => 'uploads/message-files/' . $filename
+                    ];
                 }
-
-                $files[] = [
-                    "type" => $type,
-                    "path" => 'uploads/message-files/' . $filename
-                ];
+                $message->files = json_encode($files);
             }
-            $message->files = json_encode($files);
+    
+            $message->save();
+
+            if ($message->files) {
+                $newFiles = [];
+                foreach (json_decode($message->files) as $file) {
+                    $newFiles[] = [
+                        'type' => $file->type,
+                        'path' => env('APP_URL') . '/' . $file->path
+                    ];
+                }
+                $message->files = $newFiles;
+            }
+    
+            Http::post(env('NODE_URL') . '/send-message-to-user', $message->toArray());
+    
+            $response = [
+                'success' => true,
+                'fullMessage' => $message
+            ];
+            return response()->json($response);
+        } catch (\Exception $e) {
+            $response = [
+                'success' => false,
+                'fullMessage' => $e->getMessage()
+            ];
+            return response()->json($response);
         }
-
-        $message->save();
-
-        $response = [
-            'success' => true,
-            'fullMessage' => $message
-        ];
-        return response()->json($response);
     }
 
     public function reloadChannelContainer(Request $request)
@@ -110,12 +127,9 @@ class MessageController extends Controller
             if ($lastMessage) {
                 $channel->last_message = $lastMessage;
             }
-            $is_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', $user->id)->first();
             $other_subscriber = ChannelSubscriber::where('channel_id', $channel->id)->where('user_id', '!=', $user->id)->first();
             $channel->other_subscriber = $other_subscriber;
-            if ($is_subscriber) {
-                $channels[] = $channel;
-            }
+            $channels[] = $channel;
         }
 
         $channels = collect($channels)->sortByDesc(function ($channel) {
@@ -125,7 +139,6 @@ class MessageController extends Controller
             'channels' => $channels,
             'my_user_id' => $user->id
         ];
-
         return view('backend.pages.message.message-users', $data);
     }
 }

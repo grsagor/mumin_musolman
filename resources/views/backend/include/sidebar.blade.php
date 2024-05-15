@@ -174,6 +174,27 @@
                     href="{{ route('admin.custom.ads') }}" href="{{ route('admin.custom.ads') }}">
                     <div class="sb-nav-link-icon"><i class="fa-brands fa-adversal"></i></div> Custom Ads
                 </a> --}}
+
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#messageNav"
+                aria-expanded="@if (Route::is('admin.message') ||
+                        Route::is('admin.message')) true @else false @endif"
+                aria-controls="collapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-video"></i></div> Messages
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse @if (Route::is('admin.message') ||
+                    Route::is('admin.message.requests.index')) show @endif" id="messageNav"
+                aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav down">
+                    <a class="nav-link {{ Route::is('admin.message') ? 'active' : '' }}"
+                        href="{{ route('admin.message') }}"><i class="fa-solid fa-angles-right ikon"></i>
+                        All Messages</a>
+                    <a class="nav-link {{ Route::is('admin.message.requests.index') ? 'active' : '' }}"
+                        href="{{ route('admin.message.requests.index') }}"><i class="fa-solid fa-angles-right ikon"></i>
+                        Message Requests</a>
+                </nav>
+            </div>
             </div>
         </div>
     </nav>

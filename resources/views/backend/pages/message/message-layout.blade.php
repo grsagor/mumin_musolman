@@ -74,6 +74,15 @@
 
     <script>
         let socket = io(`https://socket.grsagor.com`);
+
+        socket.on('connect', function() {
+            console.log('Connected to the server.');
+        });
+
+        socket.on('disconnect', function() {
+            console.log('Disconnected from the server.');
+        });
+
         let chatInput = $('#message-text');
         let subscripers = @json($subscribers);
         let user = @json(Auth::user());
@@ -91,7 +100,6 @@
                 data: data,
                 dataType: 'html',
                 success: function(html) {
-                    console.log(html)
                     $('#channels_container').html(html);
                 },
                 error: function(error) {
@@ -140,56 +148,58 @@
                 });
                 $('#files').val('');
                 $('#preview_images').empty();
-                $('#messages_container').append(`<div class="d-flex gap-1 h-fit-content flex-row-reverse mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="/${user.profile_image}" alt=""></div><div class="message-text-container  d-flex flex-column align-items-end">${ message ? `<div class="text-gray-900 bg-secondary rounded p-3">${message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${socketFiles.map(file => {if (file.type === 'image') {return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`;} else if(file.type === 'video') { return ` < video controls src = "${file.path}" width = "100" height = "100" autoplay > < /video>`; } else { return ''; } }).join('') } </div> <p class = "ms-2 text-gray-500 text-12">${formattedTime}</p></div></div>`);
-                
-                $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: 'POST',
-                    processData: false,
-                    contentType: false,
-                    data: body,
-                    url: "{{ route('chat.save') }}",
-                    success: function(response) {
-                        chatInput.val('');
-                        reloadChannelsContainer();
-                    },
-                    error: function(error) {
-                        // Handle errors here
-                    }
-                });
-            }
-        }
+                $('#messages_container').append(
+                    `<div class="d-flex gap-1 h-fit-content flex-row-reverse mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="/${user.profile_image}" alt=""></div><div class="message-text-container  d-flex flex-column align-items-end">${ message ? `<div class="text-gray-900 bg-secondary rounded p-3">${message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${socketFiles.map(file => {if (file.type === 'image') {return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`;} else if(file.type === 'video') { return ` <video controls src = "${file.path}" width = "100" height = "100" autoplay > < /video>`; } else { return ''; } }).join('') } </div > < p class="ms-2 text-gray-500 text-12">${formattedTime}</p></div > </div>`);
 
-        $(document).ready(function() {
-        let chatInput = $('#message-text');
-        chatInput.keypress(function(e) {
-            if (e.which == 13 && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
+                    $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight); $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'POST',
+                        processData: false,
+                        contentType: false,
+                        data: body,
+                        url: "{{ route('chat.save') }}",
+                        success: function(response) {
+                            chatInput.val('');
+                            reloadChannelsContainer();
+                        },
+                        error: function(error) {
+                            // Handle errors here
+                        }
+                    });
+                }
             }
-        });
-        let my_user_id = "{{ $my_user_id }}";
-        socket.on(`get-message/{{ $channel_id }}`, (body) => {
-            reloadChannelsContainer();
-            var currentDate = new Date();
-            var formattedTime = currentDate.toLocaleTimeString([], {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            });
-            if (channel_id == body.channel_id && my_user_id != body.user_id) {
-                $('#messages_container').append(`<div class="d-flex gap-1 h-fit-content mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ asset('') }}${body.user.profile_image}" alt=""></div><div class="message-text-container">${ body.message ? `<div class="text-gray-900 bg-white rounded p-3">${body.message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${body.files ? body.files.map(file => { if (file.type === 'image') { return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`; } else if(file.type === 'video') { return ` < video controls src = "${file.path}" width = "100" height = "100" autoplay></video>`; } else { return ''; } }).join(''): '' } </div> <p class = "ms-2 text-gray-500 text-12">${formattedTime}</p></div></div>`);
-                
-                $('a[data-channel-id="' + body.channel_id + '"]').find('.last-message').text(body.message);
-                $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
-            }
-        });
+
+            $(document).ready(function() {
+                        let chatInput = $('#message-text');
+                        chatInput.keypress(function(e) {
+                            if (e.which == 13 && !e.shiftKey) {
+                                e.preventDefault();
+                                sendMessage();
+                            }
+                        });
+                        let my_user_id = "{{ $my_user_id }}";
+                        socket.on(`get-message/{{ $channel_id }}`, (body) => {
+                                reloadChannelsContainer();
+                                var currentDate = new Date();
+                                var formattedTime = currentDate.toLocaleTimeString([], {
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                    hour12: true
+                                });
+                                if (channel_id == body.channel_id && my_user_id != body.user_id) {
+                                    $('#messages_container').append(
+                                        `<div class="d-flex gap-1 h-fit-content mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ asset('') }}${body.user.profile_image}" alt=""></div><div class="message-text-container">${ body.message ? `<div class="text-gray-900 bg-white rounded p-3">${body.message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${body.files ? body.files.map(file => { if (file.type === 'image') { return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`; } else if(file.type === 'video') { return ` <video controls src = "${file.path}" width = "100" height = "100" autoplay > < /video>`; } else { return ''; } }).join(''): '' } </div > <p class = "ms-2 text-gray-500 text-12">${formattedTime}</p></div></div>`);
+
+                                        $('a[data-channel-id="' + body.channel_id + '"]').find('.last-message')
+                                        .text(body.message); $('.messages-container').scrollTop($(
+                                            '.messages-container')[0].scrollHeight);
+                                    }
+                                });
 
 
-        })
+                        })
     </script>
 
     <script>

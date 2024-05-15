@@ -483,6 +483,9 @@ class ApiController extends Controller
                 $subscriber->user_id = $user->id;
                 $subscriber->channel_id = $channel->id;
                 $subscriber->save();
+            } elseif(!$user->chat) {
+                $channel->is_approved = 0;
+                $channel->save();
             }
 
             $message = new Message();

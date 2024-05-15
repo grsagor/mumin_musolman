@@ -11,6 +11,13 @@ app.get('/', (req, res) => {
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, { cors: {origin: "*"} });
 
+io.on('connection', (socket) => {
+    console.log('Connected')
+    socket.on('disconnect', (socket) => {
+        console.log('Disconnected.');
+    })
+})
+
 app.post('/send-message-to-user', (req, res) => {
     const body = req.body;
     console.log(body)

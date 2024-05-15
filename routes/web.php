@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\AmolvideoController;
 use App\Http\Controllers\Backend\CustomadsController;
 use App\Http\Controllers\Backend\LivechannelController;
 use App\Http\Controllers\Backend\MessageController;
+use App\Http\Controllers\Backend\MessagerequestController;
 use App\Http\Controllers\Backend\PaiduserController;
 use App\Http\Controllers\Backend\PaymentrequestController;
 use App\Http\Controllers\Backend\PremiumamolvideoController;
@@ -215,6 +216,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/reload', [MessageController::class, 'reloadChannelContainer'])->name('reload.channels.container');
         Route::get('/{channel_id?}', [MessageController::class, 'index'])->name('admin.message');
         Route::post('/save', [MessageController::class, 'messageSave'])->name('chat.save');
+    });
+    Route::group(['prefix' => '/message-requests'], function () {
+        Route::get('/', [MessagerequestController::class, 'index'])->name('admin.message.requests.index');
+        Route::get('/get/list', [MessagerequestController::class, 'getList'])->name('admin.message.requests.get.list');
+        Route::get('/accept', [MessagerequestController::class, 'accept'])->name('admin.message.requests.accept');
+        Route::get('/cancel', [MessagerequestController::class, 'cancel'])->name('admin.message.requests.cancel');
+        Route::get('/delete', [MessagerequestController::class, 'delete'])->name('admin.message.requests.delete');
     });
 });
 

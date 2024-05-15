@@ -14,7 +14,7 @@ class MessageController extends Controller
 {
     public function index($channel_id = null) {
         $user = Auth::user();
-        $channels = Channel::all();
+        $channels = Channel::where('is_approved',1)->get();
         foreach ($channels as $channel) {
             $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
             if ($lastMessage) {
@@ -140,5 +140,9 @@ class MessageController extends Controller
             'my_user_id' => $user->id
         ];
         return view('backend.pages.message.message-users', $data);
+    }
+
+    public function requests() {
+        return view('backend.pages.message.requests');
     }
 }

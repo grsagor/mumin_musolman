@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNotificationJob;
 use App\Mail\Otp;
 use App\Models\AmolVideo;
 use App\Models\Channel;
@@ -553,8 +554,30 @@ class ApiController extends Controller
             })->get();
 
             $response = [
-                'status' => 0,
+                'status' => 1,
                 'data' => $messages
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 0,
+                'data' => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+
+    public function sendPushNotification(Request $request) {
+        try {
+            $title = $request->title ?? 'Title';
+            $body = $request->body ?? 'Body';
+            $users = DeviceToken::all();
+            foreach ($users as $user) {
+                SendNotificationJob::dispatch($user->device_token, $title, $body, 'Image');
+            }
+            $response = [
+                'status' => 1,
+                'data' => 'Please wait.'
             ];
             return response()->json($response, 200);
         } catch (\Exception $e) {

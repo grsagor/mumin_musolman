@@ -41,63 +41,66 @@ class ApiController extends Controller
             'dob' => 'required',
             'address' => 'required',
             'password' => 'required',
-            'profile_image' => 'required|image|mimes:jpg,png|max:2048'
+            'profile_image' => 'required|image|mimes:jpg,png|max:20480'
         ];
 
         $validator = Validator::make($request->all(), $rule);
-
         if ($validator->fails()) {
             $data['status'] = 0;
             $data['data'] = $validator->errors();
             return response()->json($data, 422);
         }
 
-        $user = User::where('email', $request->email)->first();
-        if ($user && $user->is_verified) {
-            $data['status'] = 0;
-            $data['data'] = "A user is registered with this email.";
-            return response()->json($data, 422);
-        } elseif ($user && !$user->is_verified) {
-            $user->delete();
-        }
-        $user = User::where('phone', $request->phone)->first();
-        if ($user && $user->is_verified) {
-            $data['status'] = 0;
-            $data['data'] = "A user is registered with this phone.";
-            return response()->json($data, 422);
-        } elseif ($user && !$user->is_verified) {
-            $user->delete();
-        }
+        try { 
+            DB::beginTransaction();
+            $user = User::where('email', $request->email)->first();
+            if ($user && $user->is_verified) {
+                $data['status'] = 0;
+                $data['data'] = "A user is registered with this email.";
+                return response()->json($data, 422);
+            } elseif ($user && !$user->is_verified) {
+                $user->delete();
+            }
+            $user = User::where('phone', $request->phone)->first();
+            if ($user && $user->is_verified) {
+                $data['status'] = 0;
+                $data['data'] = "A user is registered with this phone.";
+                return response()->json($data, 422);
+            } elseif ($user && !$user->is_verified) {
+                $user->delete();
+            }
+    
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->dob = $request->dob;
+            $user->password = Hash::make($request->password);
+            $user->visible_password = $request->password;
+            $user->status = 1;
+            $otp = rand(1000, 9999);
+            $user->otp = $otp;
+            $user->otp_expired_at = Carbon::now()->addMinutes(2);
+            $user->is_verified = 0;
+            Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
+    
+            $body = 'Your One time password is ' . $otp . '. Do not share your one time password to anyone.';
+            $subject = 'Registration OTP.';
+    
+            Mail::to($request->email)->send(new Otp($body, $subject));
+            $user->save();
+            DB::commit();
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->dob = $request->dob;
-        $user->password = Hash::make($request->password);
-        $user->visible_password = $request->password;
-        $user->status = 1;
-        $otp = rand(1000, 9999);
-        $user->otp = $otp;
-        $user->otp_expired_at = Carbon::now()->addMinutes(2);
-        $user->is_verified = 0;
-        Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
-
-        $body = 'Your One time password is ' . $otp . '. Do not share your one time password to anyone.';
-        $subject = 'Registration OTP.';
-
-        Mail::to($request->email)->send(new Otp($body, $subject));
-
-        if ($user->save()) {
             $data['status'] = 1;
             $data['data'] = $user;
             $data['token'] = $this->generateToken($user);
             return response()->json($data, 200);
-        } else {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $data['status'] = 0;
-            $data['data'] = 'Something went wrong during registering user.';
-            return response()->json($data, 200);
+            $data['data'] = $e->getMessage();
+            return response()->json($data, 500);
         }
     }
     public function verifyOtp(Request $request)

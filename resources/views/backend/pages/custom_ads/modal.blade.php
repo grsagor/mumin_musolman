@@ -42,10 +42,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Ad no</label>
                         <div class="col-sm-10">
                             <select name="ad_no" class="form-control" id="ad_no" required>
-                                <option value="">Select Item</option>
+                                <option value="">Select Ad No</option>
                                 <option value="Ads 1">Ads 1</option>
                                 <option value="Ads 2">Ads 2</option>
                                 <option value="Ads 3">Ads 3</option>

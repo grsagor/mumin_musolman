@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Truck Type | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'Custom Ads | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
 @section('css')
     <style>
         .profile_image_input--container {
@@ -17,14 +17,14 @@
 @endsection
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Islam</h4>
+        <h4 class="mt-2">Custom Ads</h4>
 
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">
                     <div class="col-12 d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            <h5 class="m-0">Islam</h5>
+                            <h5 class="m-0">List</h5>
                         </div>
                         @if (Helper::hasRight('user.create'))
                             <button type="button" class="btn btn-primary btn-create-user create_form_btn"
@@ -39,11 +39,9 @@
                     <thead>
                         <tr>
                             <th>Sl No</th>
-                            <th>User ID</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
-                            <th>Islam</th>
+                            <th>Image</th>
+                            <th>Ad No</th>
+                            <th>Link</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -55,7 +53,7 @@
             </div>
         </div>
     </div>
-    @include('backend.pages.regular_video.modal')
+    @include('backend.pages.custom_ads.modal')
     @push('footer')
         <script type="text/javascript">
             function getusers(name = null, email = null, phone = null) {
@@ -64,7 +62,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ url('admin/truck-type/get/list') }}",
+                        url: "{{ url('admin/custom-ads/get/list') }}",
                         type: 'GET',
                         data: {
                             'name': name,
@@ -90,24 +88,16 @@
                             "className": "text-center"
                         },
                         {
-                            data: 'id',
-                            name: 'id'
+                            data: 'image',
+                            name: 'image'
                         },
                         {
-                            data: 'name',
-                            name: 'name'
+                            data: 'ad_no',
+                            name: 'ad_no'
                         },
                         {
-                            data: 'rent_amount',
-                            name: 'rent_amount'
-                        },
-                        {
-                            data: 'driver_charge',
-                            name: 'driver_charge'
-                        },
-                        {
-                            data: 'register_truck',
-                            name: 'register_truck'
+                            data: 'link',
+                            name: 'link'
                         },
                         {
                             data: 'status',
@@ -183,7 +173,7 @@
                 e.preventDefault();
                 let id = $(this).attr('data-id');
                 $.ajax({
-                    url: "{{ route('admin.regular.video.free.edit') }}",
+                    url: "{{ route('admin.custom.ads.edit') }}",
                     type: "GET",
                     data: { id: id },
                     dataType: "html",
@@ -251,22 +241,22 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('admin.truck.type.delete') }}",
+                            url: "{{ route('admin.custom.ads.delete') }}",
                             type: "GET",
                             data: { id:id },
                             dataType: "json",
                             success: function(data) {
-                                if (data.success) {
+                                if (data.type == 'success') {
                                     $.toast({
                                         heading: 'Success',
-                                        text: data.success,
+                                        text: data.message,
                                         position: 'top-center',
                                         icon: 'success'
                                     })
                                 } else {
                                     $.toast({
                                         heading: 'Error',
-                                        text: data.error,
+                                        text: data.message,
                                         position: 'top-center',
                                         icon: 'error'
                                     })

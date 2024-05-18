@@ -31,11 +31,25 @@ Route::prefix('v1')->group(function () {
         Route::get('get-user-details', 'getUserDetails');
 
         Route::get('get-regular-free-video-list', 'getRegularFreeVideoList');
+        Route::get('get-regular-free-video-details', 'getRegularFreeVideoDetails');
+
         Route::get('get-amol-video-list', 'getAmolVideoList');
+        Route::get('get-amol-video-details', 'getAmolVideoDetails');
+
         Route::get('get-premium-amol-video-list', 'getPremiumAmolVideoList');
+        Route::get('get-premium-amol-video-details', 'getPremiumAmolVideoDetails');
+
         Route::get('get-premium-video-list', 'getPremiumVideoList');
+        Route::get('get-premium-video-details', 'getPremiumVideoDetails');
+
         Route::get('get-live-channel-list', 'getLiveChannelList');
+        Route::get('get-live-channel-details', 'getLiveChannelDetails');
+
         Route::get('get-tafsir-list', 'getTafsirList');
+        Route::get('get-tafsir-details', 'getTafsirDetails');
+
+        Route::get('get-custom-ad-list', 'getCustomAdList');
+        Route::get('get-custom-ad-details', 'getCustomAdDetails');
 
         Route::post('payment', 'storePayment');
         Route::get('get-setting-list', 'getSettingList');

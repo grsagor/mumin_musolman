@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\CustomAd;
 use App\Models\TruckType;
 use App\Models\TruckTypeDetail;
 use Helper;
@@ -19,31 +20,16 @@ class CustomadsController extends Controller
     public function getList(Request $request)
     {
 
-        $data = TruckTypeDetail::with('truck_type')->get();
+        $data = CustomAd::all();
 
         return DataTables::of($data)
 
             ->editColumn('image', function ($row) {
-                return ($row->image) ? '<img class="profile-img" src="' . asset($row->image) . '" alt="profile image">' : '<img class="profile-img" src="' . asset('assets/img/no-img.jpg') . '" alt="profile image">';
-            })
-
-            ->addColumn('name', function ($row) {
-                if ($row->load_type) {
-                    return $row->truck_type->name . '(' . $row->load_type . ')';
-                } else {
-                    return $row->truck_type->name;
-                }
-            })
-            ->addColumn('driver_charge', function ($row) {
-                return $row->truck_type->driver_charge;
-            })
-
-            ->addColumn('register_truck', function ($row) {
-                return '0';
+                return ($row->image) ? '<img class="object-fit-cover" width="120" height="80" src="' . asset($row->image) . '" alt="profile image">' : '<img class="profile-img" src="' . asset('assets/img/no-img.jpg') . '" alt="profile image">';
             })
 
             ->editColumn('status', function ($row) {
-                if ($row->truck_type->status == 1) {
+                if ($row->status == 1) {
                     return '<span class="badge bg-success-200 text-success-700 rounded-pill w-80">Active</span>';
                 } else {
                     return '<span class="badge bg-gray-200 text-gray-600 rounded-pill w-80">Inactive</span>';
@@ -60,121 +46,98 @@ class CustomadsController extends Controller
                 }
                 return $btn;
             })
-            ->rawColumns(['profile_image', 'name', 'driver_charge', 'register_truck', 'status', 'action'])->make(true);
+            ->rawColumns(['image', 'status', 'action'])->make(true);
     }
 
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
+            'ad_no' => 'required',
+            'link' => 'required',
             'image' => 'required|image|mimes:jpg,png|max:20480'
         ]);
 
-        $truck_type = new TruckType();
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
+        $custom_ad = new CustomAd();
+        $custom_ad->ad_no = $request->ad_no;
+        $custom_ad->link = $request->link;
+        $custom_ad->status  = ($request->status) ? 1 : 0;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
+            $image->move(public_path('uploads/customad-images'), $filename);
+            $custom_ad->image = 'uploads/customad-images/' . $filename;
         }
-        $truck_type->save();
-
-        foreach ($request->rent_amount as $index => $value) {
-            $details = new TruckTypeDetail();
-
-            $details->truck_type_id = $truck_type->id;
-            if ($request->rent_type == 'load') {
-                $details->load_type = $request->load_type[$index];
-            }
-            $details->rent_amount = $value;
-
-            $details->save();
-        }
+        $custom_ad->save();
 
         return response()->json([
             'type' => 'success',
-            'message' => 'Trucktype created successfully.',
+            'message' => 'Custom ad created successfully.',
         ]);
     }
 
     public function edit(Request $request)
     {
         $id = $request->id;
-        $truck_details = TruckTypeDetail::with('truck_type')->find($id);
-        return view('backend.pages.custom_ads.edit', compact('truck_details'));
+        $ad = CustomAd::find($id);
+        return view('backend.pages.custom_ads.edit', compact('ad'));
     }
 
     public function update(Request $request)
     {
         $validator = $request->validate([
-            'name' => 'required',
-            'rent_type' => 'required',
-            'rent_amount' => 'required',
-            'driver_charge' => 'required',
+            'ad_no' => 'required',
+            'link' => 'required',
             'image' => 'image|mimes:jpg,png|max:20480'
         ]);
 
-        $truck_type = TruckType::find($request->truck_type_id);
-        $truck_type->name = $request->name;
-        $truck_type->rent_type = $request->rent_type;
-        $truck_type->driver_charge = $request->driver_charge;
-        $truck_type->status  = ($request->status) ? 1 : 0;
-        if ($request->hasFile('image')) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
+        try {    
+            $custom_ad = CustomAd::find($request->id);
+            $custom_ad->ad_no = $request->ad_no;
+            $custom_ad->link = $request->link;
+            $custom_ad->status  = ($request->status) ? 1 : 0;
+            if ($request->hasFile('image')) {
+                if ($custom_ad->image != Null && file_exists(public_path($custom_ad->image))) {
+                    unlink(public_path($custom_ad->image));
+                }
+                $image = $request->file('image');
+                $filename = time() . uniqid() . $image->getClientOriginalName();
+                $image->move(public_path('uploads/customad-images'), $filename);
+                $custom_ad->image = 'uploads/customad-images/' . $filename;
             }
-            $image = $request->file('image');
-            $filename = time() . uniqid() . $image->getClientOriginalName();
-            $image->move(public_path('uploads/truck-images'), $filename);
-            $truck_type->image = 'uploads/truck-images/' . $filename;
-        }
-        $truck_type->save();
-
-        $details = TruckTypeDetail::find($request->id);
-        if ($request->rent_type == 'load') {
-            $details->load_type = $request->load_type;
-        }
-        $details->rent_amount = $request->rent_amount;
-        $details->save();
-
-        if ($truck_type->save()) {
+            $custom_ad->save();
+    
             return response()->json([
                 'type' => 'success',
-                'message' => 'User updated successfully.',
+                'message' => 'Custom ad created successfully.',
             ]);
-        } else {
+        } catch (\Exception $e) {
             return response()->json([
-                'type' => 'success',
-                'message' => 'Something went wrong.',
+                'type' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }
 
     public function delete(Request $request)
     {
-        $details = TruckTypeDetail::find($request->id);
-        $truck_type = TruckType::with('truck_type_details')->find($details->truck_type_id);
-        $count = count($truck_type->truck_type_details) - 1;
+        $custom_ad = CustomAd::find($request->id);
 
-        $details->delete();
 
-        if (!$count) {
-            if ($truck_type->image != Null && file_exists(public_path($truck_type->image))) {
-                unlink(public_path($truck_type->image));
+        if ($custom_ad) {
+            if ($custom_ad->image != Null && file_exists(public_path($custom_ad->image))) {
+                unlink(public_path($custom_ad->image));
             }
-            $truck_type->delete();
-        }
+            $custom_ad->delete();
 
-        return response()->json([
-            'type' => 'success',
-            'message' => 'Truck deleted successfully.',
-        ]);
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Custom ad deleted successfully.',
+            ]);
+        } else {
+            return response()->json([
+                'type' => 'error',
+                'message' => 'Custom ad does not found.',
+            ]);
+        }
     }
 }

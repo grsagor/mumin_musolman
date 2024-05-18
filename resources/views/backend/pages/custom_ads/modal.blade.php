@@ -2,7 +2,7 @@
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form id="createUserForm" action="{{ route('admin.truck.type.store') }}" method="post">
+            <form id="createUserForm" action="{{ route('admin.custom.ads.store') }}" method="post">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Choose Image</label>
                         <div class="col-sm-10">
                             <div class="profile_image_input--container position-relative">
                                 <label class="w-100 h-100 rounded-circle overflow-hidden bg-blue-100 cursor-pointer"
@@ -36,33 +36,23 @@
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
+                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Link</label>
                         <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" placeholder="Item" required>
+                            <input type="text" name="link" class="form-control" placeholder="Link" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
                         <div class="col-sm-10">
-                            <select name="rent_type" class="form-control" id="rent_type" onchange="rentTypeChangeHandler(this, 'createModal')" required>
+                            <select name="ad_no" class="form-control" id="ad_no" required>
                                 <option value="">Select Item</option>
-                                <option value="distance">Item</option>
-                                <option value="load">Item</option>
+                                <option value="Ads 1">Ads 1</option>
+                                <option value="Ads 2">Ads 2</option>
+                                <option value="Ads 3">Ads 3</option>
+                                <option value="Ads 4">Ads 4</option>
+                                <option value="Ads 5">Ads 5</option>
+                                <option value="Ads 6">Ads 6</option>
                             </select>
-                        </div>
-                    </div>
-                    <div class="rent_amount_container">
-                        <div class="form-group row">
-                            <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
-                            <div class="col-sm-10">
-                                <input type="number" name="rent_amount[]" class="form-control" placeholder="Item" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Item</label>
-                        <div class="col-sm-10">
-                            <input type="number" name="driver_charge" class="form-control" placeholder="Item" required>
                         </div>
                     </div>
                     <div class="form-group  row">

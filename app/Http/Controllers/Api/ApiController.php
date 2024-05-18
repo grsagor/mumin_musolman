@@ -8,6 +8,7 @@ use App\Mail\Otp;
 use App\Models\AmolVideo;
 use App\Models\Channel;
 use App\Models\ChannelSubscriber;
+use App\Models\CustomAd;
 use App\Models\DeviceToken;
 use App\Models\LiveChannel;
 use App\Models\Message;
@@ -279,6 +280,18 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function getRegularFreeVideoDetails(Request $request)
+    {
+        $data = RegularAmolVideo::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
     public function getAmolVideoList()
     {
         $data = AmolVideo::orderByDesc('created_at')->get();
@@ -288,6 +301,18 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function getAmolVideoDetails(Request $request)
+    {
+        $data = AmolVideo::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
     public function getPremiumAmolVideoList()
     {
         $data = PremiumAmolVideo::orderByDesc('created_at')->get();
@@ -297,6 +322,19 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function getPremiumAmolVideoDetails(Request $request)
+    {
+        $data = PremiumAmolVideo::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
+
     public function getPremiumVideoList()
     {
         $data = PremiumVideo::orderByDesc('created_at')->get();
@@ -306,6 +344,19 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function getPremiumVideoDetails(Request $request)
+    {
+        $data = PremiumVideo::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
+
     public function getLiveChannelList()
     {
         $data = LiveChannel::orderByDesc('created_at')->get();
@@ -315,6 +366,20 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function getLiveChannelDetails(Request $request)
+    {
+        $data = LiveChannel::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
+
+
     public function getTafsirList()
     {
         $data = Tafsir::orderByDesc('created_at')->get();
@@ -324,6 +389,40 @@ class ApiController extends Controller
         ];
         return response()->json($response, 200);
     }
+    public function getTafsirDetails(Request $request)
+    {
+        $data = Tafsir::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
+
+    public function getCustomAdList() {
+        $data = CustomAd::orderByDesc('created_at')->get();
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+    public function getCustomAdDetails(Request $request)
+    {
+        $data = CustomAd::find($request->id);
+        $response = [
+            "status" => 1,
+            "data" => $data
+        ];
+        return response()->json($response, 200);
+    }
+
+
+
+
     public function storePayment(Request $request)
     {
         try {

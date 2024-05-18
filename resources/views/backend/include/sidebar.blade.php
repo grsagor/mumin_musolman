@@ -170,10 +170,10 @@
                     href="{{ route('admin.transaction.history') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-book-quran"></i></div> Transaction History
                 </a>
-                {{-- <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
+                <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
                     href="{{ route('admin.custom.ads') }}" href="{{ route('admin.custom.ads') }}">
                     <div class="sb-nav-link-icon"><i class="fa-brands fa-adversal"></i></div> Custom Ads
-                </a> --}}
+                </a>
 
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#messageNav"

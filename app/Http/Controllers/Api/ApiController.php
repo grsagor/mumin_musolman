@@ -103,6 +103,101 @@ class ApiController extends Controller
             return response()->json($data, 500);
         }
     }
+    public function forgotPassword(Request $request) 
+    {
+        $rule = [
+            'email' => 'required|email',
+        ];
+
+        $validator = Validator::make($request->all(), $rule);
+        if ($validator->fails()) {
+            $data['status'] = 0;
+            $data['data'] = $validator->errors();
+            return response()->json($data, 422);
+        }
+
+        try { 
+            DB::beginTransaction();
+            $user = User::where('email', $request->email)->first();
+        
+            $otp = rand(1000, 9999);
+            $user->otp = $otp;
+            $user->otp_expired_at = Carbon::now()->addMinutes(2);
+
+            Helper::updateFileField($request, $user, 'profile_image', 'uploads/user-images/');
+    
+            $body = 'Your One time password is ' . $otp . '. Do not share your one time password to anyone.';
+            $subject = 'Registration OTP.';
+    
+            Mail::to($request->email)->send(new Otp($body, $subject));
+            $user->save();
+            DB::commit();
+
+            $data['status'] = 1;
+            $data['data'] = 'Otp sent';
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $data['status'] = 0;
+            $data['data'] = $e->getMessage();
+            return response()->json($data, 500);
+        }
+    }
+
+    public function changePassword(Request $request) 
+    {
+        $rule = [
+            'email' => 'required',
+            'password' => 'required',
+            'confirm_password' => 'required|same:password',
+        ];
+
+        $validator = Validator::make($request->all(), $rule);
+        if ($validator->fails()) {
+            $data['status'] = 0;
+            $data['data'] = $validator->errors();
+            return response()->json($data, 422);
+        }
+
+        try {
+            DB::beginTransaction();
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                $currentDateTime = Carbon::now();
+                $otp_expired_at = Carbon::parse($user->otp_expired_at);
+                if ($otp_expired_at->lt($currentDateTime)) {
+                    $data['status'] = 0;
+                    $data['data'] = 'OTP expired.';
+                    return response()->json($data, 200);
+                } else {
+                    if ($user->otp == $request->otp) {
+                        $user->password = Hash::make($request->password);
+                        $user->save();
+                    } else {
+                        $data['status'] = 0;
+                        $data['data'] = 'OTP does not matched.';
+                        return response()->json($data, 200);
+                    }
+                }
+            } else {
+                $data['status'] = 0;
+                $data['data'] = 'No user found.';
+                return response()->json($data, 200);
+            }
+
+            DB::commit();
+
+            $data['status'] = 1;
+            $data['data'] = 'Password changed';
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $data['status'] = 0;
+            $data['data'] = $e->getMessage();
+            return response()->json($data, 200);
+        }
+    }
+
     public function verifyOtp(Request $request)
     {
         try {
@@ -672,7 +767,6 @@ class ApiController extends Controller
             return response()->json($response, 500);
         }
     }
-
     public function sendPushNotification(Request $request) {
         try {
             $title = $request->title ?? 'Title';

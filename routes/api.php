@@ -30,6 +30,9 @@ Route::prefix('v1')->group(function () {
         Route::post('update-user', 'updateUser');
         Route::get('get-user-details', 'getUserDetails');
 
+        Route::post('forgot-password', 'forgotPassword');
+        Route::post('change-password', 'changePassword');
+
         Route::get('get-regular-free-video-list', 'getRegularFreeVideoList');
         Route::get('get-regular-free-video-details', 'getRegularFreeVideoDetails');
 

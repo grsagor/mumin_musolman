@@ -59,8 +59,9 @@ Route::prefix('v1')->group(function () {
         Route::post('send-message', 'sendMessage');
         Route::get('get-message', 'getMessage');
 
-
-
         Route::post('send-push-notification', 'sendPushNotification');
+
+        Route::get('get-channel-list', 'getChannelList');
+        Route::get('get-channel-message-list', 'getChannelMessageList');
     });
 });

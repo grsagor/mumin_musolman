@@ -11,9 +11,7 @@
 
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
-
             <div class="nav">
-
                 {{-- admin  --}}
                 @if (Helper::hasRight('dashboard.view'))
                     <a class="nav-link {{ Route::is('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}"
@@ -21,7 +19,61 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> Dashboard
                     </a>
                 @endif
-
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#messageNav"
+                    aria-expanded="@if (Route::is('admin.message') || Route::is('admin.message')) true @else false @endif"
+                    aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-video"></i></div> Messages
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse @if (Route::is('admin.message') || Route::is('admin.message.requests.index')) show @endif" id="messageNav"
+                    aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav down">
+                        <a class="nav-link {{ Route::is('admin.message') ? 'active' : '' }}"
+                            href="{{ route('admin.message') }}"><i class="fa-solid fa-angles-right ikon"></i>
+                            All Messages</a>
+                        <a class="nav-link {{ Route::is('admin.message.requests.index') ? 'active' : '' }}"
+                            href="{{ route('admin.message.requests.index') }}"><i
+                                class="fa-solid fa-angles-right ikon"></i>
+                            Message Requests</a>
+                    </nav>
+                </div>
+                {{-- Video started --}}
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#videoNav"
+                    aria-expanded="@if (Route::is('admin.regular.video.free') ||
+                            Route::is('admin.amol.video.free') ||
+                            Route::is('admin.video.premium') ||
+                            Route::is('admin.amol.video.premium')) true @else false @endif"
+                    aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-video"></i></div> Videos
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse @if (Route::is('admin.regular.video.free') ||
+                        Route::is('admin.amol.video.free') ||
+                        Route::is('admin.video.premium') ||
+                        Route::is('admin.amol.video.premium')) show @endif" id="videoNav"
+                    aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav down">
+                        <a class="nav-link {{ Route::is('admin.regular.video.free') ? 'active' : '' }}"
+                            href="{{ route('admin.regular.video.free') }}"><i
+                                class="fa-solid fa-angles-right ikon"></i>
+                            নিয়মিত ভিডিও FREE </a>
+                        <a class="nav-link {{ Route::is('admin.amol.video.free') ? 'active' : '' }}"
+                            href="{{ route('admin.amol.video.free') }}"><i class="fa-solid fa-angles-right ikon"></i>
+                            আমল ভিডিও FREE </a>
+                        <a class="nav-link {{ Route::is('admin.amol.video.premium') ? 'active' : '' }}"
+                            href="{{ route('admin.amol.video.premium') }}"><i
+                                class="fa-solid fa-angles-right ikon"></i>
+                            প্রিমিয়াম আমল ভিডিও </a>
+                        <a class="nav-link {{ Route::is('admin.video.premium') ? 'active' : '' }}"
+                            href="{{ route('admin.video.premium') }}"><i class="fa-solid fa-angles-right ikon"></i>
+                            প্রিমিয়াম ভিডিও </a>
+                    </nav>
+                </div>
+                {{-- Video ended --}}
+                <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
+                    href="{{ route('admin.custom.ads') }}" href="{{ route('admin.custom.ads') }}">
+                    <div class="sb-nav-link-icon"><i class="fa-brands fa-adversal"></i></div> Custom Ads
+                </a>
                 {{-- @if (Helper::hasRight('setting.view'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#setupNav"
                         aria-expanded="@if (Route::is('admin.role') || Route::is('admin.role.create') || Route::is('admin.role.edit') || Route::is('admin.role.right') || Route::is('admin.user.details') || Route::is('admin.driver') || Route::is('admin.driver.details') || Route::is('admin.dispatcher') || Route::is('admin.dispatcher.details') || Route::is('admin.user')) true @else false @endif"
@@ -51,7 +103,6 @@
                         </nav>
                     </div>
                 @endif --}}
-
                 @if (Helper::hasRight('setting.view'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#settingNav"
                         aria-expanded="@if (Route::is('admin.setting.general') ||
@@ -90,48 +141,14 @@
                         </nav>
                     </div>
                 @endif
-
-                {{-- Video started --}}
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#videoNav"
-                    aria-expanded="@if (Route::is('admin.regular.video.free') ||
-                            Route::is('admin.amol.video.free') ||
-                            Route::is('admin.video.premium') ||
-                            Route::is('admin.amol.video.premium')) true @else false @endif"
-                    aria-controls="collapseLayouts">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-video"></i></div> Videos
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse @if (Route::is('admin.regular.video.free') ||
-                        Route::is('admin.amol.video.free') ||
-                        Route::is('admin.video.premium') ||
-                        Route::is('admin.amol.video.premium')) show @endif" id="videoNav"
-                    aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav down">
-                        <a class="nav-link {{ Route::is('admin.regular.video.free') ? 'active' : '' }}"
-                            href="{{ route('admin.regular.video.free') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                            নিয়মিত ভিডিও FREE </a>
-                        <a class="nav-link {{ Route::is('admin.amol.video.free') ? 'active' : '' }}"
-                            href="{{ route('admin.amol.video.free') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                            আমল ভিডিও FREE </a>
-                        <a class="nav-link {{ Route::is('admin.amol.video.premium') ? 'active' : '' }}"
-                            href="{{ route('admin.amol.video.premium') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                            প্রিমিয়াম আমল ভিডিও </a>
-                        <a class="nav-link {{ Route::is('admin.video.premium') ? 'active' : '' }}"
-                            href="{{ route('admin.video.premium') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                            প্রিমিয়াম ভিডিও </a>
-                    </nav>
-                </div>
-                {{-- Video ended --}}
                 {{-- User started --}}
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#userNav"
-                    aria-expanded="@if (Route::is('admin.all.user') ||
-                            Route::is('admin.paid.user')) true @else false @endif"
+                    aria-expanded="@if (Route::is('admin.all.user') || Route::is('admin.paid.user')) true @else false @endif"
                     aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-user"></i></div> Users
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse @if (Route::is('admin.all.user') ||
-                        Route::is('admin.paid.user')) show @endif" id="userNav"
+                <div class="collapse @if (Route::is('admin.all.user') || Route::is('admin.paid.user')) show @endif" id="userNav"
                     aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav down">
                         <a class="nav-link {{ Route::is('admin.all.user') ? 'active' : '' }}"
@@ -143,58 +160,18 @@
                     </nav>
                 </div>
                 {{-- User ended --}}
-
-                {{-- @if (Helper::hasRight('truck_type.view'))
-                    <a class="nav-link {{ Route::is('admin.truck.type') ? 'active' : '' }}"
-                        href="{{ route('admin.truck.type') }}" href="{{ route('admin.truck.type') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div> Truck Type Management
-                    </a>
-                @endif --}}
                 <a class="nav-link {{ Route::is('admin.live.channel') ? 'active' : '' }}"
                     href="{{ route('admin.live.channel') }}" href="{{ route('admin.live.channel') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-tv"></i></div> Live Channel
                 </a>
-                {{-- <a class="nav-link {{ Route::is('admin.total.message') ? 'active' : '' }}"
-                    href="{{ route('admin.total.message') }}" href="{{ route('admin.total.message') }}">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-message"></i></div> Massage Total Massage
-                </a> --}}
-                {{-- <a class="nav-link {{ Route::is('admin.payment.request') ? 'active' : '' }}"
-                    href="{{ route('admin.payment.request') }}" href="{{ route('admin.payment.request') }}">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></div> Payment Requst
-                </a> --}}
-                <a class="nav-link {{ Route::is('admin.tafsir') ? 'active' : '' }}" href="{{ route('admin.tafsir') }}"
-                    href="{{ route('admin.tafsir') }}">
+                <a class="nav-link {{ Route::is('admin.tafsir') ? 'active' : '' }}"
+                    href="{{ route('admin.tafsir') }}" href="{{ route('admin.tafsir') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-book-quran"></i></div> তাসফীর
                 </a>
-                <a class="nav-link {{ Route::is('admin.transaction.history') ? 'active' : '' }}" href="{{ route('admin.transaction.history') }}"
-                    href="{{ route('admin.transaction.history') }}">
+                <a class="nav-link {{ Route::is('admin.transaction.history') ? 'active' : '' }}"
+                    href="{{ route('admin.transaction.history') }}" href="{{ route('admin.transaction.history') }}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-book-quran"></i></div> Transaction History
                 </a>
-                <a class="nav-link {{ Route::is('admin.custom.ads') ? 'active' : '' }}"
-                    href="{{ route('admin.custom.ads') }}" href="{{ route('admin.custom.ads') }}">
-                    <div class="sb-nav-link-icon"><i class="fa-brands fa-adversal"></i></div> Custom Ads
-                </a>
-
-
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#messageNav"
-                aria-expanded="@if (Route::is('admin.message') ||
-                        Route::is('admin.message')) true @else false @endif"
-                aria-controls="collapseLayouts">
-                <div class="sb-nav-link-icon"><i class="fa-solid fa-video"></i></div> Messages
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse @if (Route::is('admin.message') ||
-                    Route::is('admin.message.requests.index')) show @endif" id="messageNav"
-                aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav down">
-                    <a class="nav-link {{ Route::is('admin.message') ? 'active' : '' }}"
-                        href="{{ route('admin.message') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                        All Messages</a>
-                    <a class="nav-link {{ Route::is('admin.message.requests.index') ? 'active' : '' }}"
-                        href="{{ route('admin.message.requests.index') }}"><i class="fa-solid fa-angles-right ikon"></i>
-                        Message Requests</a>
-                </nav>
-            </div>
             </div>
         </div>
     </nav>

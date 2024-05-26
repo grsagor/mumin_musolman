@@ -478,6 +478,11 @@ body {
     padding-left: 265px;
     top: 56px;
 }
+@media (max-width: 991px) {
+    .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+        padding-left: 225px;
+    }
+}
 
 #layoutError {
     display: flex;

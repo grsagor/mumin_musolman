@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\TransactionHistory;
 use Illuminate\Http\Request;
 use Auth;
 use Helper;
@@ -12,30 +13,21 @@ use App\Models\User;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-
-            $this->user = Auth::user();
-            if ($this->user->role == 3 || $this->user->role == 4) {
-                Auth::logout();
-                return redirect()->route('login');
-            }else{
-                if (!$this->user || Helper::hasRight('dashboard.view') !=  true) {
-                    Auth::logout();
-                    $request->session()->invalidate();
-                    session()->flash('error', 'You can not access! Login first.');
-                    return redirect()->route('admin');
-                }
-            }
-            return $next($request);
-        });
-    }
-
     public function index(){
-        if (empty(Session::get('admin_language'))) {
-            Session::put('admin_language', 'en');
-        }
-        return view('backend.pages.dashboard');
+        $total_transaction = TransactionHistory::sum('amount');
+        $total_users = User::where('role', '!=', '1')->count();
+        $premium_users = User::where('role', '!=', '1')->get()->filter(function ($user) {
+            return $user->premium == 1;
+        })->count();
+        $chat_users = User::where('role', '!=', '1')->get()->filter(function ($user) {
+            return $user->chat == 1;
+        })->count();
+        $data = [
+            'total_transaction' => $total_transaction,
+            'total_users' => $total_users,
+            'premium_users' => $premium_users,
+            'chat_users' => $chat_users,
+        ];
+        return view('backend.pages.dashboard', $data);
     }
 }

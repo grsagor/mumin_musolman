@@ -17,7 +17,30 @@
 @endsection
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2 mb-3">Alsl User Management</h4>
+        <h4 class="mt-2 mb-3">All User Management</h4>
+
+        <div class="card my-2">
+            <div class="card-body pb-0 mb-3">
+                <form method="" id="filter_form">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <select name="user_type" class="form-control" id="user_type" required>
+                                <option value="">Select User Type</option>
+                                <option value="chat">Chat Premium</option>
+                                <option value="premium">Premium</option>
+                                <option value="normal">Normal</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group text-end m-0">
+                                <button type="submit" id="filterBtn" name="submit" class="btn btn-primary w-100"><i
+                                        class="feather icon-file mr-2"></i> Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="card my-2">
             <div class="card-header">
@@ -58,7 +81,7 @@
     @include('backend.pages.all_user.modal')
     @push('footer')
         <script type="text/javascript">
-            function getusers(name = null, email = null, phone = null) {
+            function getusers(user_type = null) {
                 var table = jQuery('#dataTable').DataTable({
                     responsive: true,
                     processing: true,
@@ -67,9 +90,7 @@
                         url: "{{ url('admin/all-user/get/list') }}",
                         type: 'GET',
                         data: {
-                            'name': name,
-                            'email': email,
-                            'phone': phone
+                            'user_type': user_type
                         },
                     },
                     aLengthMenu: [
@@ -128,12 +149,9 @@
 
             $(document).on('click', '#filterBtn', function(e) {
                 e.preventDefault();
-                let name = $('#filter_form #name').val();
-                let email = $('#filter_form #email').val();
-                let phone = $('#filter_form #phone').val();
-
+                let user_type = $('#user_type').val();
                 $('#dataTable').DataTable().destroy();
-                getusers(name, email, phone);
+                getusers(user_type);
             })
 
             $(document).on('click', '#createUserBtn', function(e) {

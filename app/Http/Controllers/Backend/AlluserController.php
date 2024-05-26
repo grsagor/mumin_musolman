@@ -22,23 +22,24 @@ class AlluserController extends Controller
     public function getList(Request $request){
 
         $data = User::query();
-        if ($request->name) {
-            $data->where(function($query) use ($request){
-                $query->where('name','like', "%" .$request->name ."%" );
-            });
+        if ($request->user_type) {
+            if ($request->user_type == 'chat') {
+                $data = $data->get()->filter(function ($user) {
+                    return $user->chat == 1;
+                });
+            } elseif($request->user_type == 'premium') {
+                $data = $data->get()->filter(function ($user) {
+                    return $user->premium == 1;
+                });
+            } else {
+                $data = $data->get()->filter(function ($user) {
+                    return $user->premium == 0 && $user->chat == 0;
+                });
+            }
+        } else {
+            $data = $data->get();
         }
-
-        if ($request->email) {
-            $data->where(function($query) use ($request){
-                $query->where('email','like', "%" .$request->email ."%" );
-            });
-        }
-
-        if ($request->phone) {
-            $data->where(function($query) use ($request){
-                $query->where('phone','like', "%" .$request->phone ."%" );
-            });
-        }
+        
 
 
         return Datatables::of($data)

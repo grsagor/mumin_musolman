@@ -51,7 +51,7 @@
                                 <option value="Ads 3">Ads 3</option>
                                 <option value="Ads 4">Ads 4</option>
                                 <option value="Ads 5">Ads 5</option>
-                                <option value="Ads 6">Ads 6</option>
+                                <option value="Banner">Banner</option>
                             </select>
                         </div>
                     </div>

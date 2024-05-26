@@ -48,7 +48,7 @@
                     <option {{ $ad->ad_no == "Ads 3" ? 'selected' : '' }} value="Ads 3">Ads 3</option>
                     <option {{ $ad->ad_no == "Ads 4" ? 'selected' : '' }} value="Ads 4">Ads 4</option>
                     <option {{ $ad->ad_no == "Ads 5" ? 'selected' : '' }} value="Ads 5">Ads 5</option>
-                    <option {{ $ad->ad_no == "Ads 6" ? 'selected' : '' }} value="Ads 6">Ads 6</option>
+                    <option {{ $ad->ad_no == "Banner" ? 'selected' : '' }} value="Banner">Banner</option>
                 </select>
             </div>
         </div>

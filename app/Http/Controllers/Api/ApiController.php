@@ -406,10 +406,14 @@ class ApiController extends Controller
 
 
     public function getCustomAdList() {
-        $data = CustomAd::orderByDesc('created_at')->get();
+        $slider = CustomAd::where('ad_no', '!=', 'Banner')->get();
+        $popup = CustomAd::where('ad_no', 'Banner')->first();
         $response = [
             "status" => 1,
-            "data" => $data
+            "data" => [
+                'slider' => $slider,
+                'popup' => $popup
+            ]
         ];
         return response()->json($response, 200);
     }
@@ -680,6 +684,54 @@ class ApiController extends Controller
             $response = [
                 'status' => 1,
                 'data' => 'Please wait.'
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 0,
+                'data' => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+
+    public function getChannelList() {
+        try {
+            $channels = Channel::where('is_approved',1)->get();
+            foreach ($channels as $channel) {
+                $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
+                if ($lastMessage) {
+                    $channel->last_message = $lastMessage;
+                }
+            }
+    
+            $channels = collect($channels)->sortByDesc(function ($channel) {
+                return optional($channel->last_message)->created_at ?? null;
+            })->values()->all();
+
+            $response = [
+                'status' => 1,
+                'data' => $channels
+            ];
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 0,
+                'data' => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+    public function getChannelMessageList(Request $request) {
+        try {
+            $messages = Message::with('user')->where('channel_id',$request->channel_id)->get();
+            foreach ($messages as $message) {
+                $message->files = json_decode($message->files);
+            }
+
+            $response = [
+                'status' => 1,
+                'data' => $messages
             ];
             return response()->json($response, 200);
         } catch (\Exception $e) {

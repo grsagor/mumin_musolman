@@ -2,10 +2,10 @@
 @section('title', 'Message')
 @section('content')
     <div class="row border-start me-0 g-0">
-        <div class="col-7 p-0 full-height">
+        <div class="{{ $channel_id ? '' : 'd-none d-lg-block' }} col-12 col-lg-7 p-0 full-height">
             @yield('message-content')
         </div>
-        <div class="col-5 border-start p-3 pt-0 full-height overflow-y-scroll customized__scrollbar">
+        <div class="{{ $channel_id ? 'd-none d-lg-block' : '' }} col-12 col-lg-5 border-start p-3 pt-0 full-height overflow-y-scroll customized__scrollbar">
             @include('backend.pages.message.message-right-side')
         </div>
     </div>
@@ -52,6 +52,12 @@
         .full-height {
             height: calc(100vh - 80px) !important;
         }
+
+        /* @media (max-width: 991px) {
+            .no_channel_id {
+                display: none;
+            }
+        } */
     </style>
 @endsection
 @section('js')
@@ -149,7 +155,14 @@
                 $('#files').val('');
                 $('#preview_images').empty();
                 $('#messages_container').append(
-                    `<div class="d-flex gap-1 h-fit-content flex-row-reverse mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="/${user.profile_image}" alt=""></div><div class="message-text-container  d-flex flex-column align-items-end">${ message ? `<div class="text-gray-900 bg-secondary rounded p-3">${message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${socketFiles.map(file => {if (file.type === 'image') {return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`;} else if(file.type === 'video') { return ` <video controls src = "${file.path}" width = "100" height = "100" autoplay > < /video>`; } else { return ''; } }).join('') } </div > < p class="ms-2 text-gray-500 text-12">${formattedTime}</p></div > </div>`);
+                    `<div class="d-flex gap-1 h-fit-content flex-row-reverse mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="/${user.profile_image}" alt=""></div><div class="message-text-container  d-flex flex-column align-items-end">${ message ? `<div class="text-gray-900 bg-secondary rounded p-3">${message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${socketFiles.map(file => {if (file.type === 'image') {return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`;} else if(file.type === 'video') { return ` <
+                    video controls src = "${file.path}"
+                    width = "100"
+                    height = "100"
+                    autoplay > < /video>`; } else { return ''; } }).join('') } </div > < p class =
+                "ms-2 text-gray-500 text-12" > $ {
+                    formattedTime
+                } < /p></div > < /div>`);
 
                     $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight); $.ajax({
                         headers: {
@@ -190,7 +203,14 @@
                                 });
                                 if (channel_id == body.channel_id && my_user_id != body.user_id) {
                                     $('#messages_container').append(
-                                        `<div class="d-flex gap-1 h-fit-content mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ asset('') }}${body.user.profile_image}" alt=""></div><div class="message-text-container">${ body.message ? `<div class="text-gray-900 bg-white rounded p-3">${body.message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${body.files ? body.files.map(file => { if (file.type === 'image') { return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`; } else if(file.type === 'video') { return ` <video controls src = "${file.path}" width = "100" height = "100" autoplay > < /video>`; } else { return ''; } }).join(''): '' } </div > <p class = "ms-2 text-gray-500 text-12">${formattedTime}</p></div></div>`);
+                                        `<div class="d-flex gap-1 h-fit-content mb-3"><div class="message-profile-pic-container aspect-ratio-1x1 overflow-hidden"><img class="rounded-circle object-fit-cover" height="36px" width="36px" src="{{ asset('') }}${body.user.profile_image}" alt=""></div><div class="message-text-container">${ body.message ? `<div class="text-gray-900 bg-white rounded p-3">${body.message}</div>` : '' }<div class="mt-2 d-flex gap-1" id="imageContainer">${body.files ? body.files.map(file => { if (file.type === 'image') { return `<img width="100" height="100" class="object-fit-cover" src="${file.path}" alt="">`; } else if(file.type === 'video') { return ` <
+                                        video controls src = "${file.path}"
+                                        width = "100"
+                                        height = "100"
+                                        autoplay > < /video>`; } else { return ''; } }).join(''): '' } </div > <
+                                    p class = "ms-2 text-gray-500 text-12" > $ {
+                                        formattedTime
+                                    } < /p></div > < /div>`);
 
                                         $('a[data-channel-id="' + body.channel_id + '"]').find('.last-message')
                                         .text(body.message); $('.messages-container').scrollTop($(

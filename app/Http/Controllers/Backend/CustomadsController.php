@@ -52,7 +52,7 @@ class CustomadsController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'ad_no' => 'required',
+            'ad_no' => 'required|unique:custom_ads',
             'link' => 'required',
             'image' => 'required|image|mimes:jpg,png|max:20480'
         ]);
@@ -85,7 +85,7 @@ class CustomadsController extends Controller
     public function update(Request $request)
     {
         $validator = $request->validate([
-            'ad_no' => 'required',
+            'ad_no' => 'required|unique:custom_ads',
             'link' => 'required',
             'image' => 'image|mimes:jpg,png|max:20480'
         ]);

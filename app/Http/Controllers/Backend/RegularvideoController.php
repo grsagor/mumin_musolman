@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendNotificationJob;
+use App\Models\DeviceToken;
 use App\Models\RegularAmolVideo;
 use App\Models\User;
 use Helper;
@@ -26,7 +27,7 @@ class RegularvideoController extends Controller
         return DataTables::of($data)
 
             ->editColumn('video', function ($row) {
-                return '<iframe width="150" height="100" src=" '.$row->embed_link.' " title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+                return '<iframe width="150" height="100" src="https://www.youtube.com/embed/' .$row->embed_link.'" title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
             })
 
             ->editColumn('status', function ($row) {
@@ -73,9 +74,9 @@ class RegularvideoController extends Controller
             $video->status  = ($request->status) ? 1 : 0;
             $video->save();
 
-            $users = User::all();
+            $users = DeviceToken::all();
             foreach ($users as $user) {
-                SendNotificationJob::dispatch($user->device_token, 'Title', 'Body', 'Image');
+                SendNotificationJob::dispatch($user->device_token, $request->title, $request->short_description, 'Image');
             }
     
             return response()->json([

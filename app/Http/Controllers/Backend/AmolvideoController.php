@@ -26,8 +26,10 @@ class AmolvideoController extends Controller
 
         return DataTables::of($data)
 
+        // <iframe width="695" height="391" src="https://www.youtube.com/embed/Pe7wgxxHjT8" title="Haranor Gaan | Ershad Zaman | Official Music Video | EZ | ☢ EXCLUSIVE ☢ 2024" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
             ->editColumn('video', function ($row) {
-                return '<iframe width="150" height="100" src=" '.$row->embed_link.' " title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+                return '<iframe width="150" height="100" src="https://www.youtube.com/embed/' .$row->embed_link.'" title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
             })
 
             ->editColumn('status', function ($row) {
@@ -76,7 +78,7 @@ class AmolvideoController extends Controller
 
             $users = DeviceToken::all();
             foreach ($users as $user) {
-                SendNotificationJob::dispatch($user->device_token, 'Title', 'Body', 'Image');
+                SendNotificationJob::dispatch($user->device_token, $request->title, $request->short_description, 'Image');
             }
     
             return response()->json([

@@ -7,6 +7,7 @@ use App\Jobs\SendNotificationJob;
 use App\Models\AmolVideo;
 use App\Models\Channel;
 use App\Models\DeviceToken;
+use Carbon\Carbon;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -59,6 +60,21 @@ class MessagerequestController extends Controller
     {
         $id = $request->id;
         $channel = Channel::find($id);
+        $user = $channel->subscribers[0]->user;
+
+        if (!$user->premium_expiry_date) {
+            $user->premium_expiry_date = Carbon::now()->addMonths(Helper::getSettings('premium_validity'));
+        } else {
+            $currentDateTime = Carbon::now();
+            $premium_expiry_date = Carbon::parse($user->premium_expiry_date);
+            if ($premium_expiry_date->lt($currentDateTime)) {
+                $premium_expiry_date = $currentDateTime->copy()->addMonths(Helper::getSettings('premium_validity'));
+            } else {
+                $premium_expiry_date->addMonths(Helper::getSettings('premium_validity'));
+            }
+            $user->premium_expiry_date = $premium_expiry_date;
+        }
+        $user->save();
 
         if ($channel) {
             $channel->is_approved = 1;

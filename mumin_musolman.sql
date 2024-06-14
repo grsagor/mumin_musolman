@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2024 at 03:33 PM
+-- Generation Time: Jun 14, 2024 at 05:06 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -37,6 +37,13 @@ CREATE TABLE `amol_videos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `amol_videos`
+--
+
+INSERT INTO `amol_videos` (`id`, `title`, `short_description`, `embed_link`, `status`, `created_at`, `updated_at`) VALUES
+(7, 'Cillum saepe minima', 'Dolore quaerat quisq', '1ScWL04EPrQ', 0, '2024-06-14 02:15:29', '2024-06-14 02:18:24');
+
 -- --------------------------------------------------------
 
 --
@@ -46,6 +53,7 @@ CREATE TABLE `amol_videos` (
 CREATE TABLE `channels` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `is_approved` int(11) DEFAULT NULL,
   `created_by` varchar(255) DEFAULT NULL,
   `updated_by` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -56,9 +64,9 @@ CREATE TABLE `channels` (
 -- Dumping data for table `channels`
 --
 
-INSERT INTO `channels` (`id`, `name`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Single', NULL, NULL, NULL, NULL),
-(2, 'Group', NULL, NULL, NULL, NULL);
+INSERT INTO `channels` (`id`, `name`, `is_approved`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'user1', 1, '6193', NULL, '2024-05-15 09:05:55', '2024-05-15 09:41:40'),
+(3, 'user2', 0, '9527', NULL, '2024-05-15 09:39:26', '2024-05-28 18:48:52');
 
 -- --------------------------------------------------------
 
@@ -79,11 +87,8 @@ CREATE TABLE `channel_subscribers` (
 --
 
 INSERT INTO `channel_subscribers` (`id`, `user_id`, `channel_id`, `created_at`, `updated_at`) VALUES
-(1, '1', '1', NULL, NULL),
-(2, '7865', '1', NULL, NULL),
-(3, '7865', '2', NULL, NULL),
-(4, '4', '2', NULL, NULL),
-(5, '1', '2', NULL, NULL);
+(1, '6193', '1', '2024-05-15 09:05:55', '2024-05-15 09:05:55'),
+(3, '9527', '3', '2024-05-15 09:39:26', '2024-05-15 09:39:26');
 
 -- --------------------------------------------------------
 
@@ -96,9 +101,42 @@ CREATE TABLE `custom_ads` (
   `ad_no` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `link` varchar(255) NOT NULL,
+  `status` int(1) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `custom_ads`
+--
+
+INSERT INTO `custom_ads` (`id`, `ad_no`, `image`, `link`, `status`, `created_at`, `updated_at`) VALUES
+(7, 'Ads 1', 'uploads/customad-images/171672860866533320b480fabmgsc.png', 'asdf', 1, '2024-05-26 13:03:28', '2024-05-26 13:03:28'),
+(8, 'Banner', 'uploads/customad-images/1716728870665334267659apos.png', 'asdf', 1, '2024-05-26 13:07:50', '2024-05-26 13:07:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_tokens`
+--
+
+CREATE TABLE `device_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(256) DEFAULT NULL,
+  `device_token` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `device_tokens`
+--
+
+INSERT INTO `device_tokens` (`id`, `user_id`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
+(3, NULL, 'cAWlQfVATmO-or221Nh8rK:APA91bHk-kFxoQvhtLHziIVbtYynCrM1gibyRuDfqS7R-n6Iaji_OMiLmhJwDBLBHje4Lz7dIPqMxyWJdQmbVMHsK1vKsqk6ukv7wU9MkKrThAk36r7Pockd6uuvMya6XBEsNNqgKKRp', NULL, '2024-05-09 18:47:53', '2024-05-09 18:47:53'),
+(4, NULL, 'bc', NULL, '2024-05-09 18:47:59', '2024-05-09 18:47:59'),
+(5, '1111', 'bc', NULL, '2024-05-09 18:48:11', '2024-05-09 18:48:11');
 
 -- --------------------------------------------------------
 
@@ -115,6 +153,13 @@ CREATE TABLE `live_channels` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `live_channels`
+--
+
+INSERT INTO `live_channels` (`id`, `title`, `short_description`, `embed_link`, `status`, `created_at`, `updated_at`) VALUES
+(3, 'Ipsam dicta est est', 'Quis aut quia volupt', 'Sed et non Nam volup', 1, '2024-05-18 13:16:42', '2024-05-18 13:16:42');
 
 -- --------------------------------------------------------
 
@@ -137,68 +182,12 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`id`, `channel_id`, `message`, `files`, `user_id`, `created_at`, `updated_at`) VALUES
-(106, '1', 'hi', NULL, '1', '2023-12-28 23:27:38', '2023-12-28 23:27:38'),
-(107, '1', 'hi', NULL, '1', '2023-12-28 23:28:15', '2023-12-28 23:28:15'),
-(108, '1', 'abc', NULL, '1', '2023-12-28 23:29:48', '2023-12-28 23:29:48'),
-(109, '1', 'abc\nasdfasdf', NULL, '1', '2023-12-28 23:29:53', '2023-12-28 23:29:53'),
-(110, '1', 'asfdas', NULL, '1', '2023-12-28 23:30:13', '2023-12-28 23:30:13'),
-(111, '1', 'asdfasfd', NULL, '1', '2023-12-28 23:30:26', '2023-12-28 23:30:26'),
-(112, '1', 'helllo', NULL, '1', '2023-12-28 23:31:25', '2023-12-28 23:31:25'),
-(113, '1', 'hiiiiiii', NULL, '1', '2023-12-28 23:32:41', '2023-12-28 23:32:41'),
-(114, '1', 'hello', NULL, '1', '2023-12-28 23:33:33', '2023-12-28 23:33:33'),
-(115, '1', 'hello', NULL, '1', '2023-12-28 23:34:14', '2023-12-28 23:34:14'),
-(116, '1', 'hiiiiiiiiiiiiiiiiiiiiiiii', NULL, '1', '2023-12-28 23:34:47', '2023-12-28 23:34:47'),
-(117, '1', 'kigo', NULL, '2', '2023-12-28 23:44:28', '2023-12-28 23:44:28'),
-(118, '1', 'baiya', NULL, '1', '2023-12-28 23:44:43', '2023-12-28 23:44:43'),
-(119, '1', 'hillo', NULL, '1', '2023-12-28 23:45:34', '2023-12-28 23:45:34'),
-(120, '1', 'bhaiyaaaaaaaaaaaaaa', NULL, '2', '2023-12-28 23:45:40', '2023-12-28 23:45:40'),
-(121, '1', 'pilo pilo', NULL, '1', '2023-12-28 23:45:55', '2023-12-28 23:45:55'),
-(122, '1', 'pakka pakka', NULL, '2', '2023-12-28 23:46:10', '2023-12-28 23:46:10'),
-(123, '1', 'pide pide', NULL, '1', '2023-12-28 23:47:11', '2023-12-28 23:47:11'),
-(124, '1', 'pidamu', NULL, '2', '2023-12-28 23:48:40', '2023-12-28 23:48:40'),
-(125, '1', 'ustaaaaaaaaaaaad', NULL, '1', '2023-12-28 23:48:51', '2023-12-28 23:48:51'),
-(126, '1', 'reza bhai', NULL, '1', '2023-12-28 23:59:09', '2023-12-28 23:59:09'),
-(127, '1', 'bhalo?', NULL, '1', '2023-12-28 23:59:12', '2023-12-28 23:59:12'),
-(128, '1', 'hae hae bhalo', NULL, '2', '2023-12-28 23:59:17', '2023-12-28 23:59:17'),
-(129, '1', 'ki obostha?', NULL, '2', '2023-12-28 23:59:20', '2023-12-28 23:59:20'),
-(130, '1', 'hi', NULL, '1', '2023-12-29 00:22:25', '2023-12-29 00:22:25'),
-(131, '1', 'ajsdf;lakjsfdlasd', NULL, '2', '2023-12-29 00:23:10', '2023-12-29 00:23:10'),
-(132, '1', 'hiiiiiiiiiiiiii', NULL, '1', '2023-12-29 00:24:13', '2023-12-29 00:24:13'),
-(133, '1', 'bossssssssssss', NULL, '1', '2023-12-29 00:26:17', '2023-12-29 00:26:17'),
-(134, '1', 'hiyo', NULL, '1', '2023-12-29 00:27:00', '2023-12-29 00:27:00'),
-(135, '1', 'omago turu lav', NULL, '1', '2023-12-29 00:56:58', '2023-12-29 00:56:58'),
-(136, '2', 'nice', NULL, '1', '2023-12-29 00:59:13', '2023-12-29 00:59:13'),
-(137, '1', 'hello', NULL, '1', '2023-12-29 01:16:34', '2023-12-29 01:16:34'),
-(138, '1', 'hi', NULL, '1', '2023-12-29 01:16:55', '2023-12-29 01:16:55'),
-(139, '2', 'hello', NULL, '1', '2023-12-29 01:17:22', '2023-12-29 01:17:22'),
-(140, '2', 'hello', NULL, '1', '2023-12-29 01:17:31', '2023-12-29 01:17:31'),
-(141, '1', 'hello', NULL, '1', '2023-12-29 01:18:16', '2023-12-29 01:18:16'),
-(142, '2', 'bye', NULL, '1', '2023-12-29 01:19:00', '2023-12-29 01:19:00'),
-(143, '1', 'ki koro', NULL, '1', '2023-12-29 01:19:50', '2023-12-29 01:19:50'),
-(144, '2', 'group re upore nao', NULL, '1', '2023-12-29 01:20:35', '2023-12-29 01:20:35'),
-(145, '1', 'ebar single re upore nao', NULL, '1', '2023-12-29 01:20:52', '2023-12-29 01:20:52'),
-(146, '2', 'group re duita thekei upore nao', NULL, '1', '2023-12-29 01:22:12', '2023-12-29 01:22:12'),
-(147, '1', 'hello', NULL, '7865', '2024-03-16 10:01:14', '2024-03-16 10:01:14'),
-(148, '1', NULL, '[{\"type\":\"image\",\"path\":\"uploads\\/message-files\\/171058402065f570d4bb617screencapture-192-168-0-101-8000-create-quiz-3-2024-03-06-03_12_36.png\"}]', '7865', '2024-03-16 10:13:40', '2024-03-16 10:13:40'),
-(149, '1', 'asd', NULL, '7865', '2024-03-16 10:55:19', '2024-03-16 10:55:19'),
-(150, '2', 'hello', NULL, '7865', '2024-03-16 11:18:32', '2024-03-16 11:18:32'),
-(151, '1', 'hi', NULL, '7865', '2024-03-16 11:18:49', '2024-03-16 11:18:49'),
-(152, '1', 'asdf', NULL, '7865', '2024-03-16 11:19:19', '2024-03-16 11:19:19'),
-(153, '1', 'as', NULL, '7865', '2024-03-16 11:22:55', '2024-03-16 11:22:55'),
-(154, '2', 'll', NULL, '7865', '2024-03-16 11:26:08', '2024-03-16 11:26:08'),
-(155, '2', 'll', NULL, '7865', '2024-03-16 11:27:06', '2024-03-16 11:27:06'),
-(156, '2', 'lsd', NULL, '7865', '2024-03-16 11:29:41', '2024-03-16 11:29:41'),
-(157, '2', 'asdf', NULL, '7865', '2024-03-16 11:30:23', '2024-03-16 11:30:23'),
-(158, '2', 'asdfa', NULL, '7865', '2024-03-16 11:31:14', '2024-03-16 11:31:14'),
-(159, '2', 'asfd', NULL, '7865', '2024-03-16 11:31:55', '2024-03-16 11:31:55'),
-(160, '2', 'asdfads', NULL, '7865', '2024-03-16 11:34:28', '2024-03-16 11:34:28'),
-(161, '2', 'asdfasd', NULL, '7865', '2024-03-16 11:34:50', '2024-03-16 11:34:50'),
-(162, '2', 'asd', NULL, '7865', '2024-03-16 11:36:12', '2024-03-16 11:36:12'),
-(163, '2', 'asdfasdf', NULL, '7865', '2024-03-16 11:36:35', '2024-03-16 11:36:35'),
-(164, '2', 'asdf', NULL, '7865', '2024-03-16 11:45:12', '2024-03-16 11:45:12'),
-(165, '2', 'asdff', NULL, '7865', '2024-03-16 11:45:58', '2024-03-16 11:45:58'),
-(166, '2', 'asdf', NULL, '7865', '2024-03-16 11:46:28', '2024-03-16 11:46:28'),
-(167, '2', 'asdff', NULL, '7865', '2024-03-16 11:46:33', '2024-03-16 11:46:33');
+(1, '1', 'sdf', NULL, '6193', '2024-05-15 09:05:55', '2024-05-15 09:05:55'),
+(5, '3', 'koi?', NULL, '9527', '2024-05-15 09:39:26', '2024-05-15 09:39:26'),
+(6, '3', 'koi?', NULL, '9527', '2024-05-28 18:48:31', '2024-05-28 18:48:31'),
+(7, '3', 'koi?', NULL, '9527', '2024-05-28 18:48:52', '2024-05-28 18:48:52'),
+(8, '3', 'koi?', NULL, '9527', '2024-05-28 18:54:52', '2024-05-28 18:54:52'),
+(9, '3', 'ekhane', NULL, '7865', '2024-05-28 18:54:57', '2024-05-28 18:54:57');
 
 -- --------------------------------------------------------
 
@@ -248,7 +237,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2024_01_19_181604_create_message_requests_table', 14),
 (15, '2024_01_19_181910_create_transaction_histories_table', 15),
 (16, '2024_01_19_182105_create_tafsirs_table', 16),
-(17, '2024_01_19_182601_create_custom_ads_table', 17);
+(17, '2024_01_19_182601_create_custom_ads_table', 17),
+(18, '2024_05_10_003245_create_device_tokens_table', 18);
 
 -- --------------------------------------------------------
 
@@ -557,6 +547,13 @@ CREATE TABLE `transaction_histories` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `transaction_histories`
+--
+
+INSERT INTO `transaction_histories` (`id`, `user_id`, `transaction_id`, `phone`, `amount`, `cause`, `created_at`, `updated_at`) VALUES
+(3, '6193', 'asdfa', NULL, '500', 'premium', '2024-05-26 09:22:04', '2024-05-26 09:22:04');
+
 -- --------------------------------------------------------
 
 --
@@ -614,6 +611,7 @@ INSERT INTO `truck_type_details` (`id`, `truck_type_id`, `load_type`, `rent_amou
 
 CREATE TABLE `user` (
   `id` varchar(40) NOT NULL,
+  `profile_image` varchar(256) DEFAULT NULL,
   `otp` int(11) DEFAULT NULL,
   `otp_expired_at` timestamp NULL DEFAULT NULL,
   `is_verified` int(11) DEFAULT NULL,
@@ -628,7 +626,6 @@ CREATE TABLE `user` (
   `role` int(11) NOT NULL DEFAULT 2 COMMENT 'Admin = 1\r\nDispatcher = 2\r\nDriver = 3\r\nCustomer = 4',
   `password` text DEFAULT NULL,
   `visible_password` varchar(255) DEFAULT NULL,
-  `profile_image` varchar(256) DEFAULT NULL,
   `dob` varchar(255) DEFAULT NULL,
   `device_token` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
@@ -640,8 +637,10 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `otp`, `otp_expired_at`, `is_verified`, `wallet`, `chat_expiry_date`, `premium_expiry_date`, `address`, `email`, `token`, `name`, `phone`, `role`, `password`, `visible_password`, `profile_image`, `dob`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
-('7865', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, 'Jack Rose', '12345678', 1, '$2y$10$kJ5cYJxY51rQL5v4aOPUouMLfISAC4uTS6FDHyuo6rXxCKTG0gRs.', NULL, 'uploads/user-images/170533771565a56373f241bunnamed.webp', '1970-01-01', NULL, 1, '2023-05-07 11:15:50', '2024-01-15 10:55:16');
+INSERT INTO `user` (`id`, `profile_image`, `otp`, `otp_expired_at`, `is_verified`, `wallet`, `chat_expiry_date`, `premium_expiry_date`, `address`, `email`, `token`, `name`, `phone`, `role`, `password`, `visible_password`, `dob`, `device_token`, `status`, `created_at`, `updated_at`) VALUES
+('6193', 'uploads/user-images/1718331066666ba6ba9feffdownload (2).jpeg', 8812, '2024-05-26 13:26:38', 1, '0', '2024-05-27 09:43:36', '2024-11-26 09:22:04', 'asfasd', 'grsagor08@gmail.com', 'nEUaq6iYR9MeBbk5vsK6gMJZDYLrLyX9dhRt3ICn5QNgh4GxIdoft0XN7RZn', 'user1', '1234', 2, '$2y$10$RNC0MW7XNYIhSq2lo3WjaOus6e2OXDyaNiOUYStQbU1eKv.7EjmeO', '123456', '123', 'cAWlQfVATmO-or221Nh8rK:APA91bHk-kFxoQvhtLHziIVbtYynCrM1gibyRuDfqS7R-n6Iaji_OMiLmhJwDBLBHje4Lz7dIPqMxyWJdQmbVMHsK1vKsqk6ukv7wU9MkKrThAk36r7Pockd6uuvMya6XBEsNNqgKKRp', 1, '2024-03-30 20:24:00', '2024-06-14 02:11:06'),
+('7865', 'uploads/user-images/170533771565a56373f241bunnamed.webp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin@gmail.com', NULL, 'Jack Rose', '12345678', 1, '$2y$10$kJ5cYJxY51rQL5v4aOPUouMLfISAC4uTS6FDHyuo6rXxCKTG0gRs.', NULL, '1970-01-01', NULL, 1, '2023-05-07 11:15:50', '2024-01-15 10:55:16'),
+('9527', 'uploads/user-images/1711830320660875301df971.jpg', 8909, '2024-03-30 20:27:20', 1, NULL, NULL, NULL, 'asfasd', 'user2@gmail.com', 'nJVNpmEDFgAk9YWy0CGvSp4WGR2CwZod9mS0WPVMGHrP1YaogyvJvSl2r2iY', 'user2', '12344', 2, '$2y$10$kQMoD6VMEm.XT7hiWvpwuOARNobMaSijwPTeIZ3Klp0IdoqCeJv8W', '123456', '123', NULL, 1, '2024-03-30 20:25:46', '2024-03-30 20:25:46');
 
 -- --------------------------------------------------------
 
@@ -683,6 +682,12 @@ ALTER TABLE `channel_subscribers`
 -- Indexes for table `custom_ads`
 --
 ALTER TABLE `custom_ads`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `device_tokens`
+--
+ALTER TABLE `device_tokens`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -806,37 +811,43 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `amol_videos`
 --
 ALTER TABLE `amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `channels`
 --
 ALTER TABLE `channels`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `channel_subscribers`
 --
 ALTER TABLE `channel_subscribers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `custom_ads`
 --
 ALTER TABLE `custom_ads`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `device_tokens`
+--
+ALTER TABLE `device_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `live_channels`
 --
 ALTER TABLE `live_channels`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `message_requests`
@@ -848,7 +859,7 @@ ALTER TABLE `message_requests`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -860,19 +871,19 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `premium_amol_videos`
 --
 ALTER TABLE `premium_amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `premium_videos`
 --
 ALTER TABLE `premium_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `regular_amol_videos`
 --
 ALTER TABLE `regular_amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `right`
@@ -908,7 +919,7 @@ ALTER TABLE `tafsirs`
 -- AUTO_INCREMENT for table `transaction_histories`
 --
 ALTER TABLE `transaction_histories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `truck_types`

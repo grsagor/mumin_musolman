@@ -62,22 +62,30 @@ class MessagerequestController extends Controller
         $channel = Channel::find($id);
         $user = $channel->subscribers[0]->user;
 
-        if (!$user->premium_expiry_date) {
-            $user->premium_expiry_date = Carbon::now()->addMonths(Helper::getSettings('premium_validity'));
+        if (!$user->chat_expiry_date) {
+            $user->chat_expiry_date = Carbon::now()->addDays(Helper::getSettings('message_validity'));
         } else {
             $currentDateTime = Carbon::now();
-            $premium_expiry_date = Carbon::parse($user->premium_expiry_date);
-            if ($premium_expiry_date->lt($currentDateTime)) {
-                $premium_expiry_date = $currentDateTime->copy()->addMonths(Helper::getSettings('premium_validity'));
+            $chat_expiry_date = Carbon::parse($user->chat_expiry_date);
+            if ($chat_expiry_date->lt($currentDateTime)) {
+                $chat_expiry_date = $currentDateTime->copy()->addDays(Helper::getSettings('message_validity'));
             } else {
-                $premium_expiry_date->addMonths(Helper::getSettings('premium_validity'));
+                $chat_expiry_date->addDays(Helper::getSettings('message_validity'));
             }
-            $user->premium_expiry_date = $premium_expiry_date;
+            $user->chat_expiry_date = $chat_expiry_date;
         }
         $user->save();
 
         if ($channel) {
             $channel->is_approved = 1;
+
+            $users = DeviceToken::where('user_id', $user->id)->get();
+            $title = 'Message request';
+            $body = 'An admin accepted your message request.';
+            foreach ($users as $user) {
+                SendNotificationJob::dispatch($user->device_token, $title, $body, 'Image');
+            }
+
             $channel->save();
             return response()->json([
                 'type' => 'success',

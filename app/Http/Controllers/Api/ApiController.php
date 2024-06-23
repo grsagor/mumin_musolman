@@ -563,6 +563,13 @@ class ApiController extends Controller
                         }
                         $user->premium_expiry_date = $premium_expiry_date;
                     }
+
+                    $users = DeviceToken::where('user_id', $user->id)->get();
+                    $title = 'Premium membership';
+                    $body = 'You are now a premium member.';
+                    foreach ($users as $user) {
+                        SendNotificationJob::dispatch($user->device_token, $title, $body, 'Image');
+                    }
                 }
             }
             $user->wallet = $wallet;

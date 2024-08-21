@@ -18,6 +18,7 @@ return array(
     'App\\Http\\Controllers\\Backend\\DashboardController' => $baseDir . '/app/Http/Controllers/Backend/DashboardController.php',
     'App\\Http\\Controllers\\Backend\\LivechannelController' => $baseDir . '/app/Http/Controllers/Backend/LivechannelController.php',
     'App\\Http\\Controllers\\Backend\\MessageController' => $baseDir . '/app/Http/Controllers/Backend/MessageController.php',
+    'App\\Http\\Controllers\\Backend\\MessagerequestController' => $baseDir . '/app/Http/Controllers/Backend/MessagerequestController.php',
     'App\\Http\\Controllers\\Backend\\PaiduserController' => $baseDir . '/app/Http/Controllers/Backend/PaiduserController.php',
     'App\\Http\\Controllers\\Backend\\PaymentrequestController' => $baseDir . '/app/Http/Controllers/Backend/PaymentrequestController.php',
     'App\\Http\\Controllers\\Backend\\PremiumamolvideoController' => $baseDir . '/app/Http/Controllers/Backend/PremiumamolvideoController.php',

@@ -553,6 +553,7 @@ class ComposerStaticInit72982031f24a47102e6db3a5a1ae00ec
         'App\\Http\\Controllers\\Backend\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/DashboardController.php',
         'App\\Http\\Controllers\\Backend\\LivechannelController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/LivechannelController.php',
         'App\\Http\\Controllers\\Backend\\MessageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/MessageController.php',
+        'App\\Http\\Controllers\\Backend\\MessagerequestController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/MessagerequestController.php',
         'App\\Http\\Controllers\\Backend\\PaiduserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/PaiduserController.php',
         'App\\Http\\Controllers\\Backend\\PaymentrequestController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/PaymentrequestController.php',
         'App\\Http\\Controllers\\Backend\\PremiumamolvideoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Backend/PremiumamolvideoController.php',

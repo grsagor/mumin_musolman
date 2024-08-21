@@ -344,17 +344,18 @@ class ApiController extends Controller
     {
         try {
             DB::beginTransaction();
-            if ($request->id) {
-                $device_token = DeviceToken::where('user_id', $request->id)->first();
+            if ($request->device_id) {
+                $device_token = DeviceToken::where('device_id', $request->device_id)->first();
                 if (!$device_token) {
                     $device_token = new DeviceToken();
                 }
-            }
-            if (!$request->id) {
+            } else {
                 $device_token = new DeviceToken();
             }
             $device_token->user_id = $request->id;
             $device_token->device_token = $request->device_token;
+            $device_token->device_id = $request->device_id;
+            $device_token->expired_at = Carbon::now()->addMonths(2);
             $device_token->save();
             $data['status'] = 1;
             $data['data'] = $device_token;

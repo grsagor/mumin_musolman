@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2024 at 05:06 AM
+-- Generation Time: Sep 26, 2024 at 04:58 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -36,13 +36,6 @@ CREATE TABLE `amol_videos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `amol_videos`
---
-
-INSERT INTO `amol_videos` (`id`, `title`, `short_description`, `embed_link`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'Cillum saepe minima', 'Dolore quaerat quisq', '1ScWL04EPrQ', 0, '2024-06-14 02:15:29', '2024-06-14 02:18:24');
 
 -- --------------------------------------------------------
 
@@ -137,6 +130,47 @@ INSERT INTO `device_tokens` (`id`, `user_id`, `device_token`, `status`, `created
 (3, NULL, 'cAWlQfVATmO-or221Nh8rK:APA91bHk-kFxoQvhtLHziIVbtYynCrM1gibyRuDfqS7R-n6Iaji_OMiLmhJwDBLBHje4Lz7dIPqMxyWJdQmbVMHsK1vKsqk6ukv7wU9MkKrThAk36r7Pockd6uuvMya6XBEsNNqgKKRp', NULL, '2024-05-09 18:47:53', '2024-05-09 18:47:53'),
 (4, NULL, 'bc', NULL, '2024-05-09 18:47:59', '2024-05-09 18:47:59'),
 (5, '1111', 'bc', NULL, '2024-05-09 18:48:11', '2024-05-09 18:48:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`id`, `queue`, `payload`, `attempts`, `reserved_at`, `available_at`, `created_at`) VALUES
+(10, 'default', '{\"uuid\":\"63d1d62d-705e-4841-9a4f-86550ec3a85e\",\"displayName\":\"App\\\\Jobs\\\\SendNotificationJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendNotificationJob\",\"command\":\"O:28:\\\"App\\\\Jobs\\\\SendNotificationJob\\\":14:{s:14:\\\"\\u0000*\\u0000deviceToken\\\";s:163:\\\"cAWlQfVATmO-or221Nh8rK:APA91bHk-kFxoQvhtLHziIVbtYynCrM1gibyRuDfqS7R-n6Iaji_OMiLmhJwDBLBHje4Lz7dIPqMxyWJdQmbVMHsK1vKsqk6ukv7wU9MkKrThAk36r7Pockd6uuvMya6XBEsNNqgKKRp\\\";s:8:\\\"\\u0000*\\u0000title\\\";s:19:\\\"Fugit illo magni ni\\\";s:7:\\\"\\u0000*\\u0000body\\\";s:19:\\\"Expedita quis nihil\\\";s:8:\\\"\\u0000*\\u0000image\\\";s:5:\\\"Image\\\";s:3:\\\"job\\\";N;s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:19:\\\"chainCatchCallbacks\\\";N;s:5:\\\"delay\\\";N;s:11:\\\"afterCommit\\\";N;s:10:\\\"middleware\\\";a:0:{}s:7:\\\"chained\\\";a:0:{}}\"}}', 0, NULL, 1723652767, 1723652767),
+(11, 'default', '{\"uuid\":\"cf6d1f2c-e211-4319-89f1-ed1a7d16564c\",\"displayName\":\"App\\\\Jobs\\\\SendNotificationJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendNotificationJob\",\"command\":\"O:28:\\\"App\\\\Jobs\\\\SendNotificationJob\\\":14:{s:14:\\\"\\u0000*\\u0000deviceToken\\\";s:2:\\\"bc\\\";s:8:\\\"\\u0000*\\u0000title\\\";s:19:\\\"Fugit illo magni ni\\\";s:7:\\\"\\u0000*\\u0000body\\\";s:19:\\\"Expedita quis nihil\\\";s:8:\\\"\\u0000*\\u0000image\\\";s:5:\\\"Image\\\";s:3:\\\"job\\\";N;s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:19:\\\"chainCatchCallbacks\\\";N;s:5:\\\"delay\\\";N;s:11:\\\"afterCommit\\\";N;s:10:\\\"middleware\\\";a:0:{}s:7:\\\"chained\\\";a:0:{}}\"}}', 0, NULL, 1723652767, 1723652767),
+(12, 'default', '{\"uuid\":\"0584e394-6c1e-42d8-8f75-7cd065a29ba8\",\"displayName\":\"App\\\\Jobs\\\\SendNotificationJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendNotificationJob\",\"command\":\"O:28:\\\"App\\\\Jobs\\\\SendNotificationJob\\\":14:{s:14:\\\"\\u0000*\\u0000deviceToken\\\";s:2:\\\"bc\\\";s:8:\\\"\\u0000*\\u0000title\\\";s:19:\\\"Fugit illo magni ni\\\";s:7:\\\"\\u0000*\\u0000body\\\";s:19:\\\"Expedita quis nihil\\\";s:8:\\\"\\u0000*\\u0000image\\\";s:5:\\\"Image\\\";s:3:\\\"job\\\";N;s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:19:\\\"chainCatchCallbacks\\\";N;s:5:\\\"delay\\\";N;s:11:\\\"afterCommit\\\";N;s:10:\\\"middleware\\\";a:0:{}s:7:\\\"chained\\\";a:0:{}}\"}}', 0, NULL, 1723652767, 1723652767);
 
 -- --------------------------------------------------------
 
@@ -238,7 +272,18 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (15, '2024_01_19_181910_create_transaction_histories_table', 15),
 (16, '2024_01_19_182105_create_tafsirs_table', 16),
 (17, '2024_01_19_182601_create_custom_ads_table', 17),
-(18, '2024_05_10_003245_create_device_tokens_table', 18);
+(18, '2014_10_12_000000_create_users_table', 18),
+(19, '2014_10_12_100000_create_password_resets_table', 18),
+(20, '2019_08_19_000000_create_failed_jobs_table', 18),
+(21, '2019_12_14_000001_create_personal_access_tokens_table', 18),
+(22, '2023_07_07_043328_create_translations_table', 18),
+(23, '2023_08_11_053742_create_transactions_table', 18),
+(24, '2023_08_14_093605_create_sessions_table', 18),
+(25, '2024_01_22_173216_create_channel_subscribers_table', 1),
+(26, '2024_01_22_173253_create_messages_table', 2),
+(27, '2024_01_22_173616_create_channels_table', 1),
+(28, '2024_05_10_003245_create_device_tokens_table', 2),
+(29, '2024_08_14_215416_create_jobs_table', 19);
 
 -- --------------------------------------------------------
 
@@ -264,6 +309,36 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `name`, `email`, `phone`, `amount`, `address`, `status`, `transaction_id`, `currency`) VALUES
 (6, 'Customer Name', 'customer@mail.com', '8801XXXXXXXXX', 10, 'Customer Address', 'Processing', '65aba97a2b7ae', 'BDT');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -454,6 +529,21 @@ INSERT INTO `role_right` (`id`, `role_id`, `right_id`, `permission`, `created_at
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` text NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -533,6 +623,18 @@ INSERT INTO `tafsirs` (`id`, `created_at`, `sura_no`, `ayat_no`, `jakariya_headi
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `transaction_histories`
 --
 
@@ -553,6 +655,23 @@ CREATE TABLE `transaction_histories` (
 
 INSERT INTO `transaction_histories` (`id`, `user_id`, `transaction_id`, `phone`, `amount`, `cause`, `created_at`, `updated_at`) VALUES
 (3, '6193', 'asdfa', NULL, '500', 'premium', '2024-05-26 09:22:04', '2024-05-26 09:22:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `translations`
+--
+
+CREATE TABLE `translations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `translatable_type` varchar(255) NOT NULL,
+  `translatable_id` bigint(20) UNSIGNED NOT NULL,
+  `language_code` varchar(255) NOT NULL,
+  `field` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -645,6 +764,23 @@ INSERT INTO `user` (`id`, `profile_image`, `otp`, `otp_expired_at`, `is_verified
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_role`
 --
 
@@ -691,6 +827,20 @@ ALTER TABLE `device_tokens`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
 -- Indexes for table `live_channels`
 --
 ALTER TABLE `live_channels`
@@ -719,6 +869,20 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
 -- Indexes for table `premium_amol_videos`
@@ -759,6 +923,14 @@ ALTER TABLE `role_right`
   ADD KEY `right_id` (`right_id`);
 
 --
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`
@@ -771,9 +943,21 @@ ALTER TABLE `tafsirs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `transaction_histories`
 --
 ALTER TABLE `transaction_histories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `translations`
+--
+ALTER TABLE `translations`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -796,6 +980,13 @@ ALTER TABLE `user`
   ADD KEY `role` (`role`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
 -- Indexes for table `user_role`
 --
 ALTER TABLE `user_role`
@@ -811,7 +1002,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `amol_videos`
 --
 ALTER TABLE `amol_videos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `channels`
@@ -838,6 +1029,18 @@ ALTER TABLE `device_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `live_channels`
 --
 ALTER TABLE `live_channels`
@@ -859,13 +1062,19 @@ ALTER TABLE `message_requests`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `premium_amol_videos`
@@ -916,10 +1125,22 @@ ALTER TABLE `tafsirs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `transaction_histories`
 --
 ALTER TABLE `transaction_histories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `translations`
+--
+ALTER TABLE `translations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `truck_types`
@@ -932,6 +1153,12 @@ ALTER TABLE `truck_types`
 --
 ALTER TABLE `truck_type_details`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

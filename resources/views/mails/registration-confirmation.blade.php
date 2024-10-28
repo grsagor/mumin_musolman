@@ -14,7 +14,7 @@
 										<tr>
 											<td style="padding-top: 60px; padding-bottom: 20px;" align="center" valign="middle" class="emailLogo">
 												<a href="#" style="text-decoration:none" target="_blank">
-													<img alt="" border="0" src="{{ asset('uploads/settings/'.Helper::getSettings('site_logo')) }}" style="width:100%;max-width:150px;height:auto;display:block" width="150">
+													<img alt="" border="0" src="{{ asset('uploads/settings/170533711865a5611ec2009unnamed.webp') }}" style="width:100%;max-width:150px;height:auto;display:block" width="150">
 												</a>
                                                 <h4>Registration Confirmed</h4>
 											</td>
@@ -27,7 +27,7 @@
 										
                                         <tr>
 											<td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
-												<h3 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Welcome to {{ Helper::getSettings('application_name') }}</h3>
+												<h3 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Welcome to Mumin Musolman</h3>
 											</td>
 										</tr>
 
@@ -84,7 +84,7 @@
 									
 										<tr>
 											<td style="padding: 10px 10px 5px;" align="center" valign="top" class="brandInfo">
-												<p class="text" style="color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0">©&nbsp;{{ Helper::getSettings('application_name') }} | {{ Helper::getSettings('application_address') }}.</p>
+												<p class="text" style="color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0">©&nbsp;Mumin Musolman | {{ Helper::getSettings('application_address') }}.</p>
 											</td>
 										</tr>
 										

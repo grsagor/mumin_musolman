@@ -6,7 +6,7 @@
             alt="">
 
         <div class="profile-title text-capitalize">{{ Auth::user()->name }}</div>
-        <div class="profile-description">{{ Auth::user()->roles->name }}</div>
+        <div class="profile-description">Admin</div>
     </div>
 
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">

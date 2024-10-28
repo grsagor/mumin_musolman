@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Dashboard | '.Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'Dashboard | Mumin Musolman')
 @section('content')
     <div class="container-fluid px-5 pt-4">
         <div class="row">

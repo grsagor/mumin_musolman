@@ -317,7 +317,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_text_87 .v-
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:15px 30px 0px 10px;font-family:'Montserrat',sans-serif;" align="left">
 
   <div class="v-text-align" style="font-size: 14px; color: #ffffff; line-height: 140%; text-align: right; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px; font-family: Montserrat, sans-serif;">{{ Helper::getSettings('application_name') }}</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px; font-family: Montserrat, sans-serif;">Mumin Musolman</span></p>
   </div>
 
       </td>

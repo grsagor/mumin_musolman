@@ -13,7 +13,7 @@
         @hasSection('title')
             @yield('title')
         @else
-            Dashboard | {{ Helper::getSettings('application_name') }}
+            Dashboard | Mumin Musolman
         @endif
     </title>
 
@@ -25,7 +25,7 @@
     <script src="{{ asset('assets/js/backend/sweetalert2.js') }}" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="{{ asset('uploads/settings/' . Helper::getSettings('site_favicon')) }}" />
+    <link rel="shortcut icon" href="{{ asset('uploads/settings/170533711865a5611ec2e47unnamed.webp') }}" />
     @yield('css')
 </head>
 

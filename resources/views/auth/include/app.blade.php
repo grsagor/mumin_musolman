@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title') - {{ Helper::getSettings('application_name') }}</title>
+    <title>@yield('title') - Mumin Musolman</title>
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -16,7 +16,7 @@
     <div class="row justify-content-center w-100 auth-container">
         <div class="col-12 col-lg-4 d-flex flex-column justify-content-center align-items-center px-5 overflow-y-auto py-5">
             <div class="mb-3">
-                <img src="{{ asset('uploads/settings/'.Helper::getSettings('site_logo')) }}" width="70px" alt="Logo">
+                <img src="{{ asset('uploads/settings/170533711865a5611ec2009unnamed.webp') }}" width="70px" alt="Logo">
             </div>
             @yield('content')
         </div>

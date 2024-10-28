@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'নিয়োমিত আমল ভিডিও | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'নিয়োমিত আমল ভিডিও | Mumin Musolman')
 @section('css')
     <style>
         .profile_image_input--container {

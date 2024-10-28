@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Custom Ads | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'Custom Ads | Mumin Musolman')
 @section('css')
     <style>
         .profile_image_input--container {

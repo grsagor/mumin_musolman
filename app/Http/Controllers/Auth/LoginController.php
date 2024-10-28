@@ -36,7 +36,7 @@ class LoginController extends Controller
         if($user->save()){
             $subject = 'Register confirmation';
             $data['user'] = $user;
-            $data['message'] = 'Thank you for registering on '.Helper::getSettings('application_name').'! We\'re excited to have you as part of our community.';
+            $data['message'] = 'Thank you for registering on Mumin Musolman! We\'re excited to have you as part of our community.';
             if(filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
                 Helper::sendEmail($user->email, $subject, $data, 'registration-confirmation');
             }

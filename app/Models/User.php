@@ -67,10 +67,10 @@ class User extends Authenticatable
         $profileImage = $this->attributes['profile_image'];
         return env('APP_URL') . '/' . $profileImage;
     }
-    public function roles()
-    {
-        return $this->belongsTo(Role::class, 'role', 'id');
-    }
+    // public function roles()
+    // {
+    //     return $this->belongsTo(class, 'role', 'id');
+    // }
     public function getChatAttribute() {
         if (isset($this->attributes["chat_expiry_date"])) {
             $chat_expiry_date = $this->attributes["chat_expiry_date"];

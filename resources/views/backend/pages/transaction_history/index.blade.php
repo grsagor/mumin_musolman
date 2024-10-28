@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Transaction History | ' . Helper::getSettings('application_name') ?? 'Truck Ease')
+@section('title', 'Transaction History | Mumin Musolman')
 @section('css')
     <style>
         .profile_image_input--container {

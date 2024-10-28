@@ -18,21 +18,7 @@ class Helper
 
     public static function hasRight($right, $role_id = null)
     {
-        if ($role_id != null) {
-            $role = $role_id;
-        } else {
-            $role = \Auth::user()->role;
-        }
-        $right = Right::where('name', $right)->first();
-        if ($right) {
-            if (RoleRight::where('role_id', $role)->where('right_id', $right->id)->where('permission', 1)->exists()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return true;
     }
 
     public static function getSettings($key)
@@ -77,61 +63,6 @@ class Helper
         }
     }
 
-    public static function distance($pickupLat = null, $pickupLng = null, $destinationLat = null, $destinationLng = null)
-    {
-        $apiKey = config('services.google_maps.api_key');
-        $client = new Client();
-
-        $result = [];
-
-        if ($pickupLat && $pickupLng) {
-            $pickupResponse = $client->get("https://maps.googleapis.com/maps/api/geocode/json", [
-                'query' => [
-                    'latlng' => "$pickupLat,$pickupLng",
-                    'key' => $apiKey,
-                ],
-            ]);
-            $pickupData = json_decode($pickupResponse->getBody(), true);
-            $result["pickup_location"] = $pickupData['results'][0]['formatted_address'];
-        } else {
-            $result["pickup_location"] = null;
-        }
-
-        if ($destinationLat && $destinationLng) {
-            $dropResponse = $client->get("https://maps.googleapis.com/maps/api/geocode/json", [
-                'query' => [
-                    'latlng' => "$destinationLat,$destinationLng",
-                    'key' => $apiKey,
-                ],
-            ]);
-            $dropData = json_decode($dropResponse->getBody(), true);
-            $result["drop_location"] = $dropData['results'][0]['formatted_address'];
-        } else {
-            $result["drop_location"] = null;
-        }
-
-        if ($pickupLat && $pickupLng && $destinationLat && $destinationLng) {
-            $response = $client->get("https://maps.googleapis.com/maps/api/directions/json", [
-                'query' => [
-                    'origin' => "$pickupLat,$pickupLng",
-                    'destination' => "$destinationLat,$destinationLng",
-                    'key' => $apiKey,
-                    'mode' => 'driving',
-                    'avoid' => 'ferries',
-                ],
-            ]);
-
-            $data = json_decode($response->getBody(), true);
-            $distance_meter = $data['routes'][0]['legs'][0]['distance']['value'];
-            $distance_km = $distance_meter / 1000;
-            $result["distance"] = ceil($distance_km);
-        } else {
-            $result["distance"] = null;
-        }
-
-        return $result;
-    }
-
     public static function updateFileField(Request $request, $table, $fieldName, $path) {
         if ($request->hasFile($fieldName)) {
             if ($table->$fieldName != null && file_exists(public_path($table->$fieldName))) {
@@ -142,43 +73,5 @@ class Helper
             $image->move(public_path($path), $filename);
             $table->$fieldName = $path . $filename;
         }
-    }
-
-    public static function sendPushNotification($device_token, $title, $body, $image)
-    {
-        $fcmAuthKey = env('FCM_AUTH_KEY');
-
-        $data = [
-            'to' => $device_token,
-            'content_available' => true,
-            "sticky" => true,
-            'notification' => [
-                'title' => $title,
-                'body' => $body,
-            ],
-            'data' => [
-                'title' => $title,
-                'body' => json_encode($body),
-            ],
-        ];
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: key=$fcmAuthKey",
-                "Content-Type: application/json"
-            ),
-        ));
-        $response = curl_exec($curl);
-        curl_close($curl);
-        return json_decode($response);
     }
 }

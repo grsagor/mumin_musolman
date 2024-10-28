@@ -1,6 +1,6 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark">
     <a class="navbar-brand text-center ps-3" target="_blank" href="">
-        <img src="{{ Helper::getSettings('site_logo') ? asset('uploads/settings/'.Helper::getSettings('site_logo')) : asset('assets/img/no-img.jpg') }}" width="70px" alt="Logo">
+        <img src="{{ asset('uploads/settings/170533711865a5611ec2009unnamed.webp') }}" width="70px" alt="Logo">
     </a>
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <ul class="ms-auto me-0 me-md-3 my-2 my-md-0 me-lg-4 gap-3">

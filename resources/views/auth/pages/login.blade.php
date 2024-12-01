@@ -12,7 +12,7 @@
         </div>
     @endif
     @if (Session::has('message'))
-        <div class="alert alert-success alert-dismissible w-100">
+        <div class="alert alert-danger alert-dismissible w-100">
             <p class="mb-0">{{ Session::get('message') }}</p>
         </div>
     @endif

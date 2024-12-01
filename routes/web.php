@@ -58,7 +58,7 @@ Route::get('/admin', function () {
     }
 })->name('admin');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'auth.admin']], function () {
     Route::get('profile', [LoginController::class, 'adminProfile'])->name('admin.profile');
     Route::post('profile/update', [LoginController::class, 'adminProfileUpdate'])->name('admin.profile.update');
     Route::get('profile/setting', [LoginController::class, 'adminProfileSetting'])->name('admin.profile.setting');

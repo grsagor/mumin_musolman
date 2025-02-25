@@ -66,5 +66,6 @@ Route::prefix('v1')->group(function () {
 
         Route::get('get-channel-list', 'getChannelList');
         Route::get('get-channel-message-list', 'getChannelMessageList');
+        Route::get('test-push-notification', 'testPushNotification');
     });
 });

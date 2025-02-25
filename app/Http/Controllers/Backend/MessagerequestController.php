@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendNotificationJob;
 use App\Models\AmolVideo;
 use App\Models\Channel;
 use App\Models\DeviceToken;
@@ -83,7 +82,7 @@ class MessagerequestController extends Controller
             $title = 'Message request';
             $body = 'An admin accepted your message request.';
             foreach ($users as $user) {
-                SendNotificationJob::dispatch($user->device_token, $title, $body, 'Image');
+                Helper::sendPushNotification($user->device_token, $title, $body);
             }
 
             $channel->save();

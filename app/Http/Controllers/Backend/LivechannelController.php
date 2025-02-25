@@ -24,7 +24,7 @@ class LivechannelController extends Controller
         return DataTables::of($data)
 
             ->editColumn('video', function ($row) {
-                return '<iframe width="150" height="100" src=" '.$row->embed_link.' " title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+                return '<iframe width="150" height="100" src="https://www.youtube.com/embed/' .$row->embed_link.'" title="1 minute introduction to islam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
             })
 
             ->editColumn('status', function ($row) {

@@ -77,9 +77,7 @@ class AmolvideoController extends Controller
             $video->save();
 
             $users = DeviceToken::all();
-            foreach ($users as $user) {
-                SendNotificationJob::dispatch($user->device_token, $request->title, $request->short_description, 'Image');
-            }
+            Helper::sendPushNotification(null, $request->title, $request->short_description);
     
             return response()->json([
                 'type' => 'success',

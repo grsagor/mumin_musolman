@@ -828,7 +828,11 @@ class ApiController extends Controller
         try {
             $messages = Message::with('user')->where('channel_id',$request->channel_id)->get();
             foreach ($messages as $message) {
-                $message->files = json_decode($message->files);
+                $files = json_decode($message->files);
+                foreach ($files as $file) {
+                    $file->path = env('APP_URL') . '/' . $file->path;
+                }
+                $message->files = $files;
             }
 
             $response = [

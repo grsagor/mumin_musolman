@@ -5,7 +5,8 @@
         <div class="{{ $channel_id ? '' : 'd-none d-lg-block' }} col-12 col-lg-7 p-0 full-height">
             @yield('message-content')
         </div>
-        <div class="{{ $channel_id ? 'd-none d-lg-block' : '' }} col-12 col-lg-5 border-start p-3 pt-0 full-height overflow-y-scroll customized__scrollbar">
+        <div
+            class="{{ $channel_id ? 'd-none d-lg-block' : '' }} col-12 col-lg-5 border-start p-3 pt-0 full-height overflow-y-scroll customized__scrollbar">
             @include('backend.pages.message.message-right-side')
         </div>
     </div>
@@ -54,10 +55,10 @@
         }
 
         /* @media (max-width: 991px) {
-            .no_channel_id {
-                display: none;
-            }
-        } */
+                        .no_channel_id {
+                            display: none;
+                        }
+                    } */
     </style>
 @endsection
 @section('js')
@@ -159,7 +160,10 @@
                     video controls src = "${file.path}"
                     width = "100"
                     height = "100"
-                    autoplay > < /video>`; } else { return ''; } }).join('') } </div ><p class="ms-2 text-gray-500 text-12">${ formattedTime }</p></div> </div>`);
+                    autoplay > < /video>`; } else { return ''; } }).join('') } </div > < p class =
+                "ms-2 text-gray-500 text-12" > $ {
+                    formattedTime
+                } < /p></div > < /div>`);
 
                     $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight); $.ajax({
                         headers: {
@@ -204,7 +208,10 @@
                                         video controls src = "${file.path}"
                                         width = "100"
                                         height = "100"
-                                        autoplay > < /video>`; } else { return ''; } }).join(''): '' } </div><p class="ms-2 text-gray-500 text-12">${ formattedTime }</p></div></div>`);
+                                        autoplay > < /video>`; } else { return ''; } }).join(''): '' } </div > <
+                                    p class = "ms-2 text-gray-500 text-12" > $ {
+                                        formattedTime
+                                    } < /p></div > < /div>`);
 
                                         $('a[data-channel-id="' + body.channel_id + '"]').find('.last-message')
                                         .text(body.message); $('.messages-container').scrollTop($(
@@ -225,6 +232,52 @@
 
             $(document).on('click', '#send_message_btn', function() {
                 sendMessage();
+            });
+
+            $('#message_delete_button').click(function() {
+                const channel_id = "{{ $channel_id }}";
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: "POST",
+                            url: "{{ route('admin.chat.hide') }}",
+                            data: {
+                                channel_id: channel_id
+                            },
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.success) {
+                                    $.toast({
+                                        heading: 'Success',
+                                        text: data.message,
+                                        position: 'top-center',
+                                        icon: 'success'
+                                    });
+                                    window.location.href = "{{ route('admin.message') }}"
+                                } else {
+                                    $.toast({
+                                        heading: 'Error',
+                                        text: data.message,
+                                        position: 'top-center',
+                                        icon: 'error'
+                                    });
+                                }
+                            }
+                        })
+
+                    }
+                })
             })
         })
 

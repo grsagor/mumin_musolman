@@ -21,7 +21,7 @@
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="">Delete</a></li>
+                <li><button type="button" id="message_delete_button" class="dropdown-item" href="">Delete</button></li>
             </ul>
         </div>
     </div>

@@ -14,7 +14,7 @@ class MessageController extends Controller
 {
     public function index($channel_id = null) {
         $user = Auth::user();
-        $channels = Channel::where('is_approved',1)->get();
+        $channels = Channel::where([['is_approved',1], ['is_hidden',0]])->get();
         foreach ($channels as $channel) {
             $lastMessage = Message::where('channel_id', $channel->id)->orderBy('created_at', 'desc')->first();
             if ($lastMessage) {
@@ -105,6 +105,34 @@ class MessageController extends Controller
             $response = [
                 'success' => false,
                 'fullMessage' => $e->getMessage()
+            ];
+            return response()->json($response);
+        }
+    }
+    public function chatHide(Request $request)
+    {
+        try {
+            $channel = Channel::find($request->channel_id);
+            if ($channel) {
+                $channel->is_hidden = 1;
+                $channel->save();
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'No channel found!'
+                ];
+                return response()->json($response);
+            }
+    
+            $response = [
+                'success' => true,
+                'message' => 'Deleted successfully!'
+            ];
+            return response()->json($response);
+        } catch (\Exception $e) {
+            $response = [
+                'success' => false,
+                'message' => $e->getMessage()
             ];
             return response()->json($response);
         }

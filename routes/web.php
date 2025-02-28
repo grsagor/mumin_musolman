@@ -216,6 +216,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'auth.admin']], func
         Route::get('/reload', [MessageController::class, 'reloadChannelContainer'])->name('reload.channels.container');
         Route::get('/{channel_id?}', [MessageController::class, 'index'])->name('admin.message');
         Route::post('/save', [MessageController::class, 'messageSave'])->name('chat.save');
+        Route::post('/chat-hide', [MessageController::class, 'chatHide'])->name('admin.chat.hide');
     });
     Route::group(['prefix' => '/message-requests'], function () {
         Route::get('/', [MessagerequestController::class, 'index'])->name('admin.message.requests.index');

@@ -1056,3 +1056,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .customized__scrollbar::-webkit-scrollbar-track {
     background-color: transparent;
 }
+
+.dropdown-toggle::after {
+    display: none;
+}
+.dropdown-toggle:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}

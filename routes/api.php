@@ -54,7 +54,7 @@ Route::prefix('v1')->group(function () {
         Route::get('get-custom-ad-list', 'getCustomAdList');
         Route::get('get-custom-ad-details', 'getCustomAdDetails');
 
-        Route::post('payment', 'storePayment');
+        Route::post('payment', 'storePayment')->name('store.payment');
         Route::get('get-setting-list', 'getSettingList');
 
         Route::post('bkash-transaction-status', 'bkash');

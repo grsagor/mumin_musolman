@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\BKash\Controllers\BkashRefundController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Backend\AlluserController;
 use App\Http\Controllers\Backend\AmolvideoController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\TruckTypeController;
+use App\Http\Controllers\BKash\BkashController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -36,7 +38,8 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::controller(AuthController::class)->group(function() {
+
+Route::controller(AuthController::class)->group(function () {
     Route::get('/', 'login');
     Route::get('login', 'login')->name('login');
     Route::get('register', 'registration')->name('register');
@@ -53,7 +56,7 @@ Route::post('signup', [LoginController::class, 'signup'])->name('registration.po
 Route::get('/admin', function () {
     if (Auth::user()) {
         return redirect()->route('admin.index');
-    }else{
+    } else {
         return view('auth.pages.login');
     }
 })->name('admin');
@@ -246,3 +249,20 @@ Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 
 Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 //SSLCOMMERZ END
+
+
+// Payment Routes for bKash
+Route::controller(BkashController::class)->group(function () {
+    Route::get('bkash', 'index')->name('bkash-index');
+    Route::post('bkash/get-token', 'getToken')->name('bkash-get-token');
+    Route::post('bkash/create-payment', 'createPayment')->name('bkash-create-payment');
+    Route::post('bkash/execute-payment', 'executePayment')->name('bkash-execute-payment');
+    Route::get('bkash/query-payment', 'queryPayment')->name('bkash-query-payment');
+    Route::post('bkash/success', 'bkashSuccess')->name('bkash-success');
+    Route::get('bkash/success', 'successPage')->name('payment.success.page');
+});
+Route::controller(BkashRefundController::class)->group(function () {
+    // Refund Routes for bKash
+    Route::get('bkash/refund', 'BkashRefundController@index')->name('bkash-refund');
+    Route::post('bkash/refund', 'BkashRefundController@refund')->name('bkash-refund');
+});

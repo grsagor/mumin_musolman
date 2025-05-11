@@ -48,6 +48,7 @@
                 }),
                 success: function (data) {
                     if (data) {
+                        console.log(data)
                         if (data.paymentID != null) {
                             BkashSuccess(data);
                         } else {

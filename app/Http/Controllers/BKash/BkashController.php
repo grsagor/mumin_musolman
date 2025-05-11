@@ -85,7 +85,7 @@ class BkashController extends Controller
 
     public function createPayment(Request $request)
     {
-        $requestData['amount'] = 100;
+        $requestData['amount'] = 10;
 
         $token = session()->get('bkash_token');
 

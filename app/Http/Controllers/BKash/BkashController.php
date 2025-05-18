@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BKash;
 
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -21,11 +22,16 @@ class BkashController extends Controller
         // bKash Merchant API Information
 
         // You can import it from your Database
-        $bkash_app_key = '5tunt4masn6pv2hnvte1sb5n3j'; // bKash Merchant API APP KEY
-        $bkash_app_secret = '1vggbqd4hqk9g96o9rrrp2jftvek578v7d2bnerim12a87dbrrka'; // bKash Merchant API APP SECRET
-        $bkash_username = 'sandboxTestUser'; // bKash Merchant API USERNAME
-        $bkash_password = 'hWD@8vtzw0'; // bKash Merchant API PASSWORD
-        $bkash_base_url = 'https://checkout.sandbox.bka.sh/v1.2.0-beta'; // For Live Production URL: https://checkout.pay.bka.sh/v1.2.0-beta
+        // $bkash_app_key = '5tunt4masn6pv2hnvte1sb5n3j'; // bKash Merchant API APP KEY
+        // $bkash_app_secret = '1vggbqd4hqk9g96o9rrrp2jftvek578v7d2bnerim12a87dbrrka'; // bKash Merchant API APP SECRET
+        // $bkash_username = 'sandboxTestUser'; // bKash Merchant API USERNAME
+        // $bkash_password = 'hWD@8vtzw0'; // bKash Merchant API PASSWORD
+        // $bkash_base_url = 'https://checkout.sandbox.bka.sh/v1.2.0-beta'; // For Live Production URL: https://checkout.pay.bka.sh/v1.2.0-beta
+        $bkash_app_key = 'rGrhiWtYcacOfLAqxLZN5vFZtc'; // bKash Merchant API APP KEY
+        $bkash_app_secret = 'jxTnkEdZzx9y5xS88qgjMbb9Urb02fyW5FfK5Jv1CcmXPXJZG3d9'; // bKash Merchant API APP SECRET
+        $bkash_username = '01811181526'; // bKash Merchant API USERNAME
+        $bkash_password = 'cZpu?#I&Bw7'; // bKash Merchant API PASSWORD
+        $bkash_base_url = 'https://checkout.pay.bka.sh/v1.2.0-beta';
 
         $this->app_key = $bkash_app_key;
         $this->app_secret = $bkash_app_secret;
@@ -36,6 +42,9 @@ class BkashController extends Controller
 
     public function index(Request $request)
     {
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
         $for = $request->for;
         $payment_session = Session::get('payment_session');
         $payment_session['for'] = $for;
@@ -157,11 +166,9 @@ class BkashController extends Controller
 
     public function bkashSuccess(Request $request)
     {
-        \Log::info('calling');
         try {
             $user = Auth::user();
-            if($request->payment_info['transactionStatus'] == 'Completed') {
-                \Log::info('calling completed');
+            if ($request->payment_info['transactionStatus'] == 'Completed') {
                 $payment_session = Session::get('payment_session');
                 $requestBody = [
                     'user_id' => $user->id,
@@ -170,32 +177,36 @@ class BkashController extends Controller
                     'for' => $payment_session['for'],
                     'phone' => $request->payment_info['customerMsisdn'] ?? null // Add phone number
                 ];
-                
-                $response = Http::post(url('/api/v1/payment'), $requestBody);
-                \Log::info('calling response get');
-                $responseData = $response->json(); // Decode JSON response
-                
+                $responseData = [];
+                try {
+                    $paymentController = new ApiController();
+                    $responseData = $paymentController->storePayment(new Request($requestBody))->getData(true);
+                } catch (\Throwable $th) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $th->getMessage()
+                    ]);
+                }
+
                 if ($responseData['status'] == 1) { // Check status from response data
-                    \Log::info('calling response status 1');
                     Session::put('payment_session', []);
                     return response()->json([
                         'success' => true,
                         'redirect_url' => route('payment.success.page'),
                     ]);
                 }
-                
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Payment processing failed',
                     'response' => $responseData
                 ]);
             }
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Transaction not completed'
             ]);
-            
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -204,7 +215,8 @@ class BkashController extends Controller
         }
     }
 
-    public function successPage() {
+    public function successPage()
+    {
         return view('bkash.bkash-payment-success');
     }
 }

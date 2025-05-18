@@ -26,6 +26,7 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\TruckTypeController;
 use App\Http\Controllers\BKash\BkashController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -39,8 +40,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Route::controller(FrontendController::class)->group(function () {
+    Route::get('/', 'index')->name('front.index');
+});
+
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/', 'login');
     Route::get('login', 'login')->name('login');
     Route::get('register', 'registration')->name('register');
     Route::get('reset-password', 'forgotPassword');
@@ -81,25 +85,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'auth.admin']], func
         Route::get('/{id}', [UserController::class, 'userDetails'])->name('admin.user.details');
     });
 
-    Route::group(['prefix' => '/role'], function () {
-        Route::get('/generate/right/{mdule_name}', [RoleController::class, 'generate'])->name('admin.role.right.generate');
-
-        Route::get('/', [RoleController::class, 'index'])->name('admin.role');
-        Route::get('/get/role/list', [RoleController::class, 'getRoleList']);
-        Route::get('/create', [RoleController::class, 'create'])->name('admin.role.create');
-        Route::post('/store', [RoleController::class, 'store'])->name('admin.role.store');
-        Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('admin.role.edit');
-        Route::any('/update/{id}', [RoleController::class, 'update'])->name('admin.role.update');
-        Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('admin.role.delete');
-
-        Route::get('/right', [RoleController::class, 'right'])->name('admin.role.right');
-        Route::get('/get/right/list', [RoleController::class, 'getRightList']);
-        Route::post('/right/store', [RoleController::class, 'rightStore'])->name('admin.role.right.store');
-        Route::get('/right/edit/{id}', [RoleController::class, 'editRight'])->name('admin.role.right.edit');
-        Route::any('/right/update/{id}', [RoleController::class, 'roleRightUpdate'])->name('admin.role.right.update');
-        Route::get('/right/delete/{id}', [RoleController::class, 'rightDelete'])->name('admin.role.right.delete');
-    });
-
     Route::group(['prefix' => '/setting'], function () {
         Route::get('/general', [SettingController::class, 'general'])->name('admin.setting.general');
         Route::get('/static-content', [SettingController::class, 'staticContent'])->name('admin.setting.static.content');
@@ -108,17 +93,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'auth.admin']], func
         Route::get('/change-language', [SettingController::class, 'changeLanguage'])->name('admin.setting.change.language');
     });
 
-    Route::group(['prefix' => '/truck-type'], function () {
-        Route::get('/', [TruckTypeController::class, 'index'])->name('admin.truck.type');
-        Route::get('/get/list', [TruckTypeController::class, 'getList']);
-        Route::post('/store', [TruckTypeController::class, 'store'])->name('admin.truck.type.store');
-        Route::get('/edit', [TruckTypeController::class, 'edit'])->name('admin.truck.type.edit');
-        Route::any('/update', [TruckTypeController::class, 'update'])->name('admin.truck.type.update');
-        Route::get('/delete', [TruckTypeController::class, 'delete'])->name('admin.truck.type.delete');
-        Route::get('rent-amount-html', [TruckTypeController::class, 'rentAmountHtml'])->name('admin.truck.type.rent.amount.html');
-        Route::get('rent-amount-increment', [TruckTypeController::class, 'rentAmountIncrement'])->name('admin.truck.type.rent.amount.increment');
-        Route::get('distance', [TruckTypeController::class, 'distance']);
-    });
     Route::group(['prefix' => '/regular-video-free'], function () {
         Route::get('/', [RegularvideoController::class, 'index'])->name('admin.regular.video.free');
         Route::get('/get/list', [RegularvideoController::class, 'getList'])->name('admin.regular.video.free.get.list');
@@ -231,25 +205,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'auth.admin']], func
 });
 
 Route::get('admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
-
-
-// admin route end
-
-
-// SSLCOMMERZ Start
-Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
-Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
-
-Route::post('/pay', [SslCommerzPaymentController::class, 'index']);
-Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
-
-Route::post('/success', [SslCommerzPaymentController::class, 'success']);
-Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
-Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
-
-Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
-//SSLCOMMERZ END
-
 
 // Payment Routes for bKash
 Route::controller(BkashController::class)->group(function () {

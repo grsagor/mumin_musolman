@@ -113,7 +113,7 @@
             payment_info: data
         }, function (res) {
             console.log('res', res)
-            // window.location.href = res.redirect_url;
+            window.location.href = res.redirect_url;
         });
     }
 

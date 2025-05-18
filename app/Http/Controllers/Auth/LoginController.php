@@ -63,10 +63,10 @@ class LoginController extends Controller
         if ($user && $user->status == 1) {
             if (Auth::attempt($credentials)) {
                 $authUser = Auth()->user()->role;
-                if ($authUser == 3 || $authUser == 4) {
-                    return redirect()->route('frontend.home');
-                }else{
+                if ($authUser == 1) {
                     return redirect()->route('admin.index');
+                }else{
+                    return redirect()->route('front.index');
                 }
             }else{
                 return redirect()->back()->withErrors(['error' => 'Invalid credentials.']);

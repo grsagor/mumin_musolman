@@ -94,9 +94,7 @@
 
                 if (data && data.paymentID != null) {
                     paymentID = data.paymentID;
-                    window.location.href=data.bkashURL;
-                    // console.log('data', data);
-                    // bKash.create().onSuccess(data);
+                    bKash.create().onSuccess(data);
                 } else {
                     bKash.create().onError();
                 }

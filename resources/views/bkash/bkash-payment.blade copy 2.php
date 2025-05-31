@@ -64,7 +64,7 @@
                                 <div class="col-md-6 text-end">
                                     <p class="fw-bold">Premium Subscription</p>
                                     <p class="fw-bold">1 Month</p>
-                                    <p class="fw-bold">৳{{$amount}}</p>
+                                    <p class="fw-bold">৳500</p>
                                 </div>
                             </div>
                             <hr>
@@ -73,7 +73,7 @@
                                     <p class="text-muted mb-0">Total Amount</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <p class="fw-bold mb-0">৳{{$amount}}</p>
+                                    <p class="fw-bold mb-0">৳500</p>
                                 </div>
                             </div>
                         </div>

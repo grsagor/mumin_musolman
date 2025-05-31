@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Helper;
+use Illuminate\Support\Facades\Log;
 
 class BkashController extends Controller
 {
@@ -207,10 +208,7 @@ class BkashController extends Controller
 
                 if ($responseData['status'] == 1) { // Check status from response data
                     Session::put('payment_session', []);
-                    return response()->json([
-                        'success' => true,
-                        'redirect_url' => route('payment.success.page'),
-                    ]);
+                    return view('bkash.bkash-payment-success');
                 }
 
                 return response()->json([

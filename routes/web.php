@@ -213,8 +213,8 @@ Route::controller(BkashController::class)->group(function () {
     Route::post('bkash/create-payment', 'createPayment')->name('bkash-create-payment');
     Route::post('bkash/execute-payment', 'executePayment')->name('bkash-execute-payment');
     Route::get('bkash/query-payment', 'queryPayment')->name('bkash-query-payment');
-    Route::post('bkash/success', 'bkashSuccess')->name('bkash-success');
-    Route::get('bkash/success', 'successPage')->name('payment.success.page');
+    // Route::post('bkash/success', 'bkashSuccess')->name('bkash-success');
+    Route::get('bkash/success', 'bkashSuccess')->name('payment.success.page');
 });
 Route::controller(BkashRefundController::class)->group(function () {
     // Refund Routes for bKash

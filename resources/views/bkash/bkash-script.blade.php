@@ -111,12 +111,6 @@
     }
 
     function BkashSuccess(data) {
-        $.post('{{ route('bkash-success') }}', {
-            payment_info: data
-        }, function (res) {
-            console.log('res', res)
-            window.location.href = res.redirect_url;
-        });
     }
 
     function showErrorMessage(response) {

@@ -63,7 +63,7 @@
     <div class="container mb-5">
         <div class="row g-4">
             <!-- Premium Videos Service -->
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="service-card h-100 p-4 bg-white">
                     <div class="text-center">
                         <div class="feature-icon">
@@ -73,11 +73,8 @@
                         <div class="mb-4">
                             <h4 class="h5 mb-3">যা যা পাবেন:</h4>
                             <ul class="list-unstyled text-start">
-                                <li>✓ এক্সক্লুসিভ ইসলামিক লেকচার</li>
-                                <li>✓ উচ্চমানের শিক্ষামূলক কনটেন্ট</li>
-                                <li>✓ বিজ্ঞাপনমুক্ত ভিডিও</li>
-                                <li>✓ অফলাইনে দেখার সুবিধা</li>
-                                <li>✓ স্পেশাল সিরিজ এবং ইভেন্টের এক্সেস</li>
+                                <li>✓ প্রিমিয়াম ভিডিও</li>
+                                <li>✓ প্রিমিয়াম আমল ভিডিও</li>
                             </ul>
                         </div>
                         <a href="/bkash?for=premium" class="btn btn-premium">
@@ -88,7 +85,7 @@
             </div>
 
             <!-- Premium Chat Service -->
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="service-card h-100 p-4 bg-white">
                     <div class="text-center">
                         <div class="feature-icon">
@@ -96,13 +93,9 @@
                         </div>
                         <h2 class="h3 mb-4">প্রিমিয়াম চ্যাট</h2>
                         <div class="mb-4">
-                            <h4 class="h5 mb-3">যা যা পাবেন:</h4>
+                            <h4 class="h5 mb-3">যা পাবেন:</h4>
                             <ul class="list-unstyled text-start">
-                                <li>✓ ইসলামিক স্কলারদের সাথে সরাসরি যোগাযোগ</li>
-                                <li>✓ প্রশ্নের দ্রুত উত্তর</li>
-                                <li>✓ ব্যক্তিগত পরামর্শ সেশন</li>
-                                <li>✓ গ্রুপ আলোচনায় অংশগ্রহণ</li>
-                                <li>✓ ২৪/৭ চ্যাট সাপোর্ট</li>
+                                <li>✓ সরাসরি হুজুরের সাথে কথা বলার সুযোগ।</li>
                             </ul>
                         </div>
                         <a href="/bkash?for=chat" class="btn btn-premium">
@@ -111,11 +104,32 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Premium Chat Service -->
+            <div class="col-md-4">
+                <div class="service-card h-100 p-4 bg-white">
+                    <div class="text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h2 class="h3 mb-4">ডোনেশন করুন</h2>
+                        <div class="mb-4">
+                            {{-- <h4 class="h5 mb-3">যা যা পাবেন:</h4> --}}
+                            <ul class="list-unstyled text-start">
+                                <li>✓ আপনি কি ডোনেট করতে চান?</li>
+                            </ul>
+                        </div>
+                        <a href="#" class="btn btn-premium" data-bs-toggle="modal" data-bs-target="#donationModal">
+                            ডোনেশন করুন
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Why Choose Us Section -->
-    <div class="container mb-5">
+    {{-- <div class="container mb-5">
         <div class="row">
             <div class="col-12 text-center mb-4">
                 <h2>আমাদের প্রিমিয়াম সেবা কেন বেছে নেবেন?</h2>
@@ -142,10 +156,41 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+
+    <!-- Donation Modal -->
+    <div class="modal fade" id="donationModal" tabindex="-1" aria-labelledby="donationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="donationModalLabel">ডোনেশন পরিমাণ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="donationForm" action="/bkash" method="GET">
+                        <input type="hidden" name="for" value="donation">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">টাকার পরিমাণ</label>
+                            <input type="number" class="form-control" id="amount" name="amount" required
+                                min="1">
+                        </div>
+                        <button type="submit" class="btn btn-premium">পেমেন্ট করুন</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('assets/js/backend/bootstrap.bundle.min.js') }}" crossorigin="anonymous"></script>
+
+    <script>
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = document.getElementById('amount').value;
+            window.location.href = `/bkash?for=donation&amount=${amount}`;
+        });
+    </script>
 </body>
 
 </html>

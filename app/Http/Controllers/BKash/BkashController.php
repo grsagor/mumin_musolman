@@ -44,8 +44,10 @@ class BkashController extends Controller
         
         if ($request->query('for') === 'premium') {
             $this->amount = Helper::getSettings('premium_charge');
-        } else {
+        } elseif($request->query('for') === 'chat') {
             $this->amount = Helper::getSettings('message_charge'); // default or fallback
+        } elseif($request->query('for') === 'donation') {
+            $this->amount = $request->query('amount'); // default or fallback
         }
     }
 
@@ -58,7 +60,7 @@ class BkashController extends Controller
         $payment_session = Session::get('payment_session');
         $payment_session['for'] = $for;
         Session::put('payment_session', $payment_session);
-        if (!in_array($for, ['chat', 'premium'])) {
+        if (!in_array($for, ['chat', 'premium', 'donation'])) {
             Session::put('payment_session', []);
             return 'Please select a valid option';
         }
@@ -105,7 +107,11 @@ class BkashController extends Controller
 
     public function createPayment(Request $request)
     {
-        $requestData['amount'] = $this->amount;
+        $requestData['amount'] = $request->amount;
+        // return $this->amount [
+        //     'amount' => $this->amount,
+        //     'for' => $request->query('for')
+        // ];
 
         $token = session()->get('bkash_token');
 
@@ -134,7 +140,7 @@ class BkashController extends Controller
         curl_setopt($url, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         $resultdata = curl_exec($url);
         curl_close($url);
-        session()->put('bkash_amount', $this->amount);
+        session()->put('bkash_amount', $request->amount);
         return json_decode($resultdata, true);
     }
 
@@ -211,22 +217,28 @@ class BkashController extends Controller
                     return view('bkash.bkash-payment-success');
                 }
 
-                return response()->json([
-                    'success' => false,
+                return view('bkash.bkash-payment-error', [
                     'message' => 'Payment processing failed',
-                    'response' => $responseData
                 ]);
+
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Payment processing failed',
+                //     'response' => $responseData
+                // ]);
             }
 
-            return response()->json([
-                'success' => false,
+            return view('bkash.bkash-payment-error', [
                 'message' => 'Transaction not completed'
             ]);
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage()
+            return view('bkash.bkash-payment-error', [
+                'message' => 'Something went wrong.'
             ]);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => $th->getMessage()
+            // ]);
         }
     }
     

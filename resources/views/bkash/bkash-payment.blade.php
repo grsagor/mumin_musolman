@@ -57,32 +57,32 @@
                             <h4>Order Summary</h4>
                             <div class="row mt-3">
                                 <div class="col-md-6">
-                                    <p class="text-muted">Package</p>
-                                    <p class="text-muted">Duration</p>
+                                    {{-- <p class="text-muted">Package</p> --}}
+                                    {{-- <p class="text-muted">Duration</p> --}}
                                     <p class="text-muted">Amount</p>
                                 </div>
                                 <div class="col-md-6 text-end">
-                                    <p class="fw-bold">Premium Subscription</p>
-                                    <p class="fw-bold">1 Month</p>
+                                    {{-- <p class="fw-bold">Premium Subscription</p> --}}
+                                    {{-- <p class="fw-bold">1 Month</p> --}}
                                     <p class="fw-bold">৳{{$amount}}</p>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="row">
+                            {{-- <hr> --}}
+                            {{-- <div class="row">
                                 <div class="col-6">
                                     <p class="text-muted mb-0">Total Amount</p>
                                 </div>
                                 <div class="col-6 text-end">
                                     <p class="fw-bold mb-0">৳{{$amount}}</p>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="text-center">
                             <p class="text-muted mb-4">Please click the button below to proceed with your payment</p>
                             <button class="bkash-btn" id="bKash_button" onclick="BkashPayment()">
-                                <img src="https://raw.githubusercontent.com/bKash-developer/bKash-for-woocommerce/master/assets/images/bkash-logo.png" 
-                                     alt="bKash" class="bkash-logo">
+                                {{-- <img src="{{ asset('assets/img/bkash.png') }}"
+                                     alt="bKash" class="bkash-logo"> --}}
                                 Pay with bKash
                             </button>
                         </div>

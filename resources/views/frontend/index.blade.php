@@ -44,6 +44,21 @@
             color: #E2136E;
             margin-bottom: 1rem;
         }
+
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #E2136E;
+        }
     </style>
 </head>
 
@@ -157,6 +172,21 @@
             </div>
         </div>
     </div> --}}
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">
+                        যোগাযোগ করুন: 
+                        <a href="mailto:muminmusolmanapps@gmail.com">
+                            <i class="fas fa-envelope me-1"></i>muminmusolmanapps@gmail.com
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Donation Modal -->
     <div class="modal fade" id="donationModal" tabindex="-1" aria-labelledby="donationModalLabel" aria-hidden="true">

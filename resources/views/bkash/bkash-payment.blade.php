@@ -43,6 +43,21 @@
             max-height: 40px;
             margin-right: 10px;
         }
+
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #E2136E;
+        }
     </style>
 </head>
 <body>
@@ -91,6 +106,21 @@
             </div>
         </div>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">
+                        যোগাযোগ করুন: 
+                        <a href="mailto:muminmusolmanapps@gmail.com">
+                            <i class="fas fa-envelope me-1"></i>muminmusolmanapps@gmail.com
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

@@ -116,7 +116,7 @@ class BkashController extends Controller
         $token = session()->get('bkash_token');
 
         $requestData['mode'] = '0011';
-        $requestData['payerReference'] = '01723888888';
+        $requestData['payerReference'] = '1';
         $requestData['callbackURL'] = route('payment.success.page');
         $requestData['merchantAssociationInfo'] = 'MI05MID54RF09123456One';
         $requestData['intent'] = 'sale';
